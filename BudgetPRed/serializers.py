@@ -6,8 +6,8 @@ class BudgetSerializer(serializers.Serializer):
     MONTSTRU = serializers.FloatField()
     MONTRAPP = serializers.FloatField()
     MOISSOLD = serializers.DateField()
-    CODTYPAC = serializers.CharField(max_length=3)
-    LIBACTGE = serializers.CharField(max_length=50)
+    CODTYPAC = serializers.CharField(max_length=2, default='AA' )
+    LIBACTGE = serializers.CharField(max_length=50, default='no libelle')
     Budgets = serializers.FloatField()
 
     def validate(self, data):

@@ -6,14 +6,16 @@ from rest_framework import serializers # Importing serializers
 
 class Budget(models.Model):
 
-    IDEIMPST = models.IntegerField() 
+    #id 
+    IDEIMPST = models.IntegerField(primary_key=True, default=0 )
     MONTSTRU = models.FloatField()
     MONTRAPP = models.FloatField()
-    MOISSOLD = models.DateField()
-    CODTYPAC = models.CharField(max_length=3)
-    LIBACTGE = models.CharField(max_length=50)
+    MOISSOLD = models.DateField( default='2021-01-01')
+    CODTYPAC = models.CharField(max_length=3, default='AA')
+    LIBACTGE = models.CharField(max_length=50, default='no libelle')
     Budgets = models.FloatField()
 
     def __str__(self):
-        return self.IDEIMPST
+        return self.IDEIMPST    
+    
 
