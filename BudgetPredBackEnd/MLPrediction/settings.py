@@ -45,7 +45,7 @@ ROOT_URLCONF = 'MLPrediction.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"], # add this line to TEMPLATES
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

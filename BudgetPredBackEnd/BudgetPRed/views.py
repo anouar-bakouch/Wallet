@@ -1,12 +1,15 @@
 # BudgetView REST API 
 
 import pickle
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from BudgetPRed.serializers import BudgetSerializer
 from BudgetPRed.models import Budget
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+def index(request):
+    # return index.html in templates folder
+    return render(request, 'index.html')
 
 class AddBudgetView(APIView):
 
@@ -19,7 +22,6 @@ class AddBudgetView(APIView):
             budget_saved = serializer.save()
         return Response({"success": "Budget '{}' created successfully".format(budget_saved.IDEIMPST)})
             
-
 class ListBudgetView(APIView):
     def get(self, request):
         budgets = Budget.objects.all()
