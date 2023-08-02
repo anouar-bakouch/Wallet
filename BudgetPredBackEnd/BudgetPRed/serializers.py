@@ -14,7 +14,30 @@ class BudgetSerializer(serializers.ModelSerializer):
     
     # update method to update an existing budget
     def update(self, instance, validated_data):
-        
+        instance.IDEIMPST = validated_data.get('IDEIMPST', instance.IDEIMPST)
+        instance.MONTSTRU = validated_data.get('MONTSTRU', instance.MONTSTRU)
+        instance.MONTRAPP = validated_data.get('MONTRAPP', instance.MONTRAPP)
+        instance.MOISSOLD = validated_data.get('MOISSOLD', instance.MOISSOLD)
+        instance.CODTYPAC = validated_data.get('CODTYPAC', instance.CODTYPAC)
+        instance.LIBACTGE = validated_data.get('LIBACTGE', instance.LIBACTGE)
+        instance.Budgets = validated_data.get('Budgets', instance.Budgets)
+        instance.save()
+        return instance
+    
+    # delete method to delete an existing budget
+    def delete(self, instance):
+        instance.delete()
+        return instance
+    
+    # get method to get an existing budget
+    def get(self, instance):
+        return instance
+    
+    # get all method to get all existing budgets
+    def get_all(self):
+        return Budget.objects.all()
+    
+
     
 
 
