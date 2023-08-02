@@ -2,8 +2,12 @@ from rest_framework import serializers
 
 class BudgetSerializer(serializers.Serializer):
 
+    IDEIMPST = serializers.IntegerField() 
     MONTSTRU = serializers.FloatField()
     MONTRAPP = serializers.FloatField()
+    MOISSOLD = serializers.DateField()
+    CODTYPAC = serializers.CharField(max_length=3)
+    LIBACTGE = serializers.CharField(max_length=50)
     Budgets = serializers.FloatField()
 
     def validate(self, data):
@@ -19,5 +23,5 @@ class BudgetSerializer(serializers.Serializer):
         instance.Budgets = validated_data.get('Budgets', instance.Budgets)
         instance.save()
         return instance
-
+    
     

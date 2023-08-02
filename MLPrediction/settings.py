@@ -25,7 +25,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework'
+    'rest_framework',
+    # Add the BudgetPRed app to INSTALLED_APPS
+    'BudgetPRed',
 ]
 
 MIDDLEWARE = [
