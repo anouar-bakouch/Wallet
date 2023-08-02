@@ -1,45 +1,51 @@
-import pandas as pd 
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-import sklearn
+import pandas as pd
+from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score, mean_squared_error
+import pickle
 
-# reading the xls file
+# Load the data into a pandas DataFrame
 df = pd.read_excel('../data/budgetDATA.xls')
 
-# budgets : total amount of money i have in my account 
-# MONTSTRU : total amount of money i have to pay for my montly expenses 
-# MONTRAPP : total amount of money left after paying montly expenses
-# MOISSOLD : date when i paid
-# CODYT : type of montly expense
+# Check for missing values
+if df.isnull().sum().any() == 0:
+    print('No missing values.')
 
-# building the model to predict the amount of money i will have in my account after paying montly expenses
+# Check for duplicates
+if df.duplicated().sum().any() == 0:
+    print('No duplicates.')
 
-# data cleaning using pandas
-    # 1. checking for null values
-    # 2. checking for duplicates
-    # 3. checking for outliers 
-    # 4. checking for data types
+# Check for outliers
+if df.describe().any().any() == 0:
+    print('No outliers.')
 
-# 1. checking for null values
-if(df.isnull().sum().any() == 0):
-    print('no null values')
+# Split the data into input (X) and target (Y) variables
+X = df[['MONTSTRU', 'MONTRAPP']]
+Y = df['Budgets']
 
-# 2. checking for duplicates
-if(df.duplicated().sum().any() == 0):
-    print('no duplicates') 
+# Split the data into training and testing sets
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
-# 3. checking for outliers 
-if(df.describe().any().any() == 0):
-    print('no outliers')
+# Train a linear regression model
+model = LinearRegression()
+model.fit(X_train, Y_train)
 
-# 4. checking for data types
-print(df.dtypes)
+# Make predictions on the test data
+Y_pred = model.predict(X_test)
 
-# 5. number of lines and columns
-print(df.shape)
+# Evaluate the performance of the model
+print('Model R-squared score:', r2_score(Y_test, Y_pred))
+print('Mean squared error:', mean_squared_error(Y_test, Y_pred))
 
-# 7. correlation between the columns MONTRAPP and MONTSTRU , budgets  
+# Save the model to a file
+with open('model.pkl', 'wb') as f:
+    pickle.dump(model, f)
 
-print(df[['MONTRAPP','MONTSTRU']].corr())
+# Load the model from a file
+with open('model.pkl', 'rb') as f:
+    model = pickle.load(f)
+
+# Predict the available budget for new data
+new_data = pd.DataFrame({'MONTSTRU': [0], 'MONTRAPP': [-49]})
+Y_new_pred = model.predict(new_data)
+print('Available budget:', Y_new_pred[0], 'USD')
