@@ -1,0 +1,120 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow ">
+  <div class="container">
+    <a class="navbar-brand" href=""><img
+      class="img-fluid img-thumbnail"
+      src="/assets/images/Budget_logo.png"
+      width="180"
+      height="40"
+      alt="budget predictor"
+      srcset=""
+    /></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown">
+          <a
+            class="text-color nav-link dropdown-toggle"
+            href="#ced"
+            id="poles_doctorales"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <span class="display-15">APP</span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="poles_doctorales">
+            <li>
+              <a class="dropdown-item text-color" routerLink="/home/description"
+                >Description</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-darkblue" href="#ced"
+                >Centre D'Etudes Docotrales</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-color " href="#labo"
+            >TEST</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-color" 
+            >TEST</a
+          >
+        </li>
+        
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle brand-primary text-color "
+            href="#"
+            id="reglements"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+          TEST
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="reglements">
+            <li>
+              <a class="dropdown-item text-darkblue" href="reglement/"
+                >Charte de Doctorat</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-darkblue" href="reglement/postule"
+                >Comment Candidater</a
+              >
+            </li>
+            <li>
+              <a
+                class="dropdown-item text-darkblue"
+                href="/home/candidat/pre-register"
+                >Candidater</a
+              >
+            </li>
+
+            <li>
+              <a
+                class="dropdown-item text-color"
+                
+                >guide</a
+              >
+            </li>
+            
+          </ul>
+        </li>
+      
+        <li class="nav-item">
+            
+          <a
+            class="nav-link text-color fw-bold"
+            routerLink="/home/connexion"
+          >Se Connecter
+         </a>
+        </li>
+
+<!--          
+         <li
+            class="nav-item d-flex justify-content-center align-items-center"
+          >
+          <select 
+          class="form-control form-control-sm" 
+          #selectedLang 
+          (change)="switchLang(selectedLang.value)">
+        <option *ngFor="let language of translate.getLangs()" 
+          [value]="language"
+          [selected]="language === translate.currentLang">
+          {{ language }}
+        </option>
+      </select>
+          </li> -->
+          
+      </ul>
+    </div>
+  </div>
+</nav>

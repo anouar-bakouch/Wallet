@@ -9,3 +9,4 @@ export interface Budget {
     LIBACTGE : string;
     Budgets : number;
 }
+
