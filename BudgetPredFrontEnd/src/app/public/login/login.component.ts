@@ -1,5 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { LoginService } from '../services/login.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
   username: string="";
   password: string="";
 
-  constructor(private loginService: LoginService) {}
+  constructor(private loginService: LoginService,private router:Router) {}
 
   ngOnInit() {}
 
@@ -22,9 +23,9 @@ export class LoginComponent implements OnInit {
       .subscribe(
         (success) => {
           if (success) {
-            // The user has successfully logged in.
+            this.router.navigate(['/budgets']);
           } else {
-            // The login failed.
+            this.router.navigate(['/login']);
           }
         },
         (error) => {

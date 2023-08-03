@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SignupService } from '../services/sign-up.service';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -15,7 +16,7 @@ export class SignUpComponent implements OnInit {
   firstName: string = "";
   lastName: string = "";
 
-  constructor(private signupService: SignupService) { }
+  constructor(private signupService: SignupService,private router:Router) { }
 
   ngOnInit() { }
 
@@ -23,9 +24,11 @@ export class SignUpComponent implements OnInit {
     try {
       const success = await this.signupService.signup(this.username, this.email, this.password, this.firstName, this.lastName).toPromise();
       if (success) {
-        console.log("The signup was successful.")
+        // The signup was successful.
+        this.router.navigate(['/login']);        
       } else {
         // The signup failed.
+        this.router.navigate(['/signup']);
       }
     } catch (error) {
       console.log(error);
