@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'rest_framework',
     # Add the BudgetPRed app to INSTALLED_APPS
     'BudgetPRed',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -38,6 +39,20 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:4200',
+]
+
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS'
 ]
 
 ROOT_URLCONF = 'MLPrediction.urls'
