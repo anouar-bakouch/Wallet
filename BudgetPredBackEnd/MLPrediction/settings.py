@@ -39,21 +39,17 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware'
+     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
-
+APPEND_SLASH = False 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:4200',
 ]
 
-CORS_ALLOW_METHODS = [
-    'GET',
-    'POST',
-    'PUT',
-    'PATCH',
-    'DELETE',
-    'OPTIONS'
-]
+# Allow requests from all domains (you can restrict it to specific domains if needed)
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 ROOT_URLCONF = 'MLPrediction.urls'
 

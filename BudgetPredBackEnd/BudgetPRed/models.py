@@ -42,8 +42,6 @@ class User(models.Model):
     email = models.CharField(max_length=255)
     firstName = models.CharField(max_length=255, default='no name')
     lastName = models.CharField(max_length=255, default='no name')
-    token = models.CharField(max_length=255, default='no token')
-
     def __str__(self):
         return self.username
 

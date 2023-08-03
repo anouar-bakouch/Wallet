@@ -110,8 +110,8 @@ class signUpView(APIView):
             return Response({"success": "User '{}' created successfully".format(user_saved.id)})
 
         else:
-            # Return an error message
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # Return the error messages 
+            return Response(serializer.errors)
 
 class signInView(APIView):
     

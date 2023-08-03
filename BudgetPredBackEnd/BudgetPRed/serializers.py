@@ -36,26 +36,34 @@ class BudgetSerializer(serializers.ModelSerializer):
     # get all method to get all existing budgets
     def get_all(self):
         return Budget.objects.all()
-    
-from rest_framework import serializers
-from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'password', 'firstName', 'lastName')
 
     def create(self, validated_data):
-        return User.objects.create(**validated_data)
+        user = User.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            firstName=validated_data['firstName'],
+            lastName=validated_data['lastName']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
     def update(self, instance, validated_data):
-        instance.id = validated_data.get('id', instance.id)
         instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
-        instance.password = validated_data.get('password', instance.password)
         instance.firstName = validated_data.get('firstName', instance.firstName)
         instance.lastName = validated_data.get('lastName', instance.lastName)
+        
+        password = validated_data.get('password')
+        if password:
+            instance.set_password(password)
+        
         instance.save()
         return instance
-
