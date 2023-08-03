@@ -88,17 +88,31 @@ class PredictBudgetView(APIView):
             budget['Budgets'] = Budgets[0]
         return Response({"budget": budget})
     
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .serializers import UserSerializer
+
 class signUpView(APIView):
 
     def post(self, request):
-        # display input fields IDEIMPST, MONTSTRU, MONTRAPP, MOISSOLD, CODTYPAC, LIBACTGE, Budgets 
+        # Get the user data from the request
         user = request.data.get('user')
-        # Create an article from the above data
+
+        # Create a serializer from the user data
         serializer = UserSerializer(data=user)
+
+        # Validate the serializer
         if serializer.is_valid(raise_exception=True):
+            # Save the user
             user_saved = serializer.save()
-        return Response({"success": "User '{}' created successfully".format(user_saved.id)})
-    
+
+            # Return a success message
+            return Response({"success": "User '{}' created successfully".format(user_saved.id)})
+
+        else:
+            # Return an error message
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class signInView(APIView):
     
         def post(self, request):
