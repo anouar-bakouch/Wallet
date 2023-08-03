@@ -2,11 +2,11 @@
 
 import pickle
 from django.shortcuts import get_object_or_404, render
-from requests import request
 from BudgetPRed.serializers import BudgetSerializer, UserSerializer
 from BudgetPRed.models import Budget, User
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 
 def index(request):
     # return index.html in templates folder
@@ -88,31 +88,6 @@ class PredictBudgetView(APIView):
             budget['Budgets'] = Budgets[0]
         return Response({"budget": budget})
     
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .serializers import UserSerializer
-
-class signUpView(APIView):
-
-    def post(self, request):
-        # Get the user data from the request
-        user = request.data.get('user')
-
-        # Create a serializer from the user data
-        serializer = UserSerializer(data=user)
-
-        # Validate the serializer
-        if serializer.is_valid(raise_exception=True):
-            # Save the user
-            user_saved = serializer.save()
-
-            # Return a success message
-            return Response({"success": "User '{}' created successfully".format(user_saved.id)})
-
-        else:
-            # Return the error messages 
-            return Response(serializer.errors)
-
 class signInView(APIView):
     
         def post(self, request):
@@ -132,3 +107,12 @@ class ListUserView(APIView):
         return Response({"users": serializer.data})
     
     
+class signUpView(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({"success": "User '{}' created successfully".format(user.id)}, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
