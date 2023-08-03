@@ -13,7 +13,17 @@ export class LoginService {
   constructor(private http:HttpClient) { }
 
   public login(username:string, password:string){ 
-    return this.http.post<any>(this.url+"/SignIn", {username, password});
+    const url = `${environment.apiUrl}/SignIn/`;
+    // create a json object that will be used to create a new user 
+    const User = {
+      username: username,
+      password: password
+    };
+
+    console.log(User);
+
+    return this.http.post(url, User);
+    
   }
 
 }
