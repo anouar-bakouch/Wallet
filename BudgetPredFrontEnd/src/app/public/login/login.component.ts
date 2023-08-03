@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { LoginService } from '../services/login.service';
-import { User } from 'src/models/User';
+
 
 @Component({
   selector: 'app-login',
@@ -8,22 +8,29 @@ import { User } from 'src/models/User';
   styleUrls: ['./login.component.css']
 })
 
-  export class LoginComponent {
-  
-    constructor(private loginService: LoginService) { }
-  
-    login(username: string, password: string): void {
-      this.loginService.login(username, password).subscribe(
-        (user: User) => {
-          // Handle successful login
-          console.log('Login successful', user);
-          // Further actions (e.g., redirect to a different page)
+export class LoginComponent implements OnInit {
+
+  username: string="";
+  password: string="";
+
+  constructor(private loginService: LoginService) {}
+
+  ngOnInit() {}
+
+  login() {
+    this.loginService.login(this.username, this.password)
+      .subscribe(
+        (success) => {
+          if (success) {
+            // The user has successfully logged in.
+          } else {
+            // The login failed.
+          }
         },
         (error) => {
-          // Handle login error
-          console.error('Login error', error);
+          // An error occurred while logging in.
         }
       );
-    }
   }
 
+}
