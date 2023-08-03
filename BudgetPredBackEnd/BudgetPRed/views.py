@@ -88,7 +88,7 @@ class PredictBudgetView(APIView):
             budget['Budgets'] = Budgets[0]
         return Response({"budget": budget})
     
-class signUp(APIView):
+class signUpView(APIView):
 
     def post(self, request):
         # display input fields IDEIMPST, MONTSTRU, MONTRAPP, MOISSOLD, CODTYPAC, LIBACTGE, Budgets 
@@ -99,7 +99,7 @@ class signUp(APIView):
             user_saved = serializer.save()
         return Response({"success": "User '{}' created successfully".format(user_saved.id)})
     
-class signIn(APIView):
+class signInView(APIView):
     
         def post(self, request):
             # display input fields IDEIMPST, MONTSTRU, MONTRAPP, MOISSOLD, CODTYPAC, LIBACTGE, Budgets 

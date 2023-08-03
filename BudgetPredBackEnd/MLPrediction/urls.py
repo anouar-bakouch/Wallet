@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from BudgetPRed.views import AddBudgetView, DeleteBudgetView, GetBudgetView, ListBudgetView, PredictBudgetView, UpdateBudgetView, index
+from BudgetPRed.views import AddBudgetView, DeleteBudgetView, GetBudgetView, ListBudgetView, PredictBudgetView, UpdateBudgetView, index, signInView
 
 urlpatterns = [
     path('',index),
@@ -11,6 +11,8 @@ urlpatterns = [
     path('delete-budget/<int:pk>/', DeleteBudgetView.as_view()),
     path('predict-budget/<int:pk>/', PredictBudgetView.as_view()),
     path('get-budget/<int:pk>/', GetBudgetView.as_view()),
+    path('SignIn',signInView.as_view()),
+    path('SignUp',signInView.as_view()),
 ]
 
 
