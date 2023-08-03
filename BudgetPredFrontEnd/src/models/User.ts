@@ -10,5 +10,4 @@ export interface User {
     lastName: string;
     token: string;
 
-
 }
