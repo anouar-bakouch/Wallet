@@ -25,7 +25,9 @@ export class LoginComponent implements OnInit {
       console.log(success)
       if (success) {
         // The signup was successful.
-        this.router.navigate(['/home/infos']);        
+        // navigate to another page
+        this.router.navigate(['budgetHome/budgets']);
+
       } else {
         // The signup failed.
         this.router.navigate(['/home/signup']);

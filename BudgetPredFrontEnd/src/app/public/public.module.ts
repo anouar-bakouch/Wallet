@@ -13,12 +13,13 @@ import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    HomeComponent ,
+    
     HeaderComponent,
     FooterComponent,
     InfosComponent,
     LoginComponent,
-    SignUpComponent
+    SignUpComponent,
+    HomeComponent
   ],
   imports: [
     CommonModule,
