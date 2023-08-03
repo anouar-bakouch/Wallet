@@ -9,30 +9,26 @@ import { SignupService } from '../services/sign-up.service';
 
 export class SignUpComponent implements OnInit {
 
-  username: string="";
-  email: string="";
-  password: string="";
-  firstName: string="";
-  lastName: string="";
+  username: string = "";
+  email: string = "";
+  password: string = "";
+  firstName: string = "";
+  lastName: string = "";
 
-  constructor(private signupService: SignupService) {}
+  constructor(private signupService: SignupService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  signup() {
-    this.signupService.signup(this.username, this.email, this.password, this.firstName, this.lastName)
-      .subscribe(
-        (success) => {
-          if (success) {
-            // The user has successfully signed up.
-          } else {
-            // The signup failed.
-          }
-        },
-        (error) => {
-          // An error occurred while signing up.
-        }
-      );
+  async signup() {
+    try {
+      const success = await this.signupService.signup(this.username, this.email, this.password, this.firstName, this.lastName).toPromise();
+      if (success) {
+        console.log("The signup was successful.")
+      } else {
+        // The signup failed.
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
-
 }

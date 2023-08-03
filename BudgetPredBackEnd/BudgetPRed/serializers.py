@@ -37,37 +37,25 @@ class BudgetSerializer(serializers.ModelSerializer):
     def get_all(self):
         return Budget.objects.all()
     
+from rest_framework import serializers
+from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
-        model = Budget
-        fields = ('id', 'username', 'email', 'password')
-        
-    # create method to create a new user
+        model = User
+        fields = ('id', 'username', 'email', 'password', 'firstName', 'lastName')
+
     def create(self, validated_data):
         return User.objects.create(**validated_data)
-    
-    # update method to update an existing user
+
     def update(self, instance, validated_data):
         instance.id = validated_data.get('id', instance.id)
         instance.username = validated_data.get('username', instance.username)
         instance.email = validated_data.get('email', instance.email)
         instance.password = validated_data.get('password', instance.password)
+        instance.firstName = validated_data.get('firstName', instance.firstName)
+        instance.lastName = validated_data.get('lastName', instance.lastName)
         instance.save()
         return instance
-    
-    # delete method to delete an existing user
-    def delete(self, instance):
-        instance.delete()
-        return instance
-    
-    # get method to get an existing user
-    def get(self, instance):
-        return instance
-    
-    # get all method to get all existing users
-    def get_all(self):
-        return User.objects.all()    
-
 

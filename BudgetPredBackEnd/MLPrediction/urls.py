@@ -11,8 +11,8 @@ urlpatterns = [
     path('delete-budget/<int:pk>/', DeleteBudgetView.as_view()),
     path('predict-budget/<int:pk>/', PredictBudgetView.as_view()),
     path('get-budget/<int:pk>/', GetBudgetView.as_view()),
-    path('SignIn',signInView.as_view()),
-    path('SignUp',signUpView.as_view()),
+    path('SignIn/',signInView.as_view()),
+    path('SignUp/',signUpView.as_view()),
 ]
 
 

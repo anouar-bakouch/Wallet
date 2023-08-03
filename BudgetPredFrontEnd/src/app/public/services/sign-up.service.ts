@@ -10,7 +10,7 @@ export class SignupService {
   constructor(private http: HttpClient) {}
 
   signup(username: string, email: string, password: string, firstName: string, lastName: string) {
-    const url = environment.apiUrl+'/signup';
+    const url = environment.apiUrl+'/SignUp';
     const body = {
       username: username,
       email: email,
