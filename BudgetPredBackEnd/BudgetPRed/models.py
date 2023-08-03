@@ -33,25 +33,17 @@ class Budget(models.Model):
         instance.Budgets = validated_data.get('Budgets', instance.Budgets)
         instance.save()
         return instance
-    
+
 class User(models.Model):
-    id = models.IntegerField(primary_key=True, default=0 )
-    username = models.CharField(max_length=50, default='no username')
-    email = models.CharField(max_length=50, default='no email')
-    password = models.CharField(max_length=50, default='no password')
-    # String representation of the model
+
+    id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    firstName = models.CharField(max_length=255, default='no name')
+    lastName = models.CharField(max_length=255, default='no name')
+    token = models.CharField(max_length=255, default='no token')
+
     def __str__(self):
-        return str(self.id) + ' ' + str(self.username) + ' ' + str(self.email) + ' ' + str(self.password)
-    
-    # create method to create a new user
-    def create(self, validated_data):
-        return User.objects.create(**validated_data)
-    
-    # update method to update an existing user
-    def update(self, instance, validated_data):
-        instance.id = validated_data.get('id', instance.id)
-        instance.username = validated_data.get('username', instance.username)
-        instance.email = validated_data.get('email', instance.email)
-        instance.password = validated_data.get('password', instance.password)
-        instance.save()
-        return instance
+        return self.username
+
