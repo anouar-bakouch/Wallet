@@ -88,17 +88,6 @@ class PredictBudgetView(APIView):
             budget['Budgets'] = Budgets[0]
         return Response({"budget": budget})
     
-class signInView(APIView):
-    
-        def post(self, request):
-            # display input fields IDEIMPST, MONTSTRU, MONTRAPP, MOISSOLD, CODTYPAC, LIBACTGE, Budgets 
-            user = request.data.get('user')
-            # Create an article from the above data
-            serializer = UserSerializer(data=user)
-            if serializer.is_valid(raise_exception=True):
-                user_saved = serializer.save()
-            return Response({"success": "User '{}' created successfully".format(user_saved.id)})
-        
 class ListUserView(APIView):
 
     def get(self, request):
@@ -116,3 +105,13 @@ class signUpView(APIView):
             return Response({"success": "User '{}' created successfully".format(user.id)}, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class signInView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = User.objects.filter(username=username, password=password).first()
+        if user is None:
+            return Response({"error": "Wrong username or password"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"success": "User '{}' signed in successfully".format(user.id)}, status=status.HTTP_200_OK)
