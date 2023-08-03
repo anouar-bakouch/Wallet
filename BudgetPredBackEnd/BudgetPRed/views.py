@@ -2,8 +2,9 @@
 
 import pickle
 from django.shortcuts import get_object_or_404, render
-from BudgetPRed.serializers import BudgetSerializer
-from BudgetPRed.models import Budget
+from requests import request
+from BudgetPRed.serializers import BudgetSerializer, UserSerializer
+from BudgetPRed.models import Budget, User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -87,4 +88,33 @@ class PredictBudgetView(APIView):
             budget['Budgets'] = Budgets[0]
         return Response({"budget": budget})
     
+class signUp(APIView):
 
+    def post(self, request):
+        # display input fields IDEIMPST, MONTSTRU, MONTRAPP, MOISSOLD, CODTYPAC, LIBACTGE, Budgets 
+        user = request.data.get('user')
+        # Create an article from the above data
+        serializer = UserSerializer(data=user)
+        if serializer.is_valid(raise_exception=True):
+            user_saved = serializer.save()
+        return Response({"success": "User '{}' created successfully".format(user_saved.id)})
+    
+class signIn(APIView):
+    
+        def post(self, request):
+            # display input fields IDEIMPST, MONTSTRU, MONTRAPP, MOISSOLD, CODTYPAC, LIBACTGE, Budgets 
+            user = request.data.get('user')
+            # Create an article from the above data
+            serializer = UserSerializer(data=user)
+            if serializer.is_valid(raise_exception=True):
+                user_saved = serializer.save()
+            return Response({"success": "User '{}' created successfully".format(user_saved.id)})
+        
+class ListUserView(APIView):
+
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response({"users": serializer.data})
+    
+    

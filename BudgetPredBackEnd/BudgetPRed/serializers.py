@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
-from BudgetPRed.models import Budget
+from BudgetPRed.models import Budget, User
 
 class BudgetSerializer(serializers.ModelSerializer):
     
@@ -38,6 +38,36 @@ class BudgetSerializer(serializers.ModelSerializer):
         return Budget.objects.all()
     
 
+class UserSerializer(serializers.ModelSerializer):
     
+    class Meta:
+        model = Budget
+        fields = ('id', 'username', 'email', 'password')
+        
+    # create method to create a new user
+    def create(self, validated_data):
+        return User.objects.create(**validated_data)
+    
+    # update method to update an existing user
+    def update(self, instance, validated_data):
+        instance.id = validated_data.get('id', instance.id)
+        instance.username = validated_data.get('username', instance.username)
+        instance.email = validated_data.get('email', instance.email)
+        instance.password = validated_data.get('password', instance.password)
+        instance.save()
+        return instance
+    
+    # delete method to delete an existing user
+    def delete(self, instance):
+        instance.delete()
+        return instance
+    
+    # get method to get an existing user
+    def get(self, instance):
+        return instance
+    
+    # get all method to get all existing users
+    def get_all(self):
+        return User.objects.all()    
 
 
