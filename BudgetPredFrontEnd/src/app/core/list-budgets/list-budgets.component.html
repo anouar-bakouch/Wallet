@@ -1,4 +1,16 @@
 <div class="container-fluid mt-3">
+  <div class="row mb-3">
+    <div class="col-6 m-start">
+      <button
+        class="btn btn-primary btn-sm"
+        type="button"
+        (click)="open(mymodal)"
+      >
+        <i class="bi bi-plus-square-dotted"></i>
+        ajouter un item de budget
+      </button>
+    </div>
+  </div>
     <h3 class="text-primary">Liste des items</h3>
     <div class="row">
       <div class="col-3" *ngFor="let budget of budgets">
@@ -16,3 +28,69 @@
       </div>
     </div>
   </div>
+
+
+<ng-template
+class="modal fade"
+tabindex="-1"
+role="dialog"
+#mymodal
+let-modal
+aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered w-100" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLongTitle">l'ajout du sujet</h5>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="form" (ngSubmit)="onClickSubmit()">
+        <div class="form-group mb-3">
+          <label for="my-textarea" class="mb-3">Titre</label>
+          <textarea
+            maxlength="512"
+            placeholder="Max. 512 caractères"
+            id="my-textarea"
+            class="form-control"
+            name=""
+            rows="3"
+            formControlName="titre"
+          ></textarea>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="my-textarea" class="mb-3">Description</label>
+          <textarea
+            maxlength="512"
+            placeholder="Max. 2048 caractères"
+            id="my-textarea"
+            class="form-control"
+            name=""
+            rows="3"
+            formControlName="description"
+          ></textarea>
+        </div>
+
+     
+        <div class="modal-footer">
+          <button
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            (click)="modal.dismiss('Cross click')"
+            type="button"
+          >
+            annuler
+          </button>
+          <button
+            class="btn btn-primary btn-confirmer"
+            type="submit"
+            (click)="modal.close('Save click')"
+            [disabled]="form.invalid"
+          >
+            confirmer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

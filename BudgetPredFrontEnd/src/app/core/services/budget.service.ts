@@ -23,5 +23,16 @@ export class BudgetService {
   }
 
 
+  addBudget(budget:any){
+    return this.http.post(this._url, budget);
+  }
+
+  updateBudget(budget:Budget){
+    return this.http.put(this._url + budget.IDEIMPST, budget);
+  }
+
+  deleteBudget(id:number){
+    return this.http.delete(this._url + id);
+  }
 
 }

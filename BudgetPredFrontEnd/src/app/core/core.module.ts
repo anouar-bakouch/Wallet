@@ -6,6 +6,7 @@ import { HeaderBudgetComponent } from './header/header.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ListBudgetsComponent } from './list-budgets/list-budgets.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -20,7 +21,9 @@ import { ListBudgetsComponent } from './list-budgets/list-budgets.component';
   
     CoreRoutingModule,
     HttpClientModule,
-    CommonModule
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports : [
     HomeBudgetComponent
