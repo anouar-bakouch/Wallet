@@ -24,8 +24,6 @@ export class LoginComponent implements OnInit {
       const success = await this.signinService.login(this.username, this.password).toPromise();
       console.log(success)
       if (success) {
-        // The signup was successful.
-        // navigate to another page
         this.router.navigate(['budgetHome/budgets']);
 
       } else {

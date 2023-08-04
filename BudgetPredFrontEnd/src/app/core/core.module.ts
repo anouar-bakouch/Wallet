@@ -5,6 +5,7 @@ import { HomeBudgetComponent } from './home/home.component';
 import { HeaderBudgetComponent } from './header/header.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ListBudgetsComponent } from './list-budgets/list-budgets.component';
 
 
 
@@ -12,15 +13,18 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [
     HomeBudgetComponent,
     HeaderBudgetComponent,
-    ProfileComponent
+    ProfileComponent,
+    ListBudgetsComponent
   ],
   imports: [
-    CommonModule,
+  
     CoreRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule
   ],
   exports : [
     HomeBudgetComponent
   ]
 })
+
 export class CoreModule { }

@@ -1,1 +1,18 @@
-<p>list-budgets works!</p>
+<div class="container-fluid mt-3">
+    <h3 class="text-primary">Liste des items</h3>
+    <div class="row">
+      <div class="col-3" *ngFor="let budget of budgets">
+        <div class="card mb-3" style="width: 18rem;">
+          <img class="card-img-top" src="https://car-images.bauersecure.com/wp-images/13349/80-mercedes-amg-gt63-e-performance-hero.jpg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{ budget.LIBACTGE }}</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <div class="d-flex justify-content-between align-items-center">
+            <a href="#" class="btn btn-primary mx-3">modifier</a>
+            <a href="#" class="btn btn-danger">delete</a>
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

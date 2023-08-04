@@ -1,16 +1,64 @@
-<header>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3">
-          <img src="https://www.w3schools.com/bootstrap/img/bootstrap-logo.png" alt="Bootstrap logo" class="img-fluid">
-        </div>
-        <div class="col-md-9">
-          <div class="d-flex justify-content-end">
-            <img src="https://www.gravatar.com/avatar/200?d=mm" alt="Profile icon" class="rounded-circle mr-3">
-            <a href="/logout" class="btn btn-danger">Disconnect</a>
-          </div>
-        </div>
-      </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow ">
+  <div class="container">
+    <a class="navbar-brand" href=""><img
+      class="img-fluid img-thumbnail"
+      src="/assets/images/Budget_logo.png"
+      width="180"
+      height="40"
+      alt="budget predictor"
+      srcset=""
+    /></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item dropdown">
+          <a
+            class="text-color nav-link dropdown-toggle"
+            href="#ced"
+            id="poles_doctorales"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <span class="display-15">
+              <img  class="img-fluid img-thumbnail" src="https://aufutur.fr/wp-content/uploads/2022/07/624ea970240000db7896e941.jpeg" width="70" height="70" alt="" srcset="">
+            </span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="poles_doctorales">
+            <li>
+              <a class="dropdown-item text-color" routerLink="/home/description"
+                >Description</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-darkblue" href="#ced"
+                >Centre D'Etudes Docotrales</a
+              >
+            </li>
+          </ul>
+        </li>
+        
+        
+      
+<!--          
+         <li
+            class="nav-item d-flex justify-content-center align-items-center"
+          >
+          <select 
+          class="form-control form-control-sm" 
+          #selectedLang 
+          (change)="switchLang(selectedLang.value)">
+        <option *ngFor="let language of translate.getLangs()" 
+          [value]="language"
+          [selected]="language === translate.currentLang">
+          {{ language }}
+        </option>
+      </select>
+          </li> -->
+          
+      </ul>
     </div>
-  </header>
-  
+  </div>
+</nav>
