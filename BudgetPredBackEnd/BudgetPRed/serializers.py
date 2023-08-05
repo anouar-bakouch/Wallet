@@ -6,7 +6,7 @@ class BudgetSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Budget
-        fields = ('IDEIMPST', 'MONTSTRU', 'MONTRAPP', 'MOISSOLD', 'CODTYPAC', 'LIBACTGE', 'Budgets', 'User')
+        fields = ('IDEIMPST', 'MONTSTRU', 'MONTRAPP', 'MOISSOLD', 'CODTYPAC', 'LIBACTGE', 'Budgets', 'User', 'budgetPhoto')
         
     # create method to create a new budget 
     def create(self, validated_data):
@@ -22,6 +22,7 @@ class BudgetSerializer(serializers.ModelSerializer):
         instance.LIBACTGE = validated_data.get('LIBACTGE', instance.LIBACTGE)
         instance.Budgets = validated_data.get('Budgets', instance.Budgets)
         instance.User = validated_data.get('User', instance.User)
+        instance.budgetPhoto = validated_data.get('budgetPhoto', instance.budgetPhoto)
         instance.save()
         return instance
     

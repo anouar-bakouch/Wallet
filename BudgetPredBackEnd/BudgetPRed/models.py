@@ -28,6 +28,7 @@ class Budget(models.Model):
     LIBACTGE = models.CharField(max_length=50, default='no libelle')
     Budgets = models.FloatField()
     User = models.ForeignKey(to=User, on_delete=models.CASCADE,null=True)    
+    budgetPhoto = models.ImageField(upload_to='images/items', default='images/None/no-img.jpg')
     
     # String representation of the model
     def __str__(self):
@@ -53,7 +54,9 @@ class Budget(models.Model):
         instance.LIBACTGE = validated_data.get('LIBACTGE', instance.LIBACTGE)
         instance.Budgets = validated_data.get('Budgets', instance.Budgets)
         instance.User = validated_data.get('User', instance.User)
+        instance.budgetPhoto = validated_data.get('budgetPhoto', instance.budgetPhoto)
         
+
         instance.save()
         return instance
 
