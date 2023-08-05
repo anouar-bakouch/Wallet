@@ -44,3 +44,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class TokenPairSerializer(serializers.Serializer):
+    access = serializers.CharField()
+    refresh = serializers.CharField()
+
+class TokenRefreshSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+

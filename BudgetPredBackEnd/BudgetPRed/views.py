@@ -145,3 +145,6 @@ class GetUserInfoView(APIView):
         return Response({"user": serializer.data})
 
 
+class TokenPairObtain (TokenObtainPairView):
+    serializer_class = TokenPairSerializer
+    
