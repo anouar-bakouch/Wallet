@@ -13,6 +13,9 @@ urlpatterns = [
     path('get-budget/<int:pk>/', GetBudgetView.as_view()),
     path('SignIn/',signInView.as_view()),
     path('SignUp/',signUpView.as_view()),
+    path('GetUser/<int:pk>/',GetBudgetView.as_view()),
+    path('DeleteUser/<int:pk>/',DeleteBudgetView.as_view()),
+    path('UpdateUser/<int:pk>/',UpdateBudgetView.as_view()),
 ]
 
 

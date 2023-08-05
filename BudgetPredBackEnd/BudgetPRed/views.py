@@ -115,3 +115,33 @@ class signInView(APIView):
             return Response({"error": "Wrong username or password"}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({"success": "User '{}' signed in successfully".format(user.id)}, status=status.HTTP_200_OK)
+        
+
+class UpdateUserView(APIView):
+    def put(self, request, pk):
+        saved_user = get_object_or_404(User.objects.all(), pk=pk)
+        data = request.data.get('user')
+        serializer = UserSerializer(instance=saved_user, data=data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            user_saved = serializer.save()
+        return Response({
+            "success": "User '{}' updated successfully".format(user_saved.id)
+        })
+    
+class DeleteUserView(APIView):
+    def delete(self, request, pk):
+        # Get object with this pk
+        user = get_object_or_404(User.objects.all(), pk=pk)
+        user.delete()
+        return Response({
+            "message": "User with id `{}` has been deleted.".format(pk)
+        }, status=204)
+    
+class GetUserInfoView(APIView):
+    def get(self, request, pk):
+        # Get object with this pk
+        user = get_object_or_404(User.objects.all(), pk=pk)
+        serializer = UserSerializer(user)
+        return Response({"user": serializer.data})
+
+
