@@ -1,7 +1,6 @@
 
 
 export interface Budget {
-
     IDEIMPST : number;
     MONTSTRU : number;
     MONTRAPP : number;
@@ -9,6 +8,5 @@ export interface Budget {
     CODYTPAC : string;
     LIBACTGE : string;
     Budgets : number;
-    
 }
 

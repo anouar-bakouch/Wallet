@@ -43,9 +43,14 @@ export class ListBudgetsComponent {
   } 
 
    fun = (content: any, s: Budget) => {
-
-
-
+    this.form.setValue({
+      LIBACTGE: s.LIBACTGE.toString(),
+      MONTSTRU: s.MONTSTRU.toString(),
+      MONTRAPP: s.MONTRAPP.toString(),
+      MOISSOLD: s.MOISSOLD.toString(),
+      CODYTPAC: s.CODYTPAC,
+      Budgets : s.Budgets.toString()
+    });
     this.open(content);
   };
 
