@@ -2,7 +2,7 @@
 
 import pickle
 from django.shortcuts import get_object_or_404, render
-from BudgetPRed.serializers import BudgetSerializer, UserSerializer
+from BudgetPRed.serializers import BudgetSerializer, TokenPairSerializer, TokenRefreshSerializer, TokenVerifySerializer, UserSerializer
 from BudgetPRed.models import Budget, User
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -145,6 +145,21 @@ class GetUserInfoView(APIView):
         return Response({"user": serializer.data})
 
 
-class TokenPairObtain (TokenObtainPairView):
-    serializer_class = TokenPairSerializer
+class TokenPairObtainView (APIView):
+    def post(self, request):
+        serializer = TokenPairSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
+    
+class TokenRefreshView (APIView):
+    def post(self, request):
+        serializer = TokenRefreshSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
+    
+class TokenVerifyView (APIView):
+    def post(self, request):
+        serializer = TokenVerifySerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
     
