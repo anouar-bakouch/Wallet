@@ -1,3 +1,4 @@
+import { User } from "./User";
 
 
 export interface Budget {
@@ -8,5 +9,6 @@ export interface Budget {
     CODYTPAC : string;
     LIBACTGE : string;
     Budgets : number;
+    UserId : User;
 }
 
