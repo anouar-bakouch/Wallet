@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -8,24 +9,32 @@ import { environment } from 'src/environments/environment.prod';
 export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   private currentUserSubject = new BehaviorSubject<any>(null);
-  private url:string = environment.apiUrl;
+  private url: string = environment.apiUrl;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   login(username: string, password: string): Observable<boolean> {
     return new Observable<boolean>((observer) => {
-        // TODO: call the API to authenticate the user
-        // if the authentication is successful, call next() on the isAuthenticatedSubject
-        // if the authentication fails, call error() with an appropriate error message
-
-        
-
-        
+      this.http.post<any>(`${this.url}/login`, { username, password }).subscribe(
+        (response) => {
+          // Authentication successful
+          const user = { id: response.id, username: response.username }; // Modify this based on your response structure
+          this.isAuthenticatedSubject.next(true);
+          this.currentUserSubject.next(user);
+          observer.next(true);
+          observer.complete();
+        },
+        (error) => {
+          // Authentication failed
+          this.isAuthenticatedSubject.next(false);
+          this.currentUserSubject.next(null);
+          observer.error('Authentication failed. Please check your credentials.');
+        }
+      );
     });
   }
 
-  logout(): void {  
-  
+  logout(): void {
     this.isAuthenticatedSubject.next(false);
     this.currentUserSubject.next(null);
   }
