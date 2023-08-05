@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
       (success) => {
         console.log(success);
         if (success) {
-          this.router.navigate(['budgetHome/budgets']);
+          this.router.navigate(['/budgetHome/budgets']);
         } else {
           // The login failed.
           this.router.navigate(['/home/signup']);

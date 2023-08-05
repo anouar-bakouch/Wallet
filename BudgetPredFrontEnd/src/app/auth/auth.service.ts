@@ -21,7 +21,7 @@ export class AuthService {
 
   login(username: string, password: string): Observable<boolean> {
     return new Observable<boolean>((observer) => {
-      this.http.post<any>(`${this.url}/login`, { username, password }).subscribe(
+      this.http.post<any>(`${this.url}/SignIn/`, { username, password }).subscribe(
         (response) => {
           // Authentication successful
           const user = { id: response.id, username: response.username }; // Modify this based on your response structure
@@ -30,7 +30,7 @@ export class AuthService {
           this.tokenStorage.storeTokens(response.token, response.refreshToken); // Store the tokens
           observer.next(true);
           observer.complete();
-          this.router.navigate(['budgets/']); // Navigate to the dashboard after successful login
+          
         },
         (error) => {
           // Authentication failed
