@@ -7,6 +7,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ListBudgetsComponent } from './list-budgets/list-budgets.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 
 
 
@@ -17,13 +18,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ProfileComponent,
     ListBudgetsComponent
   ],
-  imports: [
-  
+  imports: [  
     CoreRoutingModule,
     HttpClientModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RxReactiveFormsModule,
   ],
   exports : [
     HomeBudgetComponent

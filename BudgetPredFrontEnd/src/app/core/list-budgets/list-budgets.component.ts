@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
 import { BudgetService } from '../services/budget.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  even,
+  RxFormBuilder,
+  RxFormGroup,
+} from '@rxweb/reactive-form-validators';
+import { Validators } from '@angular/forms';
 import { Budget } from 'src/models/Budget';
 
 @Component({
@@ -12,24 +17,25 @@ import { Budget } from 'src/models/Budget';
 export class ListBudgetsComponent {
 
   public budgets: any[] = [];
-  public form: FormGroup;
   closeResult: string = '';
   itemsType: any[] = [];
+
+  public form = <RxFormGroup> this.fservice.group(
+    { 
+      LIBACTGE: ['', Validators.required],
+      MONTSTRU: ['', Validators.required],
+      MONTRAPP: ['', Validators.required],
+      MOISSOLD: ['', Validators.required],
+      CODYTPAC: ['', Validators.required],
+      Budgets: ['', Validators.required]
+    }
+  );
+
 
   constructor(
     private budgetService: BudgetService,
     private modalService: NgbModal,
-    private formBuilder: FormBuilder
-  ) {
-    this.form = this.formBuilder.group({
-      LIBACTGE: ['', [Validators.required, Validators.minLength(7)]],
-      MONTSTRU: ['', [Validators.required, Validators.minLength(2)]],
-      MONTRAPP: ['', Validators.required],
-      MOISSOLD: ['', Validators.required],
-      CODYTPAC: ['', Validators.required],
-      Budgets: ['', Validators.required],
-      budgetphoto: ['', Validators.required]
-    });
+    private fservice: RxFormBuilder){
   }
 
   ngOnInit() {
@@ -44,13 +50,14 @@ export class ListBudgetsComponent {
   }
 
   fun(content: any, s: Budget) {
+
     this.form.setValue({
-      LIBACTGE: s.LIBACTGE.toString(),
-      MONTSTRU: s.MONTSTRU.toString(),
-      MONTRAPP: s.MONTRAPP.toString(),
-      MOISSOLD: s.MOISSOLD.toString(),
+      LIBACTGE: s.LIBACTGE,
+      MONTSTRU: s.MONTSTRU,
+      MONTRAPP: s.MONTRAPP,
+      MOISSOLD: s.MOISSOLD,
       CODYTPAC: s.CODYTPAC,
-      Budgets: s.Budgets.toString()
+      Budgets: s.Budgets
     });
     this.open(content);
   }
@@ -83,34 +90,23 @@ export class ListBudgetsComponent {
 
   onClickSubmit() {
     if (this.form.valid) {
-      const budget = {
-        MONTSTRU: this.form.value.MONTSTRU,
-        MONTRAPP: this.form.value.MONTRAPP,
-        MOISSOLD: this.form.value.MOISSOLD,
-        CODYTPAC: this.form.value.CODYTPAC,
-        LIBACTGE: this.form.value.LIBACTGE,
-        Budgets: this.form.value.Budgets
-      };
-
       // budgetphoto
-
-      const formData = new FormData();
-      formData.append('MONTSTRU', this.form.value.MONTSTRU);
-      formData.append('MONTRAPP', this.form.value.MONTRAPP);
-      formData.append('MOISSOLD', this.form.value.MOISSOLD);
-      formData.append('CODYTPAC', this.form.value.CODYTPAC);
-      formData.append('LIBACTGE', this.form.value.LIBACTGE);
-      formData.append('Budgets', this.form.value.Budgets);
+      const formData = this.form.toFormData();
       const selectedFile = (document.getElementById('inputGroupFile01') as HTMLInputElement).files;
       if (selectedFile != null) {
         formData.append('budgetphoto', selectedFile[0], selectedFile[0].name);
       }
-
-      this.budgetService.addBudget(budget).subscribe(() => {
+  
+      this.budgetService.addBudget(formData).subscribe( response => {
         this.getBudgets();
-      });
+      },
+        error => {
+          console.log(error);
+        }
+        );
+      }
     }
-  }
+  
 
   onDelete(id: number) {
     this.budgetService.deleteBudget(id).subscribe(() => {
