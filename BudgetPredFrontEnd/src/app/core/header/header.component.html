@@ -23,18 +23,23 @@
             aria-expanded="false"
           >
             <span class="display-15">
-              <img  class="img-fluid img-thumbnail" src="https://aufutur.fr/wp-content/uploads/2022/07/624ea970240000db7896e941.jpeg" width="70" height="70" alt="" srcset="">
+              <img  class="img-fluid img-thumbnail" [src]="user?.pathPhoto" width="70" height="70" alt="" srcset="">
             </span>
           </a>
-          <ul class="dropdown-menu" aria-labelledby="poles_doctorales">
+          <ul class="dropdown-menu" aria-labelledby="budget">
             <li>
-              <a class="dropdown-item text-color" routerLink="/home/description"
-                >Description</a
+              <a class="dropdown-item text-color" routerLink="/budgethome/stats"
+                >profile</a
               >
             </li>
             <li>
-              <a class="dropdown-item text-darkblue" href="#ced"
-                >Centre D'Etudes Docotrales</a
+              <a class="dropdown-item text-color" routerLink="/budgethome/stats"
+                >stats</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-darkblue" href=""
+                >se déconnecter</a
               >
             </li>
           </ul>

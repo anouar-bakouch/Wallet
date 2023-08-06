@@ -10,5 +10,6 @@ export interface Budget {
     LIBACTGE : string;
     Budgets : number;
     UserId : User;
+    budgetPhoto : string;
 }
 
