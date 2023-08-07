@@ -23,7 +23,7 @@
             aria-expanded="false"
           >
             <span class="display-15">
-              <img  class="img-fluid img-thumbnail" [src]="user?.pathPhoto" width="70" height="70" alt="" srcset="">
+              <img  class="img-fluid img-thumbnail" [src]="photoPath" width="70" height="70" alt="" srcset="">
             </span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="budget">
@@ -38,7 +38,7 @@
               >
             </li>
             <li>
-              <a class="dropdown-item text-darkblue" href=""
+              <a (click)="onLogout()" class="dropdown-item text-darkblue" href=""
                 >se déconnecter</a
               >
             </li>

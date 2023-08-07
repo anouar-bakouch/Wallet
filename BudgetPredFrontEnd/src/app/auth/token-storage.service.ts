@@ -45,4 +45,34 @@ export class TokenStorageService {
   public clearTokens() {
     window.localStorage.clear();
   }
+
+  public getUser() {
+    const user = window.localStorage.getItem('user');
+    if (user) return JSON.parse(user);
+    return null;
+  }
+
+  public storeUser(user: any) {
+    window.localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  public clearUser() {
+    window.localStorage.removeItem('user');
+  }
+
+  public storeUserPhoto(photo: string) {
+    window.localStorage.setItem('photo', photo);
+  }
+
+  public getUserPhoto() {
+    return window.localStorage.getItem('photo');
+  }
+
+  public clearUserPhoto() {
+    window.localStorage.removeItem('photo');
+  }
+
+  
+
+     
 }

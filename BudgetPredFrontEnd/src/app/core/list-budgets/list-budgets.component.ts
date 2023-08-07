@@ -8,6 +8,7 @@ import {
 } from '@rxweb/reactive-form-validators';
 import { Validators } from '@angular/forms';
 import { Budget } from 'src/models/Budget';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-list-budgets',
@@ -20,6 +21,7 @@ export class ListBudgetsComponent {
   closeResult: string = '';
   itemsType: any[] = [];
   public selectedFie : any | null = null;
+  public base_url = environment.apiUrl;
 
   public form = <RxFormGroup> this.fservice.group(
     { 
@@ -47,6 +49,12 @@ export class ListBudgetsComponent {
   getBudgets() {
     this.budgetService.getBudgets().subscribe((data: any) => {
       this.budgets = data.budgets;
+
+      // correct the image path to be displayed
+      this.budgets.forEach((budget: any) => {
+        budget.budgetphoto = this.base_url + budget.budgetphoto;
+      } );
+
     });
   }
 

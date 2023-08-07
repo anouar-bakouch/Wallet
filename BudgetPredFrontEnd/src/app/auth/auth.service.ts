@@ -17,23 +17,26 @@ export class AuthService {
     private http: HttpClient,
     private tokenStorage: TokenStorageService,
     private router: Router
-  ) {}
+  ) {
+    const storedUser = this.tokenStorage.getUser();
+    if (storedUser) {
+      this.currentUserSubject.next(storedUser);
+      this.isAuthenticatedSubject.next(true);
+    }
+  }
 
   login(username: string, password: string): Observable<boolean> {
     return new Observable<boolean>((observer) => {
       this.http.post<any>(`${this.url}/SignIn/`, { username, password }).subscribe(
         (response) => {
-          // Authentication successful
-          const user = { id: response.id, username: response.username }; // Modify this based on your response structure
+          const user = { id: response.id, username: response.username };
           this.isAuthenticatedSubject.next(true);
           this.currentUserSubject.next(user);
-          this.tokenStorage.storeTokens(response.token, response.refreshToken); // Store the tokens
+          this.tokenStorage.storeTokens(response.token, response.refreshToken);
           observer.next(true);
           observer.complete();
-          
         },
         (error) => {
-          // Authentication failed
           this.isAuthenticatedSubject.next(false);
           this.currentUserSubject.next(null);
           observer.error('Authentication failed. Please check your credentials.');
@@ -44,7 +47,7 @@ export class AuthService {
 
   logout(): void {
     this.clearCredentials();
-    this.router.navigate(['/home/login']); // Navigate to the login page after logout
+    this.router.navigate(['/home/login']);
   }
 
   isAuthenticated(): Observable<boolean> {
@@ -60,7 +63,7 @@ export class AuthService {
     return new Observable<any>((observer) => {
       this.http.post<any>(`${this.url}/refresh`, { refreshToken }).subscribe(
         (response) => {
-          this.tokenStorage.updateAuthToken(response.token); // Update the token
+          this.tokenStorage.updateAuthToken(response.token);
           observer.next(response.token);
           observer.complete();
         },

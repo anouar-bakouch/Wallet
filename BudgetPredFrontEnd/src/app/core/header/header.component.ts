@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
+import { environment } from 'src/environments/environment';
 import { User } from 'src/models/User';
 
 @Component({
@@ -11,7 +12,9 @@ import { User } from 'src/models/User';
 
 export class HeaderBudgetComponent {
 
-  user :User | undefined;
+  public user :User | undefined;
+
+  photoPath = '';
 
   constructor(public authService:AuthService) { }
 
@@ -21,7 +24,12 @@ export class HeaderBudgetComponent {
 
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(user => {
+
       this.user = user;
+      console.log(this.user);
+      this.photoPath = environment.apiUrl + this.user?.pathPhoto;
+      console.log(this.photoPath);
+
     }
     );
   }
