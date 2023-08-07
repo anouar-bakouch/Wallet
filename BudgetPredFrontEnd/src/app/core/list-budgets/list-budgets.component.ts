@@ -19,6 +19,7 @@ export class ListBudgetsComponent {
   public budgets: any[] = [];
   closeResult: string = '';
   itemsType: any[] = [];
+  public selectedFie : any | null = null;
 
   public form = <RxFormGroup> this.fservice.group(
     { 
@@ -27,10 +28,10 @@ export class ListBudgetsComponent {
       MONTRAPP: ['', Validators.required],
       MOISSOLD: ['', Validators.required],
       CODYTPAC: ['', Validators.required],
-      Budgets: ['', Validators.required]
+      Budgets: ['', Validators.required],
+      budgetphoto: ['', Validators.required]
     }
   );
-
 
   constructor(
     private budgetService: BudgetService,
@@ -98,6 +99,7 @@ export class ListBudgetsComponent {
       }
   
       this.budgetService.addBudget(formData).subscribe( response => {
+        console.log(response);
         this.getBudgets();
       },
         error => {
@@ -106,7 +108,10 @@ export class ListBudgetsComponent {
         );
       }
     }
-  
+
+    onFileSelected(event: any) {
+      this.selectedFie = event.target.files[0];
+    }
 
   onDelete(id: number) {
     this.budgetService.deleteBudget(id).subscribe(() => {

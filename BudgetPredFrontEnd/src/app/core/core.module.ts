@@ -9,8 +9,6 @@ import { ListBudgetsComponent } from './list-budgets/list-budgets.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 
-
-
 @NgModule({
   declarations: [
     HomeBudgetComponent,

@@ -28,8 +28,11 @@ export class BudgetService {
 
 
   addBudget(budget:any){
+
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
   
-    return this.http.post(this._url_post, budget);
+    return this.http.post(this._url_post, budget, {headers: headers});
   }
 
   updateBudget(budget:Budget){
