@@ -7,28 +7,36 @@ from BudgetPRed.models import Budget, User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 def index(request):
     # return index.html in templates folder
     return render(request, 'index.html')
 
+# budgets 
+
 class AddBudgetView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request):
-        # display input fields IDEIMPST, MONTSTRU, MONTRAPP, MOISSOLD, CODTYPAC, LIBACTGE, Budgets 
-        budget = request.data.get('budget')
-        # Create an article from the above data
-        serializer = BudgetSerializer(data=budget)
+        serializer = BudgetSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             budget_saved = serializer.save()
-        return Response({"success": "Budget '{}' created successfully".format(budget_saved.IDEIMPST)})
-            
+            return Response(
+                {"success": f"Budget '{budget_saved.IDEIMPST}' created successfully"},
+                status=status.HTTP_201_CREATED
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class ListBudgetView(APIView):
     def get(self, request):
         budgets = Budget.objects.all()
         serializer = BudgetSerializer(budgets, many=True)
         return Response({"budgets": serializer.data})
-    
+
+
 class UpdateBudgetView(APIView):
     def put(self, request, pk):
         saved_budget = get_object_or_404(Budget.objects.all(), pk=pk)
@@ -58,35 +66,17 @@ class GetBudgetView(APIView):
 
 class PredictBudgetView(APIView):
 
-    # takes MONTSTRU and MONTRAPP as input and returns the predicted budget 
-    # for the next month 
-    # the input is a json object with the following format:
-    # {
-    #    "MONTSTRU": 1000,
-    #   "MONTRAPP": 1000
-    # }
-    # 
-    # the output is a json object with the following format:
-    # {
-    #   "Budgets": 1000
-    # }
-    # 
-
-    def post(self, request):
-        # display input fields IDEIMPST, MONTSTRU, MONTRAPP, MOISSOLD, CODTYPAC, LIBACTGE, Budgets 
-        budget = request.data.get('budget')
-        # process the input data using the model and return the predicted budget
-        # the model is a simple linear regression model trained on the data in the database
-        # the model is in the folder BudgetPredBackEnd/BudgetPRed/Model
-        # the model is a pickle file called budget_model.pkl
-        # the model is loaded using the following code:
-        with open('BudgetPredBackEnd/BudgetPRed/Model/budget_model.pkl', 'rb') as f:
-            model = pickle.load(f) 
-            MONTSTRU = budget['MONTSTRU']
-            MONTRAPP = budget['MONTRAPP']
-            Budgets = model.predict([[MONTSTRU, MONTRAPP]])
-            budget['Budgets'] = Budgets[0]
-        return Response({"budget": budget})
+    # the post must accept the IDEIMPST and return the prediction 
+    def post(self, request, pk):
+        # Get object with this pk
+        budget = get_object_or_404(Budget.objects.all(), pk=pk)
+        serializer = BudgetSerializer(budget)
+        # load the model from disk
+        filename = 'BudgetPRed/MLPrediction/finalized_model.sav'
+        loaded_model = pickle.load(open(filename, 'rb'))
+        # predict the budget
+        prediction = loaded_model.predict([serializer.data])
+        return Response({"prediction": prediction})
     
 class ListUserView(APIView):
 
@@ -94,7 +84,13 @@ class ListUserView(APIView):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response({"users": serializer.data})
-    
+
+class GetUserView(APIView):
+    def get(self, request, pk):
+        # Get object with this pk
+        user = get_object_or_404(User.objects.all(), pk=pk)
+        serializer = UserSerializer(user)
+        return Response({"user": serializer.data})
     
 class signUpView(APIView):
     def post(self, request):
