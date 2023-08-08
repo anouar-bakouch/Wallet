@@ -23,6 +23,7 @@ export class ListBudgetsComponent {
   public selectedFie : any | null = null;
   public base_url = environment.apiUrl;
   public predicted_budget:number | string = '';
+  public showBudgets : boolean = false;
 
   public form = <RxFormGroup> this.fservice.group(
     { 
@@ -61,6 +62,8 @@ export class ListBudgetsComponent {
   predictBudget(budget: Budget) {
     this.budgetService.predictBudget(budget).subscribe((data: any) => {
       console.log(data);
+      this.showBudgets = true;
+      this.getBudgets()
     });
   }
 
