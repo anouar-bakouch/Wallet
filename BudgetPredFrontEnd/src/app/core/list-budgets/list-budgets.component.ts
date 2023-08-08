@@ -22,6 +22,7 @@ export class ListBudgetsComponent {
   itemsType: any[] = [];
   public selectedFie : any | null = null;
   public base_url = environment.apiUrl;
+  public predicted_budget:number | string = '';
 
   public form = <RxFormGroup> this.fservice.group(
     { 
@@ -57,6 +58,13 @@ export class ListBudgetsComponent {
 
     });
   }
+
+  predictBudget(budget: Budget) {
+    this.budgetService.predictBudget(budget).subscribe((data: any) => {
+      console.log(data);
+    });
+  }
+
 
   fun(content: any, s: Budget) {
 

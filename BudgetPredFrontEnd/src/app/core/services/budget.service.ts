@@ -52,6 +52,8 @@ export class BudgetService {
   
   });
   
-  
+  predictBudget(budget:Budget){
+    return this.http.post(environment.apiUrl + "/predict-budget/"+budget.IDEIMPST, budget);
+  }
 
 }
