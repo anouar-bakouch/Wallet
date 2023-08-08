@@ -31,7 +31,6 @@ export class ListBudgetsComponent {
       MONTRAPP: ['', Validators.required],
       MOISSOLD: ['', Validators.required],
       CODYTPAC: ['', Validators.required],
-      Budgets: ['', Validators.required],
       budgetphoto: ['', Validators.required]
     }
   );
