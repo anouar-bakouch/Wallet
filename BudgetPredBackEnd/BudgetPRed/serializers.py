@@ -1,17 +1,17 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
-from BudgetPRed.models import Budget, User
+from BudgetPRed.models import Item, Purchase, User
 from rest_framework.parsers import MultiPartParser, FormParser , JSONParser
 from rest_framework import serializers
 
-class BudgetSerializer(serializers.ModelSerializer):
+class ItemSerializer(serializers.ModelSerializer):
     parser_classes = (MultiPartParser, FormParser,JSONParser)
     class Meta:
-        model = Budget
+        model = Item
         fields = ('IDEIMPST', 'MONTSTRU', 'MONTRAPP', 'MOISSOLD', 'CODTYPAC', 'LIBACTGE', 'Budgets', 'User', 'budgetphoto')
         
     def create(self, validated_data):
-        return Budget.objects.create(**validated_data)
+        return Item.objects.create(**validated_data)
 
     
     def update(self, instance, validated_data):
@@ -32,6 +32,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
+
+class PurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Purchase
+        fields = '__all__'
+
 
 class TokenPairSerializer(serializers.Serializer):
     access = serializers.CharField()
