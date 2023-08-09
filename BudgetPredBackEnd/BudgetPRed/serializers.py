@@ -21,6 +21,23 @@ class PurchaseSerializer(serializers.ModelSerializer):
         model = Purchase
         fields = '__all__'
 
+        def create(self, validated_data):
+            return Purchase.objects.create(**validated_data)
+        
+        def update(self, instance, validated_data):
+            instance.user = validated_data.get('user', instance.user)
+            instance.MOISSOLD = validated_data.get('MOISSOLD', instance.MOISSOLD)
+            instance.MONTSTRU = validated_data.get('MONTSTRU', instance.MONTSTRU)
+            instance.MONTRAPP = validated_data.get('MONTRAPP', instance.MONTRAPP)
+            instance.save()
+            return instance
+
+        def delete(self, instance):
+            instance.delete()
+            return instance
+        
+        
+
 
 class TokenPairSerializer(serializers.Serializer):
     access = serializers.CharField()
