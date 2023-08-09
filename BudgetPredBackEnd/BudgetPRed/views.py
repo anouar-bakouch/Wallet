@@ -60,12 +60,15 @@ class DeleteItemView(APIView):
             "message": "Budget with id `{}` has been deleted.".format(pk)
         }, status=204)
     
+    
 class GetItemView(APIView):
     def get(self, request, pk):
         # Get object with this pk
         budget = get_object_or_404(Item.objects.all(), pk=pk)
         serializer = ItemSerializer(budget)
         return Response({"budget": serializer.data})
+
+# Purchase views 
 
     
 class PredictNextMonthMONTSTRUView(APIView):
