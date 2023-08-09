@@ -17,7 +17,6 @@ class Item(models.Model):
     IDEIMPST = models.IntegerField(primary_key=True, default=0 )
     MONTSTRU = models.FloatField()
     MONTRAPP = models.FloatField()
-    MOISSOLD = models.DateField( default='2021-01-01')
     CODTYPAC = models.CharField(max_length=50, default='no code')
     LIBACTGE = models.CharField(max_length=50, default='no libelle')
     Budgets = models.FloatField( )
@@ -42,7 +41,6 @@ class Item(models.Model):
         instance.IDEIMPST = validated_data.get('IDEIMPST', instance.IDEIMPST)
         instance.MONTSTRU = validated_data.get('MONTSTRU', instance.MONTSTRU)
         instance.MONTRAPP = validated_data.get('MONTRAPP', instance.MONTRAPP)
-        instance.MOISSOLD = validated_data.get('MOISSOLD', instance.MOISSOLD)
         instance.CODTYPAC = validated_data.get('CODTYPAC', instance.CODTYPAC)
         instance.LIBACTGE = validated_data.get('LIBACTGE', instance.LIBACTGE)
         instance.Budgets = validated_data.get('Budgets', instance.Budgets)
@@ -56,7 +54,7 @@ class Purchase(models.Model) :
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE,null=True)
     budget = models.ForeignKey(to=Item, on_delete=models.CASCADE,null=True)
-    date = models.DateField( default='2021-01-01')
+    MOISSOLD = models.DateField( default='2021-01-01')
     def __str__(self):
         return str(self.id) + ' ' + str(self.date)
     

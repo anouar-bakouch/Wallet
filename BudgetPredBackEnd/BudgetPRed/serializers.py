@@ -8,7 +8,7 @@ class ItemSerializer(serializers.ModelSerializer):
     parser_classes = (MultiPartParser, FormParser,JSONParser)
     class Meta:
         model = Item
-        fields = ('IDEIMPST', 'MONTSTRU', 'MONTRAPP', 'MOISSOLD', 'CODTYPAC', 'LIBACTGE', 'Budgets', 'User', 'budgetphoto')
+        fields = ('IDEIMPST', 'MONTSTRU', 'MONTRAPP', 'CODTYPAC', 'LIBACTGE', 'Budgets', 'budgetphoto')
         
     def create(self, validated_data):
         return Item.objects.create(**validated_data)
@@ -18,7 +18,6 @@ class ItemSerializer(serializers.ModelSerializer):
         instance.IDEIMPST = validated_data.get('IDEIMPST', instance.IDEIMPST)
         instance.MONTSTRU = validated_data.get('MONTSTRU', instance.MONTSTRU)
         instance.MONTRAPP = validated_data.get('MONTRAPP', instance.MONTRAPP)
-        instance.MOISSOLD = validated_data.get('MOISSOLD', instance.MOISSOLD)
         instance.CODTYPAC = validated_data.get('CODTYPAC', instance.CODTYPAC)
         instance.LIBACTGE = validated_data.get('LIBACTGE', instance.LIBACTGE)
         instance.Budgets = validated_data.get('Budgets', instance.Budgets)
