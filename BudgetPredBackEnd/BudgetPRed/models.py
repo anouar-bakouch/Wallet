@@ -1,4 +1,5 @@
 from django.db import models
+from rest_framework.pagination import PageNumberPagination
 
 class User(models.Model):
     id = models.AutoField(primary_key=True)
@@ -44,3 +45,10 @@ class Purchase(models.Model):
 
     def __str__(self):
         return f"Purchase: {self.id} - User: {self.user.username} - Item: {self.item.LIBACTGE}"
+
+class ItemPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+

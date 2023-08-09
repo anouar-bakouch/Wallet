@@ -13,4 +13,21 @@ df = pd.read_excel('../data/budgetDATA.xls')
 
 # In[3]: Data Preprocessing - taking only the columns we need
 
-df = df[['IDEIMPST', 'CODTYPAC', 'MONTSTRU','LIBACTGE']]
+df = df[['CODTYPAC','LIBACTGE']]
+# add the budgetphoto column
+df['budgetphoto'] = '../statis/items/No-image-available.png'
+# add the id column , random id
+
+df['IDEIMPST'] = df.index
+
+# In[4]: creating the connection to the database
+
+conn = sqlite3.connect('../db.sqlite3')
+
+# In[5]: inserting the data into the database
+
+df.to_sql('BudgetPRed_item', conn, if_exists='append', index=False) 
+
+# In[6]: closing the connection
+
+conn.close()

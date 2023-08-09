@@ -3,7 +3,7 @@ import pickle
 from django.shortcuts import get_object_or_404, render
 import joblib
 from BudgetPRed.serializers import ItemSerializer,PurchaseSerializer, TokenPairSerializer, TokenRefreshSerializer, TokenVerifySerializer, UserSerializer
-from BudgetPRed.models import Item, User , Purchase
+from BudgetPRed.models import Item, ItemPagination, User , Purchase
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -194,3 +194,14 @@ class TokenVerifyView (APIView):
         serializer.is_valid(raise_exception=True)
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
     
+
+# PAGINATION -----
+
+class ItemAPIView(APIView):
+    pagination_class = ItemPagination
+
+    def get(self, request, format=None):
+        queryset = Item.objects.all()
+        paginated_queryset = self.pagination_class().paginate_queryset(queryset, request)
+        serialized_data = ItemSerializer(paginated_queryset, many=True)
+        return self.pagination_class.get_paginated_response(serialized_data.data)
