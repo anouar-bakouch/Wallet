@@ -38,8 +38,14 @@ INSTALLED_APPS = [
     'rest_framework',
     # Add the BudgetPRed app to INSTALLED_APPS
     'BudgetPRed',
-    'corsheaders'
+    'corsheaders',
+
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'BudgetPRed.models.Pagination',
+    'PAGE_SIZE': 10
+}
 
 DEFAULT_AUTHENTICATION_CLASSES = [
     'rest_framework.authentication.TokenAuthentication',

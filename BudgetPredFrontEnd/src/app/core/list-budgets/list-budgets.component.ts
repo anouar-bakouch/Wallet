@@ -7,7 +7,7 @@ import {
   RxFormGroup,
 } from '@rxweb/reactive-form-validators';
 import { Validators } from '@angular/forms';
-import { Budget } from 'src/models/Item';
+import { Item } from 'src/models/Item';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -50,7 +50,7 @@ export class ListBudgetsComponent {
   }
 
   getBudgets() {
-    this.budgetService.getBudgets().subscribe((data: any) => {
+    this.budgetService.getItems().subscribe((data: any) => {
       this.budgets = data.budgets;
 
       // correct the image path to be displayed
@@ -61,30 +61,17 @@ export class ListBudgetsComponent {
     });
   }
 
-  predictBudget(budget: Budget) {
-    this.budgetService.predictBudget(budget).subscribe((data: any) => {
-      this.showBudgets = true;
-      console.log(data.prediction)
-      this.budgets.forEach((b: any) => {
-        if (b.IDEIMPST == data.IDEIMPST) {
-          b.predicted_budget = data.prediction;
-        }
-      }
-      );
-       // 
-    });
-  }
 
-  fun(content: any, s: Budget) {
+  fun(content: any, s: Item) {
 
-    this.form.setValue({
-      LIBACTGE: s.LIBACTGE,
-      MONTSTRU: s.MONTSTRU,
-      MONTRAPP: s.MONTRAPP,
-      MOISSOLD: s.MOISSOLD,
-      CODYTPAC: s.CODYTPAC,
-      Budgets: s.Budgets
-    });
+    // this.form.setValue({
+    //   LIBACTGE: s.LIBACTGE,
+    //   MONTSTRU: s.MONTSTRU,
+    //   MONTRAPP: s.MONTRAPP,
+    //   MOISSOLD: s.MOISSOLD,
+    //   CODYTPAC: s.CODYTPAC,
+    //   Budgets: s.Budgets
+    // });
     this.open(content);
   }
 

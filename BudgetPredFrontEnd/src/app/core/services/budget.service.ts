@@ -10,8 +10,8 @@ import { Item } from 'src/models/Item';
 
 export class BudgetService {
 
-  private _url_get:string = environment.apiUrl + "/list-budget/";
-  private _url_post = environment.apiUrl + "/add-budget/";
+  private _url_get:string = environment.apiUrl + "/list-item/";
+  private _url_post = environment.apiUrl + "/purchase-budget/";
   private _url_put = environment.apiUrl + "/update-budget/"; 
   private _url_delete = environment.apiUrl + "/delete-budget/";
   
