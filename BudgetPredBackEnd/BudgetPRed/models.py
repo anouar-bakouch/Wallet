@@ -9,17 +9,15 @@ class User(models.Model):
     firstName = models.CharField(max_length=255, default='no name')
     lastName = models.CharField(max_length=255, default='no name')
     pathPhoto = models.ImageField(upload_to='static/images', default='images/None/no-img.jpg')
+    month_budget = models.FloatField(default=0)
     def __str__(self):
         return self.username
 
 class Item(models.Model):
 
     IDEIMPST = models.IntegerField(primary_key=True, default=0 )
-    MONTSTRU = models.FloatField()
-    MONTRAPP = models.FloatField()
     CODTYPAC = models.CharField(max_length=50, default='no code')
     LIBACTGE = models.CharField(max_length=50, default='no libelle')
-    Budgets = models.FloatField( )
     budgetphoto = models.ImageField(upload_to='static/items', default='images/None/no-img.jpg')
     
     # String representation of the model
@@ -55,6 +53,10 @@ class Purchase(models.Model) :
     user = models.ForeignKey(to=User, on_delete=models.CASCADE,null=True)
     budget = models.ForeignKey(to=Item, on_delete=models.CASCADE,null=True)
     MOISSOLD = models.DateField( default='2021-01-01')
+    MONTSTRU = models.FloatField(default=0)
+    MONTRAPP = models.FloatField(default=0)
+    Budgets = models.FloatField(default=0)
+
     def __str__(self):
         return str(self.id) + ' ' + str(self.date)
     
