@@ -1,8 +1,6 @@
 from django.contrib import admin
+from .models import User, Item, Purchase
 
-# Register your models here.
-
-from .models import Budget,User
-
-admin.site.register(Budget)
 admin.site.register(User)
+admin.site.register(Item)
+admin.site.register(Purchase)

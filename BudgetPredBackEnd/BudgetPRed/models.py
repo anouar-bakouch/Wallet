@@ -52,7 +52,7 @@ class Item(models.Model):
         instance.save()
         return instance
 
-class Purchase(models.model) :
+class Purchase(models.Model) :
 
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE,null=True)
