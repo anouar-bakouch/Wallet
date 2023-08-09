@@ -3,7 +3,7 @@ import pickle
 from django.shortcuts import get_object_or_404, render
 import joblib
 from BudgetPRed.serializers import ItemSerializer,PurchaseSerializer, TokenPairSerializer, TokenRefreshSerializer, TokenVerifySerializer, UserSerializer
-from BudgetPRed.models import Budget, User
+from BudgetPRed.models import Item, User , Purchase
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -35,14 +35,14 @@ class AddItemView(APIView):
 
 class ListItemsView(APIView):
     def get(self, request):
-        budgets = Budget.objects.all()
+        budgets = Item.objects.all()
         serializer = ItemSerializer(budgets, many=True)
         return Response({"budgets": serializer.data})
 
 
 class UpdateItemView(APIView):
     def put(self, request, pk):
-        saved_budget = get_object_or_404(Budget.objects.all(), pk=pk)
+        saved_budget = get_object_or_404(Item.objects.all(), pk=pk)
         data = request.data.get('budget')
         serializer = ItemSerializer(instance=saved_budget, data=data, partial=True)
         if serializer.is_valid(raise_exception=True):
@@ -54,7 +54,7 @@ class UpdateItemView(APIView):
 class DeleteItemView(APIView):
     def delete(self, request, pk):
         # Get object with this pk
-        budget = get_object_or_404(Budget.objects.all(), pk=pk)
+        budget = get_object_or_404(Item.objects.all(), pk=pk)
         budget.delete()
         return Response({
             "message": "Budget with id `{}` has been deleted.".format(pk)
@@ -63,7 +63,7 @@ class DeleteItemView(APIView):
 class GetItemView(APIView):
     def get(self, request, pk):
         # Get object with this pk
-        budget = get_object_or_404(Budget.objects.all(), pk=pk)
+        budget = get_object_or_404(Item.objects.all(), pk=pk)
         serializer = ItemSerializer(budget)
         return Response({"budget": serializer.data})
 
@@ -71,7 +71,7 @@ class PredictBudgetView(APIView):
 
     def get(self,request,pk):
         # make the prediction for the IDEIMPST budget 
-        budget = get_object_or_404(Budget.objects.all(), pk=pk)
+        budget = get_object_or_404(Item.objects.all(), pk=pk)
         # load the model in BASE_DIR / 'models' in settings.py
         loaded_model = pickle.load(open('models/model.pkl', 'rb'))
         # print the path of the model
