@@ -18,7 +18,7 @@ class Item(models.Model):
     IDEIMPST = models.IntegerField(primary_key=True, default=0)
     CODTYPAC = models.CharField(max_length=50, default='no code')
     LIBACTGE = models.CharField(max_length=50, default='no libelle')
-    budget_photo = models.ImageField(upload_to='static/items', default='images/None/no-img.jpg')
+    budgetphoto = models.ImageField(upload_to='static/items', default='images/None/no-img.jpg')
 
     def __str__(self):
         return str(self.IDEIMPST) + ' ' + str(self.LIBACTGE)
@@ -40,7 +40,7 @@ class Purchase(models.Model):
     MOISSOLD = models.DateField(default='2021-01-01')
     MONTSTRU = models.FloatField(default=0)
     MONTRAPP = models.FloatField(default=0)
-    Budgets = models.FloatField(default=0)
+
 
     def __str__(self):
         return f"Purchase: {self.id} - User: {self.user.username} - Item: {self.item.LIBACTGE}"
