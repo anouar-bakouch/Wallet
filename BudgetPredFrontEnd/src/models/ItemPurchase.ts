@@ -2,10 +2,8 @@ import { Item } from "./Item";
 import { User } from "./User";
 
 
-export interface Purchase {
+export interface ItemPurchase {
     user :User;
     item : Item;
-    MOISSOLD : Date;
-    MONTSTRU : number;
-    MONTRAPP : number;
+    quantity : number;
 }
