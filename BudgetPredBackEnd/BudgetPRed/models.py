@@ -23,29 +23,6 @@ class Item(models.Model):
     # String representation of the model
     def __str__(self):
         return str(self.IDEIMPST) + ' ' + str(self.LIBACTGE)
-    
-    # create method to create a new budget
-    def create(self, validated_data):
-        return Item.objects.create(**validated_data)
-    
-    def get(self, instance):
-        return instance
-    
-    def UserInfo(self, instance):
-        return instance.User
-    
-    # update method to update an existing budget
-    def update(self, instance, validated_data):
-        instance.IDEIMPST = validated_data.get('IDEIMPST', instance.IDEIMPST)
-        instance.MONTSTRU = validated_data.get('MONTSTRU', instance.MONTSTRU)
-        instance.MONTRAPP = validated_data.get('MONTRAPP', instance.MONTRAPP)
-        instance.CODTYPAC = validated_data.get('CODTYPAC', instance.CODTYPAC)
-        instance.LIBACTGE = validated_data.get('LIBACTGE', instance.LIBACTGE)
-        instance.Budgets = validated_data.get('Budgets', instance.Budgets)
-        instance.User = validated_data.get('User', instance.User)
-        instance.budgetphoto = validated_data.get('budgetPhoto', instance.budgetPhoto)
-        instance.save()
-        return instance
 
 class Purchase(models.Model) :
 
