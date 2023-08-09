@@ -50,7 +50,7 @@ export class ListBudgetsComponent {
   }
 
   getBudgets() {
-    this.budgetService.getItems().subscribe((data: any) => {
+    this.budgetService.getItems(1).subscribe((data: any) => {
       this.budgets = data.budgets;
 
       // correct the image path to be displayed

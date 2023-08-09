@@ -17,8 +17,10 @@ export class BudgetService {
   
   constructor(private http:HttpClient) { }
 
-  getItems(){
-    return this.http.get(this._url_get);
+  getItems(nbrOfPage:number){
+    // ading pagination for  the request
+    const n_url = this._url_get + "?page="+nbrOfPage+"\ ";
+    return this.http.get(n_url);
   }
   
   getItem(id:number){

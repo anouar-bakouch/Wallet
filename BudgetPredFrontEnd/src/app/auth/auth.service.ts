@@ -36,9 +36,10 @@ export class AuthService {
           observer.next(true);
           observer.complete();
         },
-        (error) => {
+        (error) => { 
           this.isAuthenticatedSubject.next(false);
           this.currentUserSubject.next(null);
+          console.log(error)
           observer.error('Authentication failed. Please check your credentials.');
         }
       );
