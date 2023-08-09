@@ -67,19 +67,6 @@ class GetItemView(APIView):
         serializer = ItemSerializer(budget)
         return Response({"budget": serializer.data})
 
-class PredictBudgetView(APIView):
-
-    def get(self,request,pk):
-        # make the prediction for the IDEIMPST budget 
-        budget = get_object_or_404(Item.objects.all(), pk=pk)
-        # load the model in BASE_DIR / 'models' in settings.py
-        loaded_model = pickle.load(open('models/model.pkl', 'rb'))
-        # print the path of the model
-        dataFrame = pd.DataFrame({'MONTSTRU': [budget.MONTSTRU], 'MONTRAPP': [budget.MONTRAPP]})
-        # make the prediction
-        prediction = loaded_model.predict(dataFrame)
-        # return the prediction
-        return Response({"prediction": prediction[0],"IDEIMPST":budget.IDEIMPST})
     
 class PredictNextMonthMONTSTRUView(APIView):
     def post(self, request):
@@ -185,7 +172,6 @@ class GetUserInfoView(APIView):
         user = get_object_or_404(User.objects.all(), pk=pk)
         serializer = UserSerializer(user)
         return Response({"user": serializer.data})
-
 
 class TokenPairObtainView (APIView):
     def post(self, request):
