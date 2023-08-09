@@ -20,6 +20,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
     BASE_DIR / "static/images",
+    BASE_DIR / "models"
     
 ]
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
 DEFAULT_AUTHENTICATION_CLASSES = [
     'rest_framework.authentication.TokenAuthentication',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

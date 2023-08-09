@@ -1,13 +1,16 @@
-# BudgetView REST API 
 
 import pickle
 from django.shortcuts import get_object_or_404, render
+import joblib
 from BudgetPRed.serializers import BudgetSerializer, TokenPairSerializer, TokenRefreshSerializer, TokenVerifySerializer, UserSerializer
 from BudgetPRed.models import Budget, User
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
+import pandas as pd
+import numpy as np
+
 
 
 def index(request):
@@ -66,18 +69,61 @@ class GetBudgetView(APIView):
 
 class PredictBudgetView(APIView):
 
-    # the post must accept the IDEIMPST and return the prediction 
-    def post(self, request, pk):
-        # Get object with this pk
+    def get(self,request,pk):
+        # make the prediction for the IDEIMPST budget 
         budget = get_object_or_404(Budget.objects.all(), pk=pk)
-        serializer = BudgetSerializer(budget)
-        # load the model from disk
-        filename = 'BudgetPRed/MLPrediction/finalized_model.sav'
-        loaded_model = pickle.load(open(filename, 'rb'))
-        # predict the budget
-        prediction = loaded_model.predict([serializer.data])
-        return Response({"prediction": prediction})
+        # load the model in BASE_DIR / 'models' in settings.py
+        loaded_model = pickle.load(open('models/model.pkl', 'rb'))
+        # print the path of the model
+        dataFrame = pd.DataFrame({'MONTSTRU': [budget.MONTSTRU], 'MONTRAPP': [budget.MONTRAPP]})
+        # make the prediction
+        prediction = loaded_model.predict(dataFrame)
+        # return the prediction
+        return Response({"prediction": prediction[0],"IDEIMPST":budget.IDEIMPST})
     
+class PredictNextMonthMONTSTRUView(APIView):
+    def post(self, request):
+        # Load the ARIMA model from the pickle file
+        model = joblib.load('models/ForecastMONTSTRUmodel.pkl')
+
+        # Get the user's ID from the request
+        user_id = request.data.get('user_id')
+
+        # Get the user's purchase history from the request
+        purchase_history = request.data.get('purchase_history', [])
+
+        # Get the user's budget and spending behavior from the request
+        budget = request.data.get('budget')
+        spending_behavior = request.data.get('spending_behavior')
+
+        # Preprocess the user's data
+        user_data = pd.DataFrame({
+            'user_id': [user_id],
+            'purchase_date': pd.to_datetime(purchase_history),
+            'MONTSTRU': [sum(purchase_history)],
+            'MONTRAPP': [budget - sum(purchase_history) * spending_behavior]
+        })
+
+        # Perform time series analysis and generate the forecast for the next month
+        user_monthly_expenses = user_data.groupby(pd.Grouper(key='purchase_date', freq='M')).sum()['MONTSTRU']
+        user_model_fit = model.filter(user_monthly_expenses)
+        user_forecast = user_model_fit.forecast(steps=1)[0]
+
+        return Response({'next_month_montstru': user_forecast})
+    
+class PredictedItems(APIView):
+    def get(self,request):
+        model = pickle.load(open('models/PredictReco_model.pkl', 'rb'))
+        # Get the user's ID from the request
+        user_id = request.data.get('user_id')
+        user_items = request.data.get('items')
+        # convert the user_items into a numerical representatiol 
+        input_items = np.array([user_items])
+        # make the prediction
+        prediction = model.predict(user_id,input_items)
+        # return the prediction
+        return Response({"prediction": prediction.tolist()})
+
 class ListUserView(APIView):
 
     def get(self, request):

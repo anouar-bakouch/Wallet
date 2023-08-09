@@ -12,7 +12,7 @@ class User(models.Model):
     def __str__(self):
         return self.username
 
-class Budget(models.Model):
+class Item(models.Model):
 
     IDEIMPST = models.IntegerField(primary_key=True, default=0 )
     MONTSTRU = models.FloatField()
@@ -20,7 +20,7 @@ class Budget(models.Model):
     MOISSOLD = models.DateField( default='2021-01-01')
     CODTYPAC = models.CharField(max_length=50, default='no code')
     LIBACTGE = models.CharField(max_length=50, default='no libelle')
-    Budgets = models.FloatField()
+    Budgets = models.FloatField( )
     User = models.ForeignKey(to=User, on_delete=models.CASCADE,null=True)    
     budgetphoto = models.ImageField(upload_to='static/items', default='images/None/no-img.jpg')
     
@@ -30,7 +30,7 @@ class Budget(models.Model):
     
     # create method to create a new budget
     def create(self, validated_data):
-        return Budget.objects.create(**validated_data)
+        return Item.objects.create(**validated_data)
     
     def get(self, instance):
         return instance
@@ -49,9 +49,15 @@ class Budget(models.Model):
         instance.Budgets = validated_data.get('Budgets', instance.Budgets)
         instance.User = validated_data.get('User', instance.User)
         instance.budgetphoto = validated_data.get('budgetPhoto', instance.budgetPhoto)
-        
-
         instance.save()
         return instance
 
+class Purchase(models.model) :
 
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE,null=True)
+    budget = models.ForeignKey(to=Item, on_delete=models.CASCADE,null=True)
+    date = models.DateField( default='2021-01-01')
+    def __str__(self):
+        return str(self.id) + ' ' + str(self.date)
+    
