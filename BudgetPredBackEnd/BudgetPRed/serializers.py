@@ -22,7 +22,6 @@ class ItemSerializer(serializers.ModelSerializer):
         instance.CODTYPAC = validated_data.get('CODTYPAC', instance.CODTYPAC)
         instance.LIBACTGE = validated_data.get('LIBACTGE', instance.LIBACTGE)
         instance.Budgets = validated_data.get('Budgets', instance.Budgets)
-        instance.User = validated_data.get('User', instance.User)
         instance.budgetphoto = validated_data.get('budgetphoto', instance.budgetphoto)
         instance.save()
         return instance 

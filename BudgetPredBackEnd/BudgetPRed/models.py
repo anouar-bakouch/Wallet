@@ -21,7 +21,6 @@ class Item(models.Model):
     CODTYPAC = models.CharField(max_length=50, default='no code')
     LIBACTGE = models.CharField(max_length=50, default='no libelle')
     Budgets = models.FloatField( )
-    User = models.ForeignKey(to=User, on_delete=models.CASCADE,null=True)    
     budgetphoto = models.ImageField(upload_to='static/items', default='images/None/no-img.jpg')
     
     # String representation of the model
