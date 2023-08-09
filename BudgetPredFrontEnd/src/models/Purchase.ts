@@ -5,5 +5,5 @@ import { User } from "./User";
 export interface Purchase {
     user :User;
     item : Item;
-    date : Date;
+    MOISSOLD : Date;
 }
