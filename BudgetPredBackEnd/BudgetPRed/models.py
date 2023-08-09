@@ -32,7 +32,6 @@ class Purchase(models.Model) :
     MOISSOLD = models.DateField( default='2021-01-01')
     MONTSTRU = models.FloatField(default=0)
     MONTRAPP = models.FloatField(default=0)
-    Budgets = models.FloatField(default=0)
 
     def __str__(self):
         return str(self.id) + ' ' + str(self.date)
