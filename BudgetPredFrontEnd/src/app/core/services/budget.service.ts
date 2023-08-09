@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CategorieBudget } from 'src/app/enums/CategorieBudget';
 import { environment } from 'src/environments/environment.prod';
-import { Budget } from 'src/models/Budget';
+import { Budget } from 'src/models/Item';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +15,7 @@ export class BudgetService {
   private _url_post = environment.apiUrl + "/add-budget/";
   private _url_put = environment.apiUrl + "/update-budget/"; 
   private _url_delete = environment.apiUrl + "/delete-budget/";
+  private _url_predict = environment.apiUrl + "/PredictBudget/";
   
   constructor(private http:HttpClient) { }
 
@@ -52,8 +53,8 @@ export class BudgetService {
   
   });
   
-  predictBudget(budget:Budget){
-    return this.http.post(environment.apiUrl + "/predict-budget/"+budget.IDEIMPST, budget);
+  predictBudget(budget:Budget) // get method
+  {
+    return this.http.get(this._url_predict + budget.IDEIMPST+'/');
   }
-
 }

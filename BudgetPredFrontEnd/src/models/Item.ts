@@ -1,7 +1,4 @@
-import { User } from "./User";
-
-
-export interface Budget {
+export interface Item {
     IDEIMPST : number;
     MONTSTRU : number;
     MONTRAPP : number;
@@ -9,7 +6,10 @@ export interface Budget {
     CODYTPAC : string;
     LIBACTGE : string;
     Budgets : number;
-    UserId : User;
     budgetPhoto : string;
+    predicted_budget : number;
 }
+
+
+// 
 

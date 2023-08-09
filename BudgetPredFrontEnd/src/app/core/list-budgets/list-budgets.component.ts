@@ -7,7 +7,7 @@ import {
   RxFormGroup,
 } from '@rxweb/reactive-form-validators';
 import { Validators } from '@angular/forms';
-import { Budget } from 'src/models/Budget';
+import { Budget } from 'src/models/Item';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -24,6 +24,8 @@ export class ListBudgetsComponent {
   public base_url = environment.apiUrl;
   public predicted_budget:number | string = '';
   public showBudgets : boolean = false;
+  // dict of item id and predicted budget 
+  public dict : any = {};
 
   public form = <RxFormGroup> this.fservice.group(
     { 
@@ -61,12 +63,17 @@ export class ListBudgetsComponent {
 
   predictBudget(budget: Budget) {
     this.budgetService.predictBudget(budget).subscribe((data: any) => {
-      console.log(data);
       this.showBudgets = true;
-      this.getBudgets()
+      console.log(data.prediction)
+      this.budgets.forEach((b: any) => {
+        if (b.IDEIMPST == data.IDEIMPST) {
+          b.predicted_budget = data.prediction;
+        }
+      }
+      );
+       // 
     });
   }
-
 
   fun(content: any, s: Budget) {
 
