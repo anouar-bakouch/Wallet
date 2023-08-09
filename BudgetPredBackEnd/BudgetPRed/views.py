@@ -2,7 +2,7 @@
 import pickle
 from django.shortcuts import get_object_or_404, render
 import joblib
-from BudgetPRed.serializers import BudgetSerializer, TokenPairSerializer, TokenRefreshSerializer, TokenVerifySerializer, UserSerializer
+from BudgetPRed.serializers import ItemSerializer,PurchaseSerializer, TokenPairSerializer, TokenRefreshSerializer, TokenVerifySerializer, UserSerializer
 from BudgetPRed.models import Budget, User
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -19,11 +19,11 @@ def index(request):
 
 # budgets 
 
-class AddBudgetView(APIView):
+class AddItemView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request):
-        serializer = BudgetSerializer(data=request.data)
+        serializer = ItemSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             budget_saved = serializer.save()
             return Response(
@@ -33,25 +33,25 @@ class AddBudgetView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ListBudgetView(APIView):
+class ListItemsView(APIView):
     def get(self, request):
         budgets = Budget.objects.all()
-        serializer = BudgetSerializer(budgets, many=True)
+        serializer = ItemSerializer(budgets, many=True)
         return Response({"budgets": serializer.data})
 
 
-class UpdateBudgetView(APIView):
+class UpdateItemView(APIView):
     def put(self, request, pk):
         saved_budget = get_object_or_404(Budget.objects.all(), pk=pk)
         data = request.data.get('budget')
-        serializer = BudgetSerializer(instance=saved_budget, data=data, partial=True)
+        serializer = ItemSerializer(instance=saved_budget, data=data, partial=True)
         if serializer.is_valid(raise_exception=True):
             budget_saved = serializer.save()
         return Response({
             "success": "Budget '{}' updated successfully".format(budget_saved.IDEIMPST)
         })
     
-class DeleteBudgetView(APIView):
+class DeleteItemView(APIView):
     def delete(self, request, pk):
         # Get object with this pk
         budget = get_object_or_404(Budget.objects.all(), pk=pk)
@@ -64,7 +64,7 @@ class GetBudgetView(APIView):
     def get(self, request, pk):
         # Get object with this pk
         budget = get_object_or_404(Budget.objects.all(), pk=pk)
-        serializer = BudgetSerializer(budget)
+        serializer = ItemSerializer(budget)
         return Response({"budget": serializer.data})
 
 class PredictBudgetView(APIView):
