@@ -60,7 +60,7 @@ class DeleteItemView(APIView):
             "message": "Budget with id `{}` has been deleted.".format(pk)
         }, status=204)
     
-class GetBudgetView(APIView):
+class GetItemView(APIView):
     def get(self, request, pk):
         # Get object with this pk
         budget = get_object_or_404(Budget.objects.all(), pk=pk)
