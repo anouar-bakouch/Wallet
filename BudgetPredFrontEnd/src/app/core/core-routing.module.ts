@@ -4,6 +4,7 @@ import { ListBudgetsComponent } from "./list-budgets/list-budgets.component";
 import { NgModule } from "@angular/core";
 import { ProfileComponent } from "./profile/profile.component";
 import { StatsComponent } from "./stats/stats.component";
+import { CartComponent } from "./cart/cart.component";
 
 
 const routes:Routes = [
@@ -27,6 +28,10 @@ const routes:Routes = [
             {
                 path: "stats",
                 component : StatsComponent
+            },
+            {
+                path:"cart",
+                component : CartComponent
             }
 
         ]

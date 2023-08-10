@@ -21,9 +21,10 @@ export class ListBudgetsComponent {
   closeResult: string = '';
   itemsType: any[] = [];
   public selectedFie : any | null = null;
-  public base_url = environment.apiUrl;
+  public base_url = environment.apiUrl+"/";
   public predicted_budget:number | string = '';
   public showBudgets : boolean = false;
+  public current_number : number = 1;
   // dict of item id and predicted budget 
   public dict : any = {};
 
@@ -51,13 +52,25 @@ export class ListBudgetsComponent {
 
   getBudgets() {
     this.budgetService.getItems(1).subscribe((data: any) => {
-      this.budgets = data.budgets;
-
+      this.budgets = data.results;
+      console.log(this.budgets)
       // correct the image path to be displayed
       this.budgets.forEach((budget: any) => {
         budget.budgetphoto = this.base_url + budget.budgetphoto;
       } );
 
+    });
+  }
+
+  nextPage() {
+    this.current_number = this.current_number + 1;
+    this.budgetService.getItems(this.current_number).subscribe((data: any) => {
+      this.budgets = data.results;
+      // correct the image path to be displayed
+      this.budgets.forEach((budget: any) => {
+        budget.budgetphoto = this.base_url + budget.budgetphoto;
+      }
+      );
     });
   }
 

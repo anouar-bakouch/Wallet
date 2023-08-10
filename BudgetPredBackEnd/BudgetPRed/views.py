@@ -196,13 +196,12 @@ class TokenVerifyView (APIView):
     
 
 # PAGINATION -----
-
 class ItemAPIView(APIView):
     pagination_class = Pagination
 
     def get(self, request):
-        items = Item.objects.all() # get all items
-        paginator = Pagination() # set the pagination
-        result_page = paginator.paginate_queryset(items, request) # get the result page
-        serializer = ItemSerializer(result_page, many=True) # 
+        items = Item.objects.all()
+        paginator = self.pagination_class()
+        result_page = paginator.paginate_queryset(items, request)
+        serializer = ItemSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)

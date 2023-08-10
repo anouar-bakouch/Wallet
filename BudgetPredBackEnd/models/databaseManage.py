@@ -15,7 +15,7 @@ df = pd.read_excel('../data/budgetDATA.xls')
 
 df = df[['CODTYPAC','LIBACTGE']]
 # add the budgetphoto column
-df['budgetphoto'] = '../statis/items/No-image-available.png'
+df['budgetphoto'] = '../static/items/No-image-available.png'
 # add the id column , random id
 
 df['IDEIMPST'] = df.index
