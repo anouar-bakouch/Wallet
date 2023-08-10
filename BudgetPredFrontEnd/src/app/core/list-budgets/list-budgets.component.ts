@@ -74,6 +74,24 @@ export class ListBudgetsComponent {
     });
   }
 
+  categories: string[] = ['Category 1', 'Category 2', 'Category 3'];
+
+// Property to track whether the filter section should be shown or not
+showFilter: boolean = false;
+
+// Property to store the filtered budgets
+filteredBudgets: Item[] = []; 
+
+// Method to toggle the filter section visibility
+toggleFilter() {
+  this.showFilter = !this.showFilter;
+}
+
+// Method to filter the items based on the selected category
+filterItems(category: string) {
+  this.filteredBudgets = this.budgets.filter(budget => budget.CODTYPAC === category);
+}
+
 
   fun(content: any, s: Item) {
 

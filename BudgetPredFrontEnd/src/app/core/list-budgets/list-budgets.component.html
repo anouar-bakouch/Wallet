@@ -1,32 +1,50 @@
 <div class="container-fluid mt-3">
   <div class="row mb-3">
-    <div class="col-6 m-start">
+    <div class="col-6">
       <button class="btn btn-primary btn-sm" type="button" (click)="open(mymodal)">
         <i class="bi bi-plus-square-dotted"></i>
-        ajouter un item de budget
+        Ajouter un item de budget
       </button>
     </div>
+
+    <div class="col-6 text-end">
+      <button class="btn btn-primary btn-sm" type="button" (click)="toggleFilter()">
+        <i class="bi bi-funnel"></i>
+        Filtrer
+      </button>
+    </div>
+<div class="row my-3 mx-3" *ngIf="showFilter">
+    <div class="col">
+      <div class="btn-group">
+        <button class="mx-3 btn btn-secondary btn-sm" *ngFor="let category of categories" (click)="filterItems(category)">
+          {{ category }}
+        </button>
+      </div>
+    </div>
   </div>
+
+
+  </div>
+
+  
+  
+
   <h3 class="text-primary">Liste des items</h3>
   <div class="row">
-    <div class="col-3" *ngFor="let budget of budgets">
-      <div class="card" style="width: 18rem;">
-        <img class="card-img-top" width="300" height="250" [src]="budget?.budgetphoto" alt="Card image cap">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let budget of budgets">
+      <div class="card mb-3">
+        <img class="card-img-top" [src]="budget?.budgetphoto" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">{{ budget.LIBACTGE }}</h5>
           <p class="card-text">
             <span class="text-primary">Catégorie: </span>
             {{ budget.CODTYPAC }}
-            <br />
-
-            <span class="text-primary" *ngIf="showBudgets" > Predicted Budget : {{ budget.predicted_budget}}</span>
-            <br />
           </p>
-          <div class="d-flex justify-content-between align-items-center">
-            <a href="#" class="btn btn-primary" (click)="fun(mymodal, budget)"><i class="bi bi-pencil-square"></i></a>
-            <a href="#" class="btn btn-danger" (click)="onDelete(budget.IDEIMPST)"><i class="bi bi-file-x-fill"></i></a>
-            <button class="btn btn-success"><i class="bi bi-cart-plus"></i></button>
-          </div>
+        </div>
+        <div class="card-footer d-flex justify-content-between align-items-center">
+          <a href="#" class="btn btn-primary" (click)="fun(mymodal, budget)"><i class="bi bi-pencil-square"></i></a>
+          <a href="#" class="btn btn-danger" (click)="onDelete(budget.IDEIMPST)"><i class="bi bi-file-x-fill"></i></a>
+          <button class="btn btn-success"><i class="bi bi-cart-plus"></i></button>
         </div>
       </div>
     </div>
@@ -35,62 +53,14 @@
     <div class="col my-3">
       <button class="btn btn-primary btn-sm" type="button" (click)="nextPage()">
         <i class="bi bi-arrow-right-square"></i>
-        next page
+        Next page
       </button>
     </div>
   </div>
 </div>
 
 <ng-template class="modal fade" tabindex="-1" role="dialog" #mymodal let-modal aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered w-100" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">l'ajout d'un item</h5>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="form" (ngSubmit)="onClickSubmit()">
-          <div class="form-group mb-3">
-            <label for="my-textarea" class="mb-3">LIBELLE</label>
-            <textarea maxlength="512" placeholder="Max. 512 caractères"
-              class="form-control" name="LIBACTGE" rows="3" formControlName="LIBACTGE"></textarea>
-          </div>
-
-          <div class="form-group mb-3">
-            <label for="my-textarea" class="mb-3 text-primary fs-bold">Montant dépensé</label>
-            <input type="number" placeholder="" class="form-control" formControlName="MONTSTRU">
-          </div>
-
-          <div class="form-group mb-3">
-            <label for="my-textarea" class="mb-3 text-primary">Montant rapporté</label>
-            <input type="number" placeholder="" class="form-control" formControlName="MONTRAPP">
-          </div>
-
-          <div class="form-group mb-3">
-            <label for="my-textarea" class="mb-3 text-primary">Mois achat</label>
-            <input type="date" placeholder="" class="form-control" formControlName="MOISSOLD">
-          </div>
-
-          <div class="form-group mb-3">
-            <label for="my-textarea" class="mb-3 text-primary">Type d'item</label>
-            <select class="form-control form-control-sm" formControlName="CODYTPAC">
-              <option [value]="m.value" *ngFor="let m of itemsType">{{ m.value }}</option>
-            </select>
-          </div>
-
-          <div class="form-group mb-3">
-            <label for="my-inputGroupFile01" class="mb-3 text-primary">Budget photo</label>
-            <input type="file" placeholder="" class="form-control" formControlName="budgetphoto"
-              (change)="onFileSelected($event)">
-          </div>
-
-          <div class="modal-footer">
-            <button class="btn btn-secondary" data-dismiss="modal" (click)="modal.dismiss('Cross click')"
-              type="button">annuler</button>
-            <button class="btn btn-primary btn-confirmer" type="submit" (click)="modal.close('Save click')"
-              [disabled]="form.invalid">confirmer</button>
-          </div>
-        </form>
-      </div>
-    </div>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <!-- Rest of the modal code -->
   </div>
 </ng-template>
