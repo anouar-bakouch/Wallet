@@ -209,12 +209,18 @@ class ItemAPIView(APIView):
 # CATEGORIES ------
 
 class ItemCategorieAPIView(APIView):
-    
-    # return items same categorie
+    pagination_class = Pagination
+
     def get(self, request):
         categorie = request.query_params.get('categorie')
         items = Item.objects.filter(categorie=categorie)
-        serializer = ItemSerializer(items, many=True)
-        return Response({"items": serializer.data})
+
+        # Apply pagination
+        paginator = self.pagination_class()
+        paginated_items = paginator.paginate_queryset(items, request)
+
+        serializer = ItemSerializer(paginated_items, many=True)
+        return paginator.get_paginated_response(serializer.data)
     
+
  

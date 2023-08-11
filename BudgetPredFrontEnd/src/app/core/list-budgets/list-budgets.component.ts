@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { BudgetService } from '../services/budget.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import {
-  even,
   RxFormBuilder,
   RxFormGroup,
 } from '@rxweb/reactive-form-validators';
@@ -66,12 +65,11 @@ export class ListBudgetsComponent {
 
   getItemsByCategorie(categorie:string){
     console.group(categorie);
-    this.budgetService.getItemsByCategorie(categorie).subscribe((data: any) => {
+    this.budgetService.getItemsByCategorie(categorie,1).subscribe((data: any) => {
       this.budgets = data.results;
-      console.log(data)
-      // this.budgets.forEach((budget: any) => {
-      //   budget.budgetphoto = this.base_url + budget.budgetphoto;
-      // } );
+      this.budgets.forEach((budget: any) => {
+        budget.budgetphoto = this.base_url + budget.budgetphoto;
+      } );
     });
   }
 

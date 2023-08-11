@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CategorieItem } from 'src/app/enums/CategorieItem';
 import { environment } from 'src/environments/environment.prod';
@@ -34,8 +34,8 @@ export class BudgetService {
     return this.http.get(this._url_get + id);
   }
 
-  getItemsByCategorie(categorie:string){
-    const params = {categorie: categorie};
+  getItemsByCategorie(categorie:string,page:number){
+    const params = new HttpParams().set('categorie', categorie).set('page', page.toString()).set('page_size', '10');
     const url_filter = environment.apiUrl + "/list-item-categorie/";
     return this.http.get(url_filter, {params});
   }
