@@ -9,16 +9,17 @@ from sqlite3 import Error
 
 # In[2]: importing the dataset
 
-df = pd.read_excel('../data/budgetDATA.xls')
+df = pd.read_excel('../data/budgetDATA.xlsx')
 
 # In[3]: Data Preprocessing - taking only the columns we need
 
-df = df[['CODTYPAC','LIBACTGE']]
+df = df[['CODTYPAC','LIBACTGE','CATEGORIE']]
 # add the budgetphoto column
 df['budgetphoto'] = '../static/items/No-image-available.png'
 # add the id column , random id
 
 df['IDEIMPST'] = df.index
+
 
 # In[4]: creating the connection to the database
 
