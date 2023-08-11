@@ -30,15 +30,12 @@ export class ListBudgetsComponent {
   // Property to store the filtered budgets
   filteredBudgets: Item[] = []; 
 
-
   public form = <RxFormGroup> this.fservice.group(
     { 
       LIBACTGE: ['', Validators.required],
-      MONTSTRU: ['', Validators.required],
-      MONTRAPP: ['', Validators.required],
-      MOISSOLD: ['', Validators.required],
       CODYTPAC: ['', Validators.required],
-      budgetphoto: ['', Validators.required]
+      budgetphoto: ['', Validators.required],
+      categorie : ['', Validators.required],
     }
   );
 
