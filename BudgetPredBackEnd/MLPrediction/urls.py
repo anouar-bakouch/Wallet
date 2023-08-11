@@ -1,7 +1,7 @@
 from typing import ItemsView
 from django.contrib import admin
 from django.urls import path
-from BudgetPRed.views import AddItemView, DeleteItemView, GetItemView, ItemAPIView, PredictedItems, TokenPairObtainView, TokenRefreshView, TokenVerifyView, UpdateItemView, UpdateUserView, index, signInView, signUpView
+from BudgetPRed.views import AddItemView, DeleteItemView, GetItemView, ItemAPIView, ItemCategorieAPIView, PredictedItems, TokenPairObtainView, TokenRefreshView, TokenVerifyView, UpdateItemView, UpdateUserView, index, signInView, signUpView
 urlpatterns = [
     path('',index),
     path('admin/', admin.site.urls),
@@ -23,5 +23,6 @@ urlpatterns = [
     path('predict-items/<int:pk>/', PredictedItems.as_view(), name='PredictItems'),
     # path('PredictMONTSTRU')
     path('list-item/',ItemAPIView.as_view() , name='list-item'),
+    path('list-item-categorie/',ItemCategorieAPIView.as_view() , name='list-item-categorie'),
 ]
 

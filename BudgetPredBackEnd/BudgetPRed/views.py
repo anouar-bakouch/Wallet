@@ -205,3 +205,15 @@ class ItemAPIView(APIView):
         result_page = paginator.paginate_queryset(items, request)
         serializer = ItemSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
+
+# CATEGORIES ------
+
+class ItemCategorieAPIView(APIView):
+    
+    # return items by categorie 
+    def get(self,request):
+        categorie = request.data.get('categorie')
+        items = Item.objects.filter(LIBACTGE=categorie)
+        serializer = ItemSerializer(items, many=True)
+        return Response({"items": serializer.data})
+ 
