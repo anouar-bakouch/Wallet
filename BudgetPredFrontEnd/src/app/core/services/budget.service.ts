@@ -35,7 +35,9 @@ export class BudgetService {
   }
 
   getItemsByCategorie(categorie:string){
-    return this.http.get(this._url_get + "?LIBACTGE=" + categorie);
+    const params = {categorie: categorie};
+    const url_filter = environment.apiUrl + "/list-item-categorie/";
+    return this.http.get(url_filter, {params});
   }
 
   addBudget(item:any){

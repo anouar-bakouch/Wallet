@@ -16,9 +16,11 @@
 <div class="row my-3 mx-3" *ngIf="showFilter">
     <div class="col">
       <div class="btn-group">
-        <button class="mx-3 btn btn-outline-primary btn-md" *ngFor="let category of categories" (click)="filterItems(category)">
-          {{ category }}
-        </button>
+        <div class="mx-3 " *ngFor="let category of categories" (click)="filterItems(category)">
+          <button (click)="getItemsByCategorie(category)" class="btn btn-primary">
+            <i class="bi bi-tags-fill text-white"></i> {{ category }}
+          </button>
+        </div>
       </div>
     </div>
   </div>

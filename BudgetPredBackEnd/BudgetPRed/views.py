@@ -210,10 +210,11 @@ class ItemAPIView(APIView):
 
 class ItemCategorieAPIView(APIView):
     
-    # return items by categorie 
-    def get(self,request):
-        categorie = request.data.get('categorie')
-        items = Item.objects.filter(LIBACTGE=categorie)
+    # return items same categorie
+    def get(self, request):
+        categorie = request.query_params.get('categorie')
+        items = Item.objects.filter(categorie=categorie)
         serializer = ItemSerializer(items, many=True)
         return Response({"items": serializer.data})
+    
  

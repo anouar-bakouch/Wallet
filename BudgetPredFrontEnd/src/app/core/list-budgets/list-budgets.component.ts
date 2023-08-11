@@ -56,11 +56,22 @@ export class ListBudgetsComponent {
   }
 
   getBudgets() {
-    this.budgetService.getItems(1).subscribe((data: any) => {
+    this.budgetService.getItems(this.current_number).subscribe((data: any) => {
       this.budgets = data.results;
       this.budgets.forEach((budget: any) => {
         budget.budgetphoto = this.base_url + budget.budgetphoto;
       } );
+    });
+  }
+
+  getItemsByCategorie(categorie:string){
+    console.group(categorie);
+    this.budgetService.getItemsByCategorie(categorie).subscribe((data: any) => {
+      this.budgets = data.results;
+      console.log(data)
+      // this.budgets.forEach((budget: any) => {
+      //   budget.budgetphoto = this.base_url + budget.budgetphoto;
+      // } );
     });
   }
 
