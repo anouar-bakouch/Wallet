@@ -20,7 +20,7 @@ class Item(models.Model):
     CODTYPAC = models.CharField(max_length=50, default='no code')
     LIBACTGE = models.CharField(max_length=50, default='no libelle')
     budgetphoto = models.ImageField(upload_to='static/items', default='images/None/no-img.jpg')
-
+    categorie = models.CharField(max_length=50, default='no categorie')
     def __str__(self):
         return str(self.IDEIMPST) + ' ' + str(self.LIBACTGE)
 
@@ -51,4 +51,3 @@ class Pagination(PageNumberPagination):
     page_query_param = 'page'
     page_size_query_param = 'page_size'
     max_page_size = 10 
-    

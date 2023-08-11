@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CategorieBudget } from 'src/app/enums/CategorieBudget';
+import { CategorieItem } from 'src/app/enums/CategorieItem';
 import { environment } from 'src/environments/environment.prod';
 import { Item } from 'src/models/Item';
 import { ItemPurchase } from 'src/models/ItemPurchase';
@@ -52,10 +52,10 @@ export class BudgetService {
     return this.http.delete(this._url_delete + id);
   }
 
-  public ItemsType = Object.keys(CategorieBudget).map(name => { 
+  public ItemsType = Object.keys(CategorieItem).map(name => { 
     return {
       name ,
-      value : CategorieBudget[name as keyof typeof CategorieBudget],
+      value : CategorieItem[name as keyof typeof CategorieItem],
     }   
   });
   

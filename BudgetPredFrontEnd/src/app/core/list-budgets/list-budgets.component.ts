@@ -23,10 +23,9 @@ export class ListBudgetsComponent {
   public selectedFie : any | null = null;
   public base_url = environment.apiUrl+"/";
   public predicted_budget:number | string = '';
-  public showBudgets : boolean = false;
+
   public current_number : number = 1;
-  // dict of item id and predicted budget 
-  public dict : any = {};
+
 
   public form = <RxFormGroup> this.fservice.group(
     { 
