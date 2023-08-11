@@ -22,9 +22,14 @@ export class ListBudgetsComponent {
   itemsType: any[] = [];
   public selectedFie : any | null = null;
   public base_url = environment.apiUrl+"/";
-  public predicted_budget:number | string = '';
-
   public current_number : number = 1;
+  categories: string[] = [];
+
+  // Property to track whether the filter section should be shown or not
+  showFilter: boolean = false;
+  
+  // Property to store the filtered budgets
+  filteredBudgets: Item[] = []; 
 
 
   public form = <RxFormGroup> this.fservice.group(
@@ -47,17 +52,15 @@ export class ListBudgetsComponent {
   ngOnInit() {
     this.getBudgets();
     this.itemsType = this.budgetService.ItemsType;
+    this.categories = this.budgetService.ItemsType.map((item: any) => item.value);
   }
 
   getBudgets() {
     this.budgetService.getItems(1).subscribe((data: any) => {
       this.budgets = data.results;
-      console.log(this.budgets)
-      // correct the image path to be displayed
       this.budgets.forEach((budget: any) => {
         budget.budgetphoto = this.base_url + budget.budgetphoto;
       } );
-
     });
   }
 
@@ -65,7 +68,6 @@ export class ListBudgetsComponent {
     this.current_number = this.current_number + 1;
     this.budgetService.getItems(this.current_number).subscribe((data: any) => {
       this.budgets = data.results;
-      // correct the image path to be displayed
       this.budgets.forEach((budget: any) => {
         budget.budgetphoto = this.base_url + budget.budgetphoto;
       }
@@ -73,13 +75,7 @@ export class ListBudgetsComponent {
     });
   }
 
-  categories: string[] = ['Category 1', 'Category 2', 'Category 3'];
 
-// Property to track whether the filter section should be shown or not
-showFilter: boolean = false;
-
-// Property to store the filtered budgets
-filteredBudgets: Item[] = []; 
 
 // Method to toggle the filter section visibility
 toggleFilter() {

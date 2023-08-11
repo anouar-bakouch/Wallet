@@ -16,7 +16,7 @@
 <div class="row my-3 mx-3" *ngIf="showFilter">
     <div class="col">
       <div class="btn-group">
-        <button class="mx-3 btn btn-secondary btn-sm" *ngFor="let category of categories" (click)="filterItems(category)">
+        <button class="mx-3 btn btn-outline-primary btn-md" *ngFor="let category of categories" (click)="filterItems(category)">
           {{ category }}
         </button>
       </div>
