@@ -34,6 +34,10 @@ export class BudgetService {
     return this.http.get(this._url_get + id);
   }
 
+  getItemsByCategorie(categorie:string){
+    return this.http.get(this._url_get + "?LIBACTGE=" + categorie);
+  }
+
   addBudget(item:any){
     return this.http.post(this._url_post, item);
   }
