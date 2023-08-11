@@ -12,7 +12,7 @@ import { ItemPurchase } from 'src/models/ItemPurchase';
 export class BudgetService {
 
   private _url_get:string = environment.apiUrl + "/list-item/";
-  private _url_post = environment.apiUrl + "/purchase-budget/";
+  private _url_post = environment.apiUrl + "/add-item/";
   private _url_put = environment.apiUrl + "/update-budget/"; 
   private _url_delete = environment.apiUrl + "/delete-budget/";
   
@@ -40,7 +40,7 @@ export class BudgetService {
     return this.http.get(url_filter, {params});
   }
 
-  addBudget(item:any){
+  addItem(item:any){
     return this.http.post(this._url_post, item);
   }
 

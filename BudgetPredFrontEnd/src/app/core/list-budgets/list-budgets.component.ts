@@ -142,7 +142,7 @@ filterItems(category: string) {
         formData.append('budgetphoto', selectedFile[0], selectedFile[0].name);
       }
   
-      this.budgetService.addBudget(formData).subscribe( response => {
+      this.budgetService.addItem(formData).subscribe( response => {
         console.log(response);
         this.getBudgets();
       },

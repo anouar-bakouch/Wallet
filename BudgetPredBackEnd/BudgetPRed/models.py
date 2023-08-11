@@ -16,7 +16,7 @@ class User(models.Model):
 
 
 class Item(models.Model):
-    IDEIMPST = models.IntegerField(primary_key=True, default=0)
+    IDEIMPST = models.AutoField(primary_key=True, default=0),
     CODTYPAC = models.CharField(max_length=50, default='no code')
     LIBACTGE = models.CharField(max_length=50, default='no libelle')
     budgetphoto = models.ImageField(upload_to='static/items', default='images/None/no-img.jpg')

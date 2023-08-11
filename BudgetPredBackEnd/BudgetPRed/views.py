@@ -22,16 +22,17 @@ def index(request):
 class AddItemView(APIView):
     parser_classes = (MultiPartParser, FormParser)
 
-    def post(self, request):
-        serializer = ItemSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            budget_saved = serializer.save()
-            return Response(
-                {"success": f"Budget '{budget_saved.IDEIMPST}' created successfully"},
-                status=status.HTTP_201_CREATED
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    def post(self, request, *args, **kwargs):
+        item_serializer = ItemSerializer(data=request.data)
+        ideimpst = request.data.get('IDEIMPST')
+        if Item.objects.filter(IDEIMPST=ideimpst).exists():
+            return Response({"error": "Item '{}' already exists".format(ideimpst)}, status=status.HTTP_400_BAD_REQUEST)
+        if item_serializer.is_valid():
+            item_serializer.save()
+            return Response(item_serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            print('error', item_serializer.errors)
+            return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ListItemsView(APIView):
     def get(self, request):

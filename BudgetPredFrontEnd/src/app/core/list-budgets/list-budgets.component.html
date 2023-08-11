@@ -63,20 +63,25 @@
 
 <ng-template class="modal fade" tabindex="-1" role="dialog" #mymodal let-modal aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">l'ajout d'Item</h5>
+      </div>
+    <div class="modal-body">
     <form [formGroup]="form" (ngSubmit)="onClickSubmit()" class="container">
       <div class="form-group my-3">
         <label for="LIBACTGE">Label - Description</label>
-        <input id="LIBACTGE" type="text" formControlName="LIBACTGE" class="form-control">
+        <input id="LIBACTGE" type="text" formControlName="LIBACTGE" class="my-3 form-control">
       </div>
     
       <div class="form-group my-3">
         <label for="CODYTPAC">CODYTPAC</label>
-        <input id="CODYTPAC" type="text" formControlName="CODYTPAC" class="form-control">
+        <input id="CODYTPAC" type="text" formControlName="CODYTPAC" class=" my-3 form-control" placeholder="codtypac">
       </div>
     
       <div class="form-group my-3">
-        <label for="budgetphoto">budgetphoto</label>
-        <input id="budgetphoto" type="file" (change)="onFileSelected($event)"  formControlName="budgetphoto" class="form-control">
+        <label for="inputGroupFile01">budgetphoto</label>
+        <input id="inputGroupFile01" type="file" (change)="onFileSelected($event)"  formControlName="budgetphoto" class="form-control">
       </div>
     
       <div class="form-group my-3">
@@ -86,7 +91,9 @@
         </select>
       </div>
     
-      <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
+  </div>
+</div>
 </ng-template>
