@@ -7,6 +7,7 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { CartComponent } from './core/cart/cart.component';
 import { CoreFooterComponent } from './core/core-footer/core-footer.component';
+import { AuthService } from './auth/auth.service';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { CoreFooterComponent } from './core/core-footer/core-footer.component';
     PublicModule,
     CoreModule
   ],
-  providers: [],
+  providers: [AuthService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

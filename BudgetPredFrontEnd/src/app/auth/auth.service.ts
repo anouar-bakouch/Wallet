@@ -1,84 +1,98 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { TokenStorageService } from './token-storage.service';
+import { Token } from 'src/models/Token';
+import { User } from 'src/models/User';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
-  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
-  private currentUserSubject = new BehaviorSubject<any>(null);
+
   private url: string = environment.apiUrl;
+  isLogged: any;
+  private token:string = "";
+  private refreshTokenTimeout: any;
+  private id: number = 0;
 
   constructor(
     private http: HttpClient,
-    private tokenStorage: TokenStorageService,
     private router: Router
   ) {
-    const storedUser = this.tokenStorage.getUser();
-    if (storedUser) {
-      this.currentUserSubject.next(storedUser);
-      this.isAuthenticatedSubject.next(true);
+
+  }
+
+  login(username:string,password:string): Observable<Token> {
+    return this.http.post<Token>(`${this.url}/auth/login`, {
+      username,
+      password
+    });
+  }
+
+  logout() {
+    this.token = "";
+    this.id = 0;
+    localStorage.removeItem('access');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('refresh');
+    if (this.refreshTokenTimeout) {
+      clearTimeout(this.refreshTokenTimeout);
     }
+    this.router.navigate(['/login']);
   }
 
-  login(username: string, password: string): Observable<boolean> {
-    return new Observable<boolean>((observer) => {
-      this.http.post<any>(`${this.url}/api/token/`, { username, password }).subscribe(
-        (response: any) => {
-          const user = { id: response.user_id, username: response.username };
-          this.isAuthenticatedSubject.next(true);
-          this.currentUserSubject.next(user);
-          this.tokenStorage.storeTokens(response.access, response.refresh);
-          this.tokenStorage.storeUser(user);
-          observer.next(true);
-          observer.complete();
-        },
-        (error) => {
-          this.isAuthenticatedSubject.next(false);
-          this.currentUserSubject.next(null);
-          console.log(error);
-          observer.error('Authentication failed. Please check your credentials.');
-        }
-      );
+  refreshToken() {
+    return this.http.post<Token>(`${this.url}/auth/refresh`, {
+      refreshToken: this.getRefreshToken()
+    }).subscribe((response) => {
+      this.token = response.access;
+      localStorage.setItem('access', response.access);
+      this.refreshTokenTimeout = setTimeout(() => {
+        this.refreshToken();
+      }, 10000);
     });
   }
 
-  logout(): void {
-    this.clearCredentials();
-    this.router.navigate(['/home/login']);
+  getRefreshToken() {
+    return localStorage.getItem('refresh');
   }
 
-  isAuthenticated(): Observable<boolean> {
-    return this.isAuthenticatedSubject.asObservable();
+  getToken() {
+    return localStorage.getItem('access');
   }
 
-  getCurrentUser(): Observable<any> {
-    return this.currentUserSubject.asObservable();
+  getId() {
+    return localStorage.getItem('user_id');
   }
 
-  refreshToken(): Observable<any> {
-    const refreshToken = this.tokenStorage.getRefreshToken();
-    return new Observable<any>((observer) => {
-      this.http.post<any>(`${this.url}/api/token/refresh/`, { refresh: refreshToken }).subscribe(
-        (response: any) => {
-          this.tokenStorage.updateAuthToken(response.access);
-          observer.next(response.access);
-          observer.complete();
-        },
-        (error) => {
-          observer.error('Failed to refresh token');
-        }
-      );
+  isLoggedIn() {
+    return !!this.getToken();
+  }
+
+  logOut() {
+    localStorage.removeItem('access');
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('refresh');
+    this.router.navigate(['/login']);
+  }
+
+  signUp(user:any): Observable<User> {
+
+    return this.http.post<User>(`${this.url}/register`, {
+      username: user.username,
+      password: user.password,
+      email: user.email,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      path_photo : user.path_photo,
+      month_budget : user.month_budget
     });
+    
   }
 
-  clearCredentials() {
-    this.isAuthenticatedSubject.next(false);
-    this.currentUserSubject.next(null);
-    this.tokenStorage.clearTokens();
-  }
+  
+
 }

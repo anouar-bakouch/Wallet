@@ -29,7 +29,7 @@ import { Interceptor } from '../interceptors/interceptor.service';
     HomeBudgetComponent
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
+    // { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
   ],
 })
 

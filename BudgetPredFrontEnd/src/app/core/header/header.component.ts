@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
-import { TokenStorageService } from 'src/app/auth/token-storage.service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/models/User';
 
@@ -18,15 +17,14 @@ export class HeaderBudgetComponent {
   photoPath = '';
 
   constructor(public authService:AuthService,
-    private tokenStorage:TokenStorageService) { }
+  ) { }
 
   onLogout(){
     this.authService.logout();
   }
 
   ngOnInit(): void {
-    
-    this.user = this.tokenStorage.getUser();
+  
     console.log(this.photoPath)
   }
 

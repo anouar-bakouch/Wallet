@@ -20,7 +20,6 @@ export class SignupService {
       lastName: lastName
     };
 
-    this.authService.clearCredentials();
 
     return new Observable<any>((observer) => {
       this.http.post(url, payload).subscribe(
