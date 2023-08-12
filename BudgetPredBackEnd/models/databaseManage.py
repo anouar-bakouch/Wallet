@@ -16,10 +16,6 @@ df = pd.read_excel('../data/budgetDATA.xlsx')
 df = df[['CODTYPAC','LIBACTGE','CATEGORIE']]
 # add the budgetphoto column
 df['budgetphoto'] = '../static/items/No-image-available.png'
-# add the id column , random id
-
-df['IDEIMPST'] = df.index
-
 
 # In[4]: creating the connection to the database
 
