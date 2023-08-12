@@ -143,7 +143,6 @@ filterItems(category: string) {
       }
   
       this.budgetService.addItem(formData).subscribe( response => {
-        console.log(response);
         this.getBudgets();
       },
         error => {
@@ -151,6 +150,8 @@ filterItems(category: string) {
         }
         );
       }
+      // close the model 
+      this.modalService.dismissAll();
     }
 
     onFileSelected(event: any) {

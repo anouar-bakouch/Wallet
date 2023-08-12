@@ -1,4 +1,3 @@
-import { Item } from "./Item";
 import { User } from "./User";
 
 

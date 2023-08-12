@@ -9,6 +9,9 @@ export enum CategorieItem {
     EMPLOYEMENT = "employment",
     OTHER = "other",
     PAYROLL = "payroll",
-    TRAINING = "training"
-
+    TRAINING = "training",
+    TECHNOLOGIE = "technologie",
+    CLOTHES = "clothes",
+    FOOD = "food",
+    TRANSPORT = "transport",
 }
