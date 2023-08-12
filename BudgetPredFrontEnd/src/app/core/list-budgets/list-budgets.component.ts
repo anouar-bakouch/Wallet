@@ -8,6 +8,8 @@ import {
 import { Validators } from '@angular/forms';
 import { Item } from 'src/models/Item';
 import { environment } from 'src/environments/environment';
+import { ItemPurchase } from 'src/models/ItemPurchase';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-list-budgets',
@@ -42,7 +44,8 @@ export class ListBudgetsComponent {
   constructor(
     private budgetService: BudgetService,
     private modalService: NgbModal,
-    private fservice: RxFormBuilder){
+    private fservice: RxFormBuilder,
+    private authService: AuthService){
   }
 
   ngOnInit() {
@@ -92,6 +95,20 @@ toggleFilter() {
 filterItems(category: string) {
   this.filteredBudgets = this.budgets.filter(budget => budget.CODTYPAC === category);
 }
+
+  addToCart(item: any) {
+    console.log(item)
+    const ItemPurchase:ItemPurchase = {
+      item : item,
+      quantity : 1,
+      user : this.authService.getCurrentUser()
+    }
+
+    // this.budgetService.addToCart(item).subscribe((data: any) => {
+    //   console.log(data);
+    // });
+  }
+
 
 
   fun(content: any, s: Item) {

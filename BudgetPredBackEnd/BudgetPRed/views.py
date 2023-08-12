@@ -3,7 +3,7 @@ import pickle
 from django.shortcuts import get_object_or_404, render
 import joblib
 from BudgetPRed.serializers import ItemSerializer,PurchaseSerializer, TokenPairSerializer, TokenRefreshSerializer, TokenVerifySerializer, UserSerializer
-from BudgetPRed.models import Item, Pagination, User , Purchase
+from BudgetPRed.models import Item, ItemPurchase, Pagination, User , Purchase
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -219,6 +219,22 @@ class ItemCategorieAPIView(APIView):
 
         serializer = ItemSerializer(paginated_items, many=True)
         return paginator.get_paginated_response(serializer.data)
+
+class AddToCartAPIVIEW(APIView):
+
+    def post(self, request):
+        user_id = request.data.get('user_id')
+        item_id = request.data.get('item_id')
+        quantity = request.data.get('quantity')
+
+        user = User.objects.get(id=user_id)
+        item = Item.objects.get(id=item_id)
+
+        item_purchase = ItemPurchase.objects.create(user=user, item=item, quantity=quantity)
+        item_purchase.save()
+
+        return Response({'message': 'Item added to cart successfully'})
+
     
 
  

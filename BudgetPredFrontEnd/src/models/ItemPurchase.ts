@@ -4,8 +4,7 @@ import { User } from "./User";
 
 
 export interface ItemPurchase {
-    user :User;
-    item : Item;
+    user_id : number;
+    item_id : number;
     quantity : number;
-    purchase : Purchase;
 }
