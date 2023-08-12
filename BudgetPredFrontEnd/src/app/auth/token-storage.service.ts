@@ -9,6 +9,7 @@ import { getDaysDelta } from '../utils/date';
 @Injectable({
   providedIn: 'root',
 })
+
 export class TokenStorageService {
   constructor() {}
 
@@ -72,7 +73,13 @@ export class TokenStorageService {
     window.localStorage.removeItem('photo');
   }
 
-  
+  public getUserIdFromToken() {
+    const token = this.getAuthToken();
+    if (!token) return null;
+
+    const user = JSON.parse(token);
+    return user.id;
+  }  
 
      
 }

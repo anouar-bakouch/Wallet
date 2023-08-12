@@ -8,6 +8,7 @@ import { TokenStorageService } from './token-storage.service';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   private currentUserSubject = new BehaviorSubject<any>(null);
@@ -29,10 +30,12 @@ export class AuthService {
     return new Observable<boolean>((observer) => {
       this.http.post<any>(`${this.url}/SignIn/`, { username, password }).subscribe(
         (response) => {
-          const user = { id: response.id, username: response.username };
+          console.log(response)
+          const user = { id: response.user_id, username: response.username };
           this.isAuthenticatedSubject.next(true);
           this.currentUserSubject.next(user);
           this.tokenStorage.storeTokens(response.token, response.refreshToken);
+          this.tokenStorage.storeUser(user);
           observer.next(true);
           observer.complete();
         },

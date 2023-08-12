@@ -1,7 +1,7 @@
 from typing import ItemsView
 from django.contrib import admin
 from django.urls import path
-from BudgetPRed.views import AddItemView, DeleteItemView, GetItemView, ItemAPIView, ItemCategorieAPIView, PredictedItems, TokenPairObtainView, TokenRefreshView, TokenVerifyView, UpdateItemView, UpdateUserView, index, signInView, signUpView
+from BudgetPRed.views import AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, TokenPairObtainView, TokenRefreshView, TokenVerifyView, UpdateItemView, UpdateUserView, index, signInView, signUpView
 urlpatterns = [
     path('',index),
     path('admin/', admin.site.urls),
@@ -13,7 +13,7 @@ urlpatterns = [
     # USER ------------------------------
     path('SignIn/',signInView.as_view()),
     path('SignUp/',signUpView.as_view()),
-    path('GetUser/<int:pk>/',GetItemView.as_view()),
+    path('GetUser/<int:pk>/',GetUserView.as_view()),
     path('DeleteUser/<int:pk>/',DeleteItemView.as_view()),
     path('UpdateUser/<int:pk>/',UpdateUserView.as_view()),
     path('token/', TokenPairObtainView.as_view(), name='token_obtain_pair'),

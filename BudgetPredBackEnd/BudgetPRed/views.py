@@ -10,6 +10,7 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 import pandas as pd
 import numpy as np
+from rest_framework.authtoken.models import Token
 
 
 
@@ -143,9 +144,10 @@ class signInView(APIView):
         user = User.objects.filter(username=username, password=password).first()
         if user is None:
             return Response({"error": "Wrong username or password"}, status=status.HTTP_404_NOT_FOUND)
-        else:
-            return Response({"success": "User '{}' signed in successfully".format(user.id)}, status=status.HTTP_200_OK)
-        
+        else: # return the user id , username and token
+            token = Token.objects.get_or_create(user=user)
+            return Response({"user_id": user.id, "username": user.username, "token": token[0].key}, status=status.HTTP_200_OK)
+
 
 class UpdateUserView(APIView):
     def put(self, request, pk):

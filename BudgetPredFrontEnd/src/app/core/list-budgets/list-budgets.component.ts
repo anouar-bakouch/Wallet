@@ -96,13 +96,13 @@ filterItems(category: string) {
   this.filteredBudgets = this.budgets.filter(budget => budget.CODTYPAC === category);
 }
 
-  addToCart(item: any) {
+  addToCart(item: Item) {
     console.log(item)
-    const ItemPurchase:ItemPurchase = {
-      item : item,
-      quantity : 1,
-      user : this.authService.getCurrentUser()
-    }
+    // const ItemPurchase:ItemPurchase = {
+    //   item_id : item.IDEIMPST,
+    //   quantity : 1,
+    //   user_id : this.authService.currentUserValue.id
+    // }
 
     // this.budgetService.addToCart(item).subscribe((data: any) => {
     //   console.log(data);

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
+import { TokenStorageService } from 'src/app/auth/token-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -11,14 +12,14 @@ export class LoginComponent implements OnInit {
   username: string = '';
   password: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService,
+    private tokenService:TokenStorageService,private router: Router) {}
 
   ngOnInit() {}
 
   login() {
     this.authService.login(this.username, this.password).subscribe(
       (success) => {
-        console.log(success);
         if (success) {
           this.router.navigate(['/budgetHome/budgets']);
         } else {
