@@ -14,34 +14,34 @@ class User(models.Model):
     def __str__(self):
         return self.username
 
-
 class Item(models.Model):
-    IDEIMPST = models.AutoField(primary_key=True, default=0),
+    IDEIMPST = models.AutoField(primary_key=True)
     CODTYPAC = models.CharField(max_length=50, default='no code')
     LIBACTGE = models.CharField(max_length=50, default='no libelle')
     budgetphoto = models.ImageField(upload_to='static/items', default='images/None/no-img.jpg')
     categorie = models.CharField(max_length=50, default='no categorie')
-    def __str__(self):
-        return str(self.IDEIMPST) + ' ' + str(self.LIBACTGE)
-
-
-class ItemPurchase(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
-    quantity = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"User: {self.user.username} - Item: {self.item.LIBACTGE} - Quantity: {self.quantity}"
-
+        return str(self.IDEIMPST) 
 
 class Purchase(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
     MOISSOLD = models.DateField(default='2021-01-01')
     MONTSTRU = models.FloatField(default=0)
     MONTRAPP = models.FloatField(default=0)
 
+    def __str__(self):
+        return f"Purchase: {self.id}" 
+
+class ItemPurchase(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
+    quantity = models.IntegerField(default=1)
+    Purchase = models.ForeignKey(Purchase, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return f"User: {self.user.username} - Item: {self.item.LIBACTGE} - Quantity: {self.quantity}"
 
     def __str__(self):
         return f"Purchase: {self.id} - User: {self.user.username} - Item: {self.item.LIBACTGE}"

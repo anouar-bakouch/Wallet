@@ -24,9 +24,6 @@ class AddItemView(APIView):
 
     def post(self, request, *args, **kwargs):
         item_serializer = ItemSerializer(data=request.data)
-        ideimpst = request.data.get('IDEIMPST')
-        if Item.objects.filter(IDEIMPST=ideimpst).exists():
-            return Response({"error": "Item '{}' already exists".format(ideimpst)}, status=status.HTTP_400_BAD_REQUEST)
         if item_serializer.is_valid():
             item_serializer.save()
             return Response(item_serializer.data, status=status.HTTP_201_CREATED)
@@ -49,7 +46,7 @@ class UpdateItemView(APIView):
         if serializer.is_valid(raise_exception=True):
             budget_saved = serializer.save()
         return Response({
-            "success": "Budget '{}' updated successfully".format(budget_saved.IDEIMPST)
+            "success": "Budget '{}' updated successfully".format(budget_saved.id)
         })
     
 class DeleteItemView(APIView):
