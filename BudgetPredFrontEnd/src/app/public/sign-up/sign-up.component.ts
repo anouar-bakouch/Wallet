@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SignupService } from '../services/sign-up.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -16,24 +16,33 @@ export class SignUpComponent implements OnInit {
   firstName: string = "";
   lastName: string = "";
 
-  constructor(private signupService: SignupService,private router:Router) { }
+  constructor(
+    private router:Router,
+    private authService:AuthService) { }
 
   ngOnInit() { }
 
-  async signup() {
-    try {
-      const success = await this.signupService.signup(this.username, this.email, this.password, this.firstName, this.lastName).toPromise();
-      if (success) {
-        // The signup was successful.
-        this.router.navigate(['/login']);        
-      } else {
-        // The signup failed.
-        this.router.navigate(['/signup']);
-      }
-    } catch (error) {
+  signup() {
+    const user = {
+      username: this.username,
+      email: this.email,
+      password: this.password,
+      first_name: this.firstName,
+      last_name: this.lastName,
+      path_photo : "",
+      month_budget : 0,
+    }
+    this.authService.signUp(user).subscribe((response) => {
+      this.router.navigate(['/home/login']);
+      localStorage.setItem('access', response.access);
+      localStorage.setItem('refresh', response.refresh);
+      localStorage.setItem('user_id', response.user_id);
+      this.authService.refreshToken();
+
+    }, error => {
       console.log(error);
     }
+    );
   }
-
    
 }
