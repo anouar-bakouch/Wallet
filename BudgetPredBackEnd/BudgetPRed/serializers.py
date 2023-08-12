@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from BudgetPRed.models import Item, Purchase, User
 from rest_framework.parsers import MultiPartParser, FormParser , JSONParser
@@ -39,13 +39,20 @@ class PurchaseSerializer(serializers.ModelSerializer):
         
 
 
-class TokenPairSerializer(serializers.Serializer):
-    access = serializers.CharField()
-    refresh = serializers.CharField()
-
-class TokenRefreshSerializer(serializers.Serializer):
-    refresh = serializers.CharField()
-
-class TokenVerifySerializer(serializers.Serializer):
-    token = serializers.CharField()
+class CustomTokenPairSerializer(TokenObtainPairSerializer) :
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['username'] = user.username
+        return token
+    
+    def validate(self, attrs):
+        data = super().validate(attrs)
+        refresh = self.get_token(self.user)
+        data['refresh'] = str(refresh)
+        data['access'] = str(refresh.access_token)
+        data['username'] = self.user.username
+        data['user_id'] = self.user.id
+        return data
+    
 

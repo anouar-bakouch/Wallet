@@ -2,7 +2,7 @@
 import pickle
 from django.shortcuts import get_object_or_404, render
 import joblib
-from BudgetPRed.serializers import ItemSerializer,PurchaseSerializer, TokenPairSerializer, TokenRefreshSerializer, TokenVerifySerializer, UserSerializer
+from BudgetPRed.serializers import CustomTokenPairSerializer, ItemSerializer, UserSerializer
 from BudgetPRed.models import Item, ItemPurchase, Pagination, User , Purchase
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -11,6 +11,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 import pandas as pd
 import numpy as np
 from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 
@@ -144,10 +145,9 @@ class signInView(APIView):
         user = User.objects.filter(username=username, password=password).first()
         if user is None:
             return Response({"error": "Wrong username or password"}, status=status.HTTP_404_NOT_FOUND)
-        else: # return the user id , username and token
-            token = Token.objects.get_or_create(user=user)
-            return Response({"user_id": user.id, "username": user.username, "token": token[0].key}, status=status.HTTP_200_OK)
-
+        else:
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({"token": token.key, "user_id": user.id, "username": user.username}, status=status.HTTP_200_OK)
 
 class UpdateUserView(APIView):
     def put(self, request, pk):
@@ -176,23 +176,7 @@ class GetUserInfoView(APIView):
         serializer = UserSerializer(user)
         return Response({"user": serializer.data})
 
-class TokenPairObtainView (APIView):
-    def post(self, request):
-        serializer = TokenPairSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
-    
-class TokenRefreshView (APIView):
-    def post(self, request):
-        serializer = TokenRefreshSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
-    
-class TokenVerifyView (APIView):
-    def post(self, request):
-        serializer = TokenVerifySerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        return Response(serializer.validated_data, status=status.HTTP_200_OK)
+
     
 
 # PAGINATION -----
@@ -238,5 +222,10 @@ class AddToCartAPIVIEW(APIView):
         return Response({'message': 'Item added to cart successfully'})
 
     
+# JWT 
 
- 
+class TokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenPairSerializer
+
+
+

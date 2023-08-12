@@ -1,3 +1,4 @@
+from datetime import timedelta
 import os
 from pathlib import Path
 
@@ -39,13 +40,22 @@ INSTALLED_APPS = [
     # Add the BudgetPRed app to INSTALLED_APPS
     'BudgetPRed',
     'corsheaders',
-
+    'rest_framework_simplejwt'
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'BudgetPRed.models.Pagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    ]
 }
+
+SIMPLE_JWT = {
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+}
+
 
 DEFAULT_AUTHENTICATION_CLASSES = [
     'rest_framework.authentication.TokenAuthentication',
