@@ -82,7 +82,12 @@ export class AuthService {
   signUp(user:any): Observable<any> {
     return this.http.post<User>(`${this.url}/register/`, user);
   }
-    
+   
+  getUserInfo(id:number): Observable<User> {
+    const url = environment.apiUrl + '/userinfo/' + id + '/';
+    return this.http.get<User>(url);
+  }
+
   }
 
 

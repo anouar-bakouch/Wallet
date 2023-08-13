@@ -27,6 +27,13 @@
             </span>
           </a>
           <ul class="dropdown-menu" aria-labelledby="budget">
+            <div>
+              <ul class="list-group">
+                  <li class="list-group-item text-primary">
+                    {{user?.first_name}} {{user?.last_name}}
+                  </li>
+              </ul>
+            </div>
             <li>
               <a class="dropdown-item text-color" routerLink="/budgethome/stats"
                 >profile</a
@@ -35,6 +42,11 @@
             <li>
               <a class="dropdown-item text-color" routerLink="/budgethome/stats"
                 >stats</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-color" routerLink="/budgethome/cart"
+                >cart</a
               >
             </li>
             <li>

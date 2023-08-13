@@ -2,7 +2,7 @@
 import pickle
 from django.shortcuts import get_object_or_404, render
 import joblib
-from BudgetPRed.serializers import  ItemSerializer, UserSerializer , AuthSerializer
+from BudgetPRed.serializers import  ItemPurchaseSerializer, ItemSerializer, UserSerializer , AuthSerializer
 from BudgetPRed.models import Item, ItemPurchase, Pagination, User , Purchase
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -62,11 +62,11 @@ class DeleteItemView(APIView):
     
     
 class GetItemView(APIView):
-    def get(self, request, pk):
-        # Get object with this pk
-        budget = get_object_or_404(Item.objects.all(), pk=pk)
-        serializer = ItemSerializer(budget)
-        return Response({"budget": serializer.data})
+    def get(self, request):
+        IDEIMPST = request.query_params.get('IDEIMPST')
+        item = Item.objects.get(IDEIMPST=IDEIMPST)
+        serializer = ItemSerializer(item)
+        return Response({"item": serializer.data})
 
 # Purchase views 
 
@@ -200,7 +200,13 @@ class AddToCartAPIVIEW(APIView):
 
         return Response({'message': 'Item added to cart successfully'})
 
-
+class ItemsCartAPIView(APIView):
+    def get(self, request):
+        user_id = request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        items = ItemPurchase.objects.filter(user=user)
+        serializer = ItemPurchaseSerializer(items, many=True)
+        return Response(serializer.data)
     
 # JWT 
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from BudgetPRed.models import Item, Purchase, User
+from BudgetPRed.models import Item, Purchase, User , ItemPurchase
 from rest_framework.parsers import MultiPartParser, FormParser , JSONParser
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password 
@@ -9,7 +9,11 @@ class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
         fields = '__all__'
-    
+
+class ItemPurchaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ItemPurchase
+        fields = '__all__' 
     
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
