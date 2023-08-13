@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('refresh', response.refresh);
       localStorage.setItem('user_id', response.user_id);
       this.authService.refreshToken();
-      this.router.navigate(['/budgetHome']);
+      this.router.navigate(['/budgetHome/budgets']);
     }, error => {
       console.log(error);
     }

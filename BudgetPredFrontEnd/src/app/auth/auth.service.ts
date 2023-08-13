@@ -45,7 +45,7 @@ export class AuthService {
   }
 
   refreshToken() {
-    return this.http.post<Token>(`${this.url}/auth/refresh`, {
+    return this.http.post<Token>(`${this.url}/auth/refresh/`, {
       refreshToken: this.getRefreshToken()
     }).subscribe((response) => {
       this.token = response.access;
