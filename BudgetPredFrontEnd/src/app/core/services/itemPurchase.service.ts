@@ -17,13 +17,13 @@ export class ItemPurchaseService {
         const url = environment.apiUrl + "/get-cart/";
         // send the user id in the request
         const params = new HttpParams().set('user_id', localStorage.getItem('user_id') || '');
-        return this.http.get<ItemPurchase[]>(url, {params});
+        return this.http.get(url, {params});
     }
 
     getItemInfoById(id:number){
         const url = environment.apiUrl + "/get-item/";
         const params = new HttpParams().set('IDEIMPST', id);
-        return this.http.get<Item[]>(url, {params});
+        return this.http.get(url, {params});
     }
 
 

@@ -9,21 +9,22 @@ import { Item } from 'src/models/Item';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent {
-  public itemsCart: Item[] = [];
-  public dataArray: Array<ItemPurchase> = [];
+  public itemsCart: any[] = [];
+  public dataArray:any[] = [];
 
   constructor(private itemService: ItemPurchaseService) {}
 
   ngOnInit(): void {
-    this.itemService.getItemsCart().subscribe((data: ItemPurchase[]) => {
+    this.itemService.getItemsCart().subscribe((data:any) => {
       this.dataArray = data;
 
       this.dataArray.forEach((x) => {
         console.log(x);
-        this.itemService.getItemInfoById(x.item).subscribe((y) => {
-          // console.log(y);
+        this.itemService.getItemInfoById(x.item).subscribe((y:any) => {
+          this.itemsCart.push(y.item)
         });
       });
     });
+    console.log(this.itemsCart)
   }
 }
