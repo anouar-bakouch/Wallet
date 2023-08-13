@@ -2,7 +2,7 @@
 import pickle
 from django.shortcuts import get_object_or_404, render
 import joblib
-from BudgetPRed.serializers import CustomTokenPairSerializer, ItemSerializer, UserSerializer
+from BudgetPRed.serializers import  ItemSerializer, UserSerializer , AuthSerializer
 from BudgetPRed.models import Item, ItemPurchase, Pagination, User , Purchase
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -10,8 +10,8 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 import pandas as pd
 import numpy as np
-from rest_framework.authtoken.models import Token
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken 
+from django.contrib.auth.hashers import make_password 
 
 
 
@@ -114,6 +114,7 @@ class PredictedItems(APIView):
         # return the prediction
         return Response({"prediction": prediction.tolist()})
 
+
 class ListUserView(APIView):
 
     def get(self, request):
@@ -128,26 +129,6 @@ class GetUserView(APIView):
         serializer = UserSerializer(user)
         return Response({"user": serializer.data})
     
-class signUpView(APIView):
-    def post(self, request):
-        serializer = UserSerializer(data=request.data)
-
-        if serializer.is_valid():
-            user = serializer.save()
-            return Response({"success": "User '{}' created successfully".format(user.id)}, status=status.HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
-class signInView(APIView):
-    def post(self, request):
-        username = request.data.get('username')
-        password = request.data.get('password')
-        user = User.objects.filter(username=username, password=password).first()
-        if user is None:
-            return Response({"error": "Wrong username or password"}, status=status.HTTP_404_NOT_FOUND)
-        else:
-            token, _ = Token.objects.get_or_create(user=user)
-            return Response({"token": token.key, "user_id": user.id, "username": user.username}, status=status.HTTP_200_OK)
 
 class UpdateUserView(APIView):
     def put(self, request, pk):
@@ -176,8 +157,6 @@ class GetUserInfoView(APIView):
         serializer = UserSerializer(user)
         return Response({"user": serializer.data})
 
-
-    
 
 # PAGINATION -----
 class ItemAPIView(APIView):
@@ -221,11 +200,83 @@ class AddToCartAPIVIEW(APIView):
 
         return Response({'message': 'Item added to cart successfully'})
 
+
     
 # JWT 
 
-class TokenObtainPairView(TokenObtainPairView):
-    serializer_class = CustomTokenPairSerializer
+class UserRegistrationView(APIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def post(self, request, *args, **kwargs):
+        # Get the user data from the request
+        data = request.data
+
+        # Create a new user from the above data
+        user = User.objects.create(
+            username=data['username'],
+            email=data['email'],
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            # hash the password with the set_password method
+            password = data['password'],
+            path_photo = data['path_photo'],
+            month_budget = data['month_budget']
+        )
+
+        # algorithm to hash the password using make_password
+        user.password = make_password(user.password)
+
+        # Create a serializer instance with the user data
+        serializer = UserSerializer(data=data)
+
+        # Create a refresh and an access token for the new user
+        refresh = RefreshToken.for_user(user)
+
+        # Return the refresh and access tokens as a JSON response
+        return Response({
+            'user_id' : user.id,
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        })
+    
+
+class LoginView(APIView):
+    serializer_class = AuthSerializer
+
+    def post(self, request, *args, **kwargs):
+        # Get the user credentials from the request
+        data = request.data
+
+        # Verify if the user exists in the database
+        try:
+            user = User.objects.get(username=data['username'])
+        except User.DoesNotExist:
+            return Response({
+                'message': 'User does not exist'
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        # Verify if the password is valid
+        try:
+            password = data['password']
+            if password != user.password:
+                return Response({
+                    'message': 'Incorrect password'
+                }, status=status.HTTP_400_BAD_REQUEST)
+        except KeyError:
+            return Response({
+                'message': 'Password is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+        # if the user exists and the password is valid, return the user's refresh and access tokens
+        refresh = RefreshToken.for_user(user)
+        # Return the user's refresh token and access token
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user_id': user.id
+        })
 
 
 

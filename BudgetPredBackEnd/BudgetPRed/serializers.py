@@ -1,8 +1,8 @@
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from BudgetPRed.models import Item, Purchase, User
 from rest_framework.parsers import MultiPartParser, FormParser , JSONParser
 from rest_framework import serializers
+from django.contrib.auth.hashers import make_password 
 
 class ItemSerializer(serializers.ModelSerializer):
     parser_classes = (MultiPartParser, FormParser,JSONParser)
@@ -15,7 +15,17 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-
+    # hash password
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        instance = self.Meta.model(**validated_data)
+        # check if password is not null
+        if password is not None:
+           # use make password to hash the password 
+           instance.password = make_password(instance.password)
+        instance.save()
+        return instance
+    
 class PurchaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Purchase
@@ -36,23 +46,18 @@ class PurchaseSerializer(serializers.ModelSerializer):
             instance.delete()
             return instance
         
+class AuthSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'password')
+
+    def create(self, validated_data):
+        return User.objects.create(**validated_data)
+    
+
         
 
 
-class CustomTokenPairSerializer(TokenObtainPairSerializer) :
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        token['username'] = user.username
-        return token
     
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        refresh = self.get_token(self.user)
-        data['refresh'] = str(refresh)
-        data['access'] = str(refresh.access_token)
-        data['username'] = self.user.username
-        data['user_id'] = self.user.id
-        return data
-    
+
 

@@ -52,14 +52,9 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-    'ROTATE_REFRESH_TOKENS': True,
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=100),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
-
-
-DEFAULT_AUTHENTICATION_CLASSES = [
-    'rest_framework.authentication.TokenAuthentication',
-]
 
 
 MIDDLEWARE = [
