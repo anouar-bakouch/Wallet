@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { ItemPurchase } from 'src/models/ItemPurchase';
 import { ItemPurchaseService } from '../services/itemPurchase.service';
-import { Item } from 'src/models/Item';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-cart',
@@ -10,21 +9,25 @@ import { Item } from 'src/models/Item';
 })
 export class CartComponent {
   public itemsCart: any[] = [];
-  public dataArray:any[] = [];
+  public dataArray: any[] = [];
 
   constructor(private itemService: ItemPurchaseService) {}
 
   ngOnInit(): void {
-    this.itemService.getItemsCart().subscribe((data:any) => {
+    this.itemService.getItemsCart().subscribe((data: any) => {
       this.dataArray = data;
 
       this.dataArray.forEach((x) => {
-        console.log(x);
-        this.itemService.getItemInfoById(x.item).subscribe((y:any) => {
-          this.itemsCart.push(y.item)
+        this.itemService.getItemInfoById(x.item).subscribe((y: any) => {
+          
+          this.itemsCart.push(y.item);
+          this.correctImagePath(y.item);
         });
       });
     });
-    console.log(this.itemsCart)
+  }
+
+  correctImagePath(item: any): void {
+    item.budgetphoto = environment.apiUrl + '/' + item.budgetphoto;
   }
 }

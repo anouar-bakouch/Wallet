@@ -1,12 +1,17 @@
+<div class="container-fluid">
 <div class="list-group my-5">
 
-    <a *ngFor="let x of itemsCart" href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+    <a *ngFor="let x of itemsCart" href="#" class="list-group-item list-group-item-action flex-column justify-content-end w-100 align-items-center my-3">
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{x.LIBACTGE}}</h5>
+        <h5 class="mb-1 fs-4 text-primary fs-bold">{{x.LIBACTGE}}</h5>
+        <img class="img img-responsive" [src]="x.budgetphoto" width="200" height="200" alt="">
         <small class="text-muted">{{x.CODYTPAC}}</small>
       </div>
-      <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-      <small class="text-muted">Donec id elit non mi porta.</small>
+      <p class="mb-1">catégorie : {{x.categorie}}</p>
+     
+        <button class="btn btn-primary">confirm purchase</button>
+    
     </a>
 
   </div>
+</div>
