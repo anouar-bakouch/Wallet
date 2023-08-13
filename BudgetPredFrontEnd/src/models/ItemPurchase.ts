@@ -1,7 +1,7 @@
 
 
 export interface ItemPurchase {
-    user_id : number;
-    item_id : number;
+    user : number;
+    item : number;
     quantity : number;
 }

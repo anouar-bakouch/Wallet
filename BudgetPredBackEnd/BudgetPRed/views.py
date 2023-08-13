@@ -291,7 +291,6 @@ class refreshTokenView(APIView):
         # Verify if the refresh token is valid
         try:
             token = RefreshToken(refresh_token)
-            token.blacklist()
 
         except TokenError:
             return Response({

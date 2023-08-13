@@ -24,7 +24,6 @@ export class HeaderBudgetComponent {
       this.user = data.user;
       // fix the image path 
       this.photoPath = `${environment.apiUrl}/${this.user?.path_photo}`;
-      console.log(data.user)
     }
     );
 
