@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from BudgetPRed.views import LoginView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index
+from BudgetPRed.views import LoginView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index
 urlpatterns = [
     path('',index),
     path('admin/', admin.site.urls),
@@ -12,6 +12,7 @@ urlpatterns = [
     #TOKEN 
     path('register/', UserRegistrationView.as_view(), name='user-registration'),
     path('login/', LoginView.as_view(), name='token-obtain-pair'),
+    path('auth/refresh/', refreshTokenView.as_view(), name='token-refresh'),
     # USER ------------------------------
     path('GetUser/<int:pk>/',GetUserView.as_view()),
     path('DeleteUser/<int:pk>/',DeleteItemView.as_view()),

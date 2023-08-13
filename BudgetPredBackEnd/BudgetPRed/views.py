@@ -10,7 +10,7 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 import pandas as pd
 import numpy as np
-from rest_framework_simplejwt.tokens import RefreshToken 
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from django.contrib.auth.hashers import make_password 
 
 
@@ -278,5 +278,28 @@ class LoginView(APIView):
             'user_id': user.id
         })
 
+class refreshTokenView(APIView):
+    def post(self, request, *args, **kwargs):
+        # Get the refresh token from the request
+        refresh_token = request.data.get('refresh')
+        # Verify if the refresh token is valid
+        try:
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+        except TokenError:
+            return Response({
+                'message': 'Invalid refresh token'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create a new refresh and access token for the user
+        user = User.objects.get(id=request.data.get('user_id'))
+        refresh = RefreshToken.for_user(user)
+
+        # Return the new refresh and access tokens
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        })
 
 
