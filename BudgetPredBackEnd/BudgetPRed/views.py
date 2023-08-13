@@ -193,7 +193,7 @@ class AddToCartAPIVIEW(APIView):
         quantity = request.data.get('quantity')
 
         user = User.objects.get(id=user_id)
-        item = Item.objects.get(id=item_id)
+        item = Item.objects.get(IDEIMPST=item_id)
 
         item_purchase = ItemPurchase.objects.create(user=user, item=item, quantity=quantity)
         item_purchase.save()

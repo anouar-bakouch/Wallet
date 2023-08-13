@@ -64,8 +64,8 @@ export class AuthService {
     return localStorage.getItem('access');
   }
 
-  getId() {
-    return localStorage.getItem('user_id');
+  getId():number{ 
+    return Number(localStorage.getItem('user_id'));
   }
 
   isLoggedIn() {

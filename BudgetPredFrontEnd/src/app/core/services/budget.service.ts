@@ -26,7 +26,8 @@ export class BudgetService {
 
 
   addToCart(item:ItemPurchase){
-    return this.http.post(this._url_post, item);
+    const url = environment.apiUrl + "/add-cart/";
+    return this.http.post(url, item);
   }
 
 

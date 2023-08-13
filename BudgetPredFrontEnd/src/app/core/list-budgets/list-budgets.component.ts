@@ -98,15 +98,15 @@ filterItems(category: string) {
 
   addToCart(item: Item) {
     console.log(item)
-    // const ItemPurchase:ItemPurchase = {
-    //   item_id : item.IDEIMPST,
-    //   quantity : 1,
-    //   user_id : this.authService.currentUserValue.id
-    // }
+    const ItemPurchase:ItemPurchase = {
+      item_id : item.IDEIMPST,
+      quantity : 1,
+      user_id : this.authService?.getId()
+    }
 
-    // this.budgetService.addToCart(item).subscribe((data: any) => {
-    //   console.log(data);
-    // });
+    this.budgetService.addToCart(ItemPurchase).subscribe((data: any) => {
+      console.log(data);
+    });
   }
 
 
