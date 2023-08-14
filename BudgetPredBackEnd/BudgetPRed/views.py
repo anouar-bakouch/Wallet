@@ -337,6 +337,7 @@ class PurchaseView(APIView):
             MOISSOLD = request.data.get('MOISSOLD')
             item_purchase = request.data.get('item_id')
             item = ItemPurchase.objects.get(item_id=item_purchase)
+            item.is_purchased = True;
             purchase = Purchase.objects.create(MONTRAPP=MONTRAPP, user=user, MOISSOLD=MOISSOLD, item_purchase=item, quantity=quantity,budget=budget) 
             purchase.save()
         except :

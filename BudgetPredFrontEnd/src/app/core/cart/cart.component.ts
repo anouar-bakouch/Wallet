@@ -44,8 +44,10 @@ export class CartComponent {
       this.dataArray = data;
       this.dataArray.forEach((x) => {
         this.itemService.getItemInfoById(x.item).subscribe((y: any) => {
-          this.itemsCart.push(y.item);
-          this.correctImagePath(y.item);
+          if( !y.item.is_purchased){
+            this.itemsCart.push(y.item);
+            this.correctImagePath(y.item);
+          }
         });
       });
     });
