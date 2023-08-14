@@ -70,7 +70,7 @@ class AuthSerializer(serializers.ModelSerializer):
 class PurchaseSerializer(serializers.ModelSerializer):
     class Meta :
         model = Purchase
-        fields = '__all__'
+        fields = ('budget','user','item_purchase','MOISSOLD')
 
     # create a purchase following the model 
 
@@ -80,7 +80,9 @@ class PurchaseSerializer(serializers.ModelSerializer):
     # update a purchase following the model
     def update(self, instance, validated_data):
         instance.user = validated_data.get('user', instance.user)
-        instance.total = validated_data.get('total', instance.total)
+        instance.budget = validated_data.get('budget', instance.budget)
+        instance.item_purchase = validated_data.get('item_purchase', instance.item_purchase)
+        instance.MOISSOLD = validated_data.get('MOISSOLD', instance.MOISSOLD)
         instance.save()
         return instance
     

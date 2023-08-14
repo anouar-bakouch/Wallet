@@ -191,11 +191,13 @@ class AddToCartAPIVIEW(APIView):
         user_id = request.data.get('user_id')
         item_id = request.data.get('item_id')
         quantity = request.data.get('quantity')
+        price = request.data.get('MONTSTRU')
+        MONTSTRU = quantity * price
 
         user = User.objects.get(id=user_id)
         item = Item.objects.get(IDEIMPST=item_id)
 
-        item_purchase = ItemPurchase.objects.create(user=user, item=item, quantity=quantity)
+        item_purchase = ItemPurchase.objects.create(user=user, item=item, quantity=quantity, MONTSTRU=MONTSTRU)
         item_purchase.save()
 
         return Response({'message': 'Item added to cart successfully'})
@@ -306,16 +308,30 @@ class refreshTokenView(APIView):
             'refresh': str(refresh),
             'access': str(refresh.access_token)
         })
+    
+# Item Purchase CART 
+
+class deleteItemPurchaseView(APIView):
+    def delete(self, request, pk):
+        # Get object with this pk
+        item_purchase = get_object_or_404(ItemPurchase.objects.all(), pk=pk)
+        item_purchase.delete()
+        return Response({
+            "message": "ItemPurchase with id `{}` has been deleted.".format(pk)
+        }, status=204)    
 
 # Purchase PART YEHOOOOO 
 
-class Purchase(APIView):
+class PurchaseView(APIView):
     # follow the serializer PurchaseSerializer
     def post(self, request):
-        MONTSTRU = request.data.get('MONTSTRU')
-        MONTRAPP = request.data.get('MONTRAPP')
+        MONTSTRU = request.data.get('MONTSTRU') # total = quantity * price
+        budget = request.data.get('budget')
         user_id = request.data.get('user_id')
         user = User.objects.get(id=user_id)
+        # make a minus of the user month budet : month_budget - MONTSTRU 
+        user.month_budget = user.month_budget - MONTSTRU
+        MONTRAPP = budget - MONTSTRU
         MOISSOLD = request.data.get('MOISSOLD')
         item_purchase = request.data.get('item_purchase')
         purchase = Purchase.objects.create(MONTSTRU=MONTSTRU, MONTRAPP=MONTRAPP, user=user, MOISSOLD=MOISSOLD, item_purchase=item_purchase) 

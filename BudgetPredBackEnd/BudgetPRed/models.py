@@ -8,7 +8,7 @@ class User(models.Model):
     email = models.CharField(max_length=255)
     first_name = models.CharField(max_length=255, default='no name')
     last_name = models.CharField(max_length=255, default='no name')
-    path_photo = models.ImageField(upload_to='static/images', default='images/None/no-img.jpg')
+    path_photo = models.ImageField(upload_to='static/images', default='images/no-user-img.jpg')
     month_budget = models.FloatField(default=0)
 
     def __str__(self):
@@ -27,21 +27,25 @@ class Item(models.Model):
 
 
 class ItemPurchase(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
     quantity = models.IntegerField(default=1)
+    MONTSTRU = models.FloatField(default=0)
 
     def __str__(self):
         return f"User: {self.user.username} - Item: {self.item.LIBACTGE} - Quantity: {self.quantity}"
 
-    
+
 
 class Purchase(models.Model):
+    id = models.AutoField(primary_key=True)
+    budget = models.FloatField(default=0)
     MOISSOLD = models.DateField(default='2021-01-01')
-    MONTSTRU = models.FloatField(default=0)
     MONTRAPP = models.FloatField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True) # because one user can have many purchases
-    item_purchase = models.ManyToManyField(ItemPurchase) # because one purchase can have many items
+    item_purchase = models.ForeignKey(ItemPurchase,on_delete = models.CASCADE , null = True) # because one purchase can have many items
+    
     def __str__(self):
         return f"Purchase: {self.id}" 
 

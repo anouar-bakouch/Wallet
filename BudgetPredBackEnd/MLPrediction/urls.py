@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from BudgetPRed.views import GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW,LoginView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index
+from BudgetPRed.views import GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListPurchaseView,LoginView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index
 urlpatterns = [
     path('',index),
     path('admin/', admin.site.urls),
@@ -12,6 +12,7 @@ urlpatterns = [
     # CART 
     path('add-cart/', AddToCartAPIVIEW.as_view()), 
     path('get-cart/',ItemsCartAPIView.as_view()),
+    path('delete-item/<int:pk>/',DeleteItemView.as_view()),
     #TOKEN 
     path('register/', UserRegistrationView.as_view(), name='user-registration'),
     path('login/', LoginView.as_view(), name='token-obtain-pair'),
@@ -26,5 +27,8 @@ urlpatterns = [
     # path('PredictMONTSTRU')
     path('list-item/',ItemAPIView.as_view() , name='list-item'),
     path('list-item-categorie/',ItemCategorieAPIView.as_view() , name='list-item-categorie'),
+    # PURCHASE ---------------------------
+    path('add-purchase/', PurchaseView.as_view()),
+    path('list-purchase/', ListPurchaseView.as_view()),
 ]
 
