@@ -5,6 +5,8 @@ import { NgModule } from "@angular/core";
 import { ProfileComponent } from "./profile/profile.component";
 import { StatsComponent } from "./stats/stats.component";
 import { CartComponent } from "./cart/cart.component";
+import { MySpaceComponent } from "./my-space/my-space.component";
+import { MyPurchasesComponent } from "./my-purchases/my-purchases.component";
 
 
 const routes:Routes = [
@@ -32,6 +34,14 @@ const routes:Routes = [
             {
                 path:"cart",
                 component : CartComponent
+            },
+            {
+                path: "mySpace",
+                component : MySpaceComponent
+            },
+            {
+                path : "myPurchases",
+                component : MyPurchasesComponent
             }
 
         ]

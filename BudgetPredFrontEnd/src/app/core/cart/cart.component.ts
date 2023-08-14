@@ -9,6 +9,7 @@ import {
 import { Validators } from '@angular/forms';
 import { Purchase } from 'src/models/Purchase';
 import { Item } from 'src/models/Item';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -35,8 +36,9 @@ export class CartComponent {
 
   constructor(
     private itemService: ItemPurchaseService,
-        private modalService: NgbModal,
-    private fservice: RxFormBuilder
+    private modalService: NgbModal,
+    private fservice: RxFormBuilder,
+    private router : Router
     ) {}
 
   ngOnInit(): void {
@@ -124,12 +126,11 @@ export class CartComponent {
     this.itemService.addToPurchase(item).subscribe((data: any) => {
       // delete the data from itemsCart 
       this.itemsCart = this.itemsCart.filter((x) => x.IDEIMPST != this.item_?.IDEIMPST);
-      console.log(data);
+      this.router.navigate(['/budgetHome/myPurchases']);
     } , (error: any) => {
       console.log(error);
     } , () => {
-      console.log('done');
-      // close the modal 
+
       this.modalService.dismissAll();
     });
 
