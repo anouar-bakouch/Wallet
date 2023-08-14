@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 import { Interceptor } from '../interceptors/interceptor.service';
 import { CartComponent } from './cart/cart.component';
+import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
+import { MySpaceComponent } from './my-space/my-space.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { CartComponent } from './cart/cart.component';
     HeaderBudgetComponent,
     ProfileComponent,
     ListBudgetsComponent,
-    CartComponent
+    CartComponent,
+    MyPurchasesComponent,
+    MySpaceComponent
   ],
   imports: [  
     CoreRoutingModule,

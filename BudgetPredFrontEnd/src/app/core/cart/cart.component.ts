@@ -44,7 +44,6 @@ export class CartComponent {
       this.dataArray = data;
       this.dataArray.forEach((x) => {
         this.itemService.getItemInfoById(x.item).subscribe((y: any) => {
-          console.log(x)
           if( !x.is_purchased){
             this.itemsCart.push(y.item);
             this.correctImagePath(y.item);

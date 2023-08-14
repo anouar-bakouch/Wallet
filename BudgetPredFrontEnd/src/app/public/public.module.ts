@@ -13,7 +13,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    
     HeaderComponent,
     FooterComponent,
     InfosComponent,
