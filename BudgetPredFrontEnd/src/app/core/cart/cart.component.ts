@@ -17,9 +17,13 @@ export class CartComponent {
     this.itemService.getItemsCart().subscribe((data: any) => {
       this.dataArray = data;
 
+
       this.dataArray.forEach((x) => {
         this.itemService.getItemInfoById(x.item).subscribe((y: any) => {
-          
+
+          y.item.quantity = x.quantity;
+          y.item.MONTSTRU = x.MONTSTRU;
+          console.log(y)
           this.itemsCart.push(y.item);
           this.correctImagePath(y.item);
         });

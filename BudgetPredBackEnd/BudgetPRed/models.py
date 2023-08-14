@@ -20,7 +20,8 @@ class Item(models.Model):
     LIBACTGE = models.CharField(max_length=50, default='no libelle')
     budgetphoto = models.ImageField(upload_to='static/items', default='images/None/no-img.jpg')
     categorie = models.CharField(max_length=50, default='no categorie')
-
+    MONTSTRU = models.FloatField(default=0)
+    
     def __str__(self):
         return str(self.IDEIMPST) 
 
@@ -31,7 +32,7 @@ class ItemPurchase(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
     quantity = models.IntegerField(default=1)
-    MONTSTRU = models.FloatField(default=0)
+
 
     def __str__(self):
         return f"User: {self.user.username} - Item: {self.item.LIBACTGE} - Quantity: {self.quantity}"

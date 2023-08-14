@@ -32,19 +32,19 @@
                   <li class="list-group-item text-primary">
                     {{user?.first_name}} {{user?.last_name}}
                   </li>
-                  <li class="list-group-item text-primary fs-4 fs-bold">
-                   <i class="bi bi-wallet2 "></i> Budget <br/>{{user?.month_budget}} $
+                  <li class="list-group-item text-primary fs-4 fs-boldctext-center">
+                   {{user?.month_budget}} <i class="bi bi-wallet2 "></i>
                   </li>
               </ul>
             </div>
             <li>
-              <a class="dropdown-item text-color" routerLink="/budgethome/stats"
-                >profile</a
+              <a class="dropdown-item text-primary" routerLink="/budgethome/budgets"
+                ><i class="bi bi-house"></i> Home</a
               >
             </li>
             <li>
               <a class="dropdown-item text-primary" routerLink="/budgethome/stats"
-                ><i class="bi bi-percent"></i>My SPACE</a
+                >My SPACE</a
               >
             </li>
             <li>
