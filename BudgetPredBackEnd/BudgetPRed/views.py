@@ -2,7 +2,7 @@
 import pickle
 from django.shortcuts import get_object_or_404, render
 import joblib
-from BudgetPRed.serializers import  ItemPurchaseSerializer, ItemSerializer, UserSerializer , AuthSerializer
+from BudgetPRed.serializers import  ItemPurchaseSerializer, ItemSerializer, PurchaseSerializer, UserSerializer , AuthSerializer
 from BudgetPRed.models import Item, ItemPurchase, Pagination, User , Purchase
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -307,4 +307,24 @@ class refreshTokenView(APIView):
             'access': str(refresh.access_token)
         })
 
+# Purchase PART YEHOOOOO 
 
+class Purchase(APIView):
+    # follow the serializer PurchaseSerializer
+    def post(self, request):
+        MONTSTRU = request.data.get('MONTSTRU')
+        MONTRAPP = request.data.get('MONTRAPP')
+        user_id = request.data.get('user_id')
+        user = User.objects.get(id=user_id)
+        MOISSOLD = request.data.get('MOISSOLD')
+        item_purchase = request.data.get('item_purchase')
+        purchase = Purchase.objects.create(MONTSTRU=MONTSTRU, MONTRAPP=MONTRAPP, user=user, MOISSOLD=MOISSOLD, item_purchase=item_purchase) 
+        purchase.save()
+        return Response({'message': 'Purchase added successfully'})
+    
+class ListPurchaseView(APIView):
+    def get(self, request):
+        purchases = Purchase.objects.all()
+        serializer = PurchaseSerializer(purchases, many=True)
+        return Response({"purchases": serializer.data})
+    

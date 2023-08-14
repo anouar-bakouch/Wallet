@@ -34,6 +34,8 @@ class ItemPurchase(models.Model):
     def __str__(self):
         return f"User: {self.user.username} - Item: {self.item.LIBACTGE} - Quantity: {self.quantity}"
 
+    
+
 class Purchase(models.Model):
     MOISSOLD = models.DateField(default='2021-01-01')
     MONTSTRU = models.FloatField(default=0)

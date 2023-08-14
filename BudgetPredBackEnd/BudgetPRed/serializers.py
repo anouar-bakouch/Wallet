@@ -13,7 +13,34 @@ class ItemSerializer(serializers.ModelSerializer):
 class ItemPurchaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemPurchase
-        fields = '__all__' 
+        fields = '__all__'
+
+        def create(self, validated_data):
+            existing_item_purchase = ItemPurchase.objects.filter(
+                user=validated_data['user'],
+                item=validated_data['item']
+            ).first()
+
+            if existing_item_purchase:
+                # ItemPurchase already exists, update the quantity
+                existing_item_purchase.quantity += validated_data['quantity']
+                existing_item_purchase.save()
+                return existing_item_purchase
+            else:
+                return super().create(validated_data)
+            
+        def update(self, instance, validated_data):
+            instance.user = validated_data.get('user', instance.user)
+            instance.item = validated_data.get('item', instance.item)
+            instance.quantity = validated_data.get('quantity', instance.quantity)
+            instance.save()
+            return instance
+        
+        def delete(self, instance):
+            instance.delete()
+            return instance
+            
+         
     
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,25 +57,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
     
-class PurchaseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Purchase
-        fields = '__all__'
 
-        def create(self, validated_data):
-            return Purchase.objects.create(**validated_data)
-        
-        def update(self, instance, validated_data):
-            instance.user = validated_data.get('user', instance.user)
-            instance.MOISSOLD = validated_data.get('MOISSOLD', instance.MOISSOLD)
-            instance.MONTSTRU = validated_data.get('MONTSTRU', instance.MONTSTRU)
-            instance.MONTRAPP = validated_data.get('MONTRAPP', instance.MONTRAPP)
-            instance.save()
-            return instance
-
-        def delete(self, instance):
-            instance.delete()
-            return instance
         
 class AuthSerializer(serializers.ModelSerializer):
     class Meta:
@@ -57,6 +66,32 @@ class AuthSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return User.objects.create(**validated_data)
+    
+class PurchaseSerializer(serializers.ModelSerializer):
+    class Meta :
+        model = Purchase
+        fields = '__all__'
+
+    # create a purchase following the model 
+
+    def create(self, validated_data):
+        return Purchase.objects.create(**validated_data)
+    
+    # update a purchase following the model
+    def update(self, instance, validated_data):
+        instance.user = validated_data.get('user', instance.user)
+        instance.total = validated_data.get('total', instance.total)
+        instance.save()
+        return instance
+    
+    # delete a purchase following the model
+    def delete(self, instance):
+        instance.delete()
+        return instance
+
+
+    
+
     
 
         
