@@ -322,20 +322,29 @@ class deleteItemPurchaseView(APIView):
 class PurchaseView(APIView):
     # follow the serializer PurchaseSerializer
     def post(self, request):
+
         MONTSTRU = request.data.get('MONTSTRU') # total = quantity * price
-        budget = request.data.get('budget')
+        budget = request.data.get('Budget')
         user_id = request.data.get('user_id')
         quantity = request.data.get('quantity')
         user = User.objects.get(id=user_id)
+
         # make a minus of the user month budet : month_budget - MONTSTRU 
-        user.month_budget = user.month_budget - (MONTSTRU * quantity)
-        MONTRAPP = budget - MONTSTRU
-        MOISSOLD = request.data.get('MOISSOLD')
-        item_purchase = request.data.get('item_purchase')
-        purchase = Purchase.objects.create(MONTSTRU=MONTSTRU, MONTRAPP=MONTRAPP, user=user, MOISSOLD=MOISSOLD, item_purchase=item_purchase, quantity=quantity) 
-        purchase.save()
+        try :
+            MONTRAPP = float(budget) - float(MONTSTRU)
+            user.month_budget = user.month_budget - float(MONTSTRU)
+            user.save()
+            MOISSOLD = request.data.get('MOISSOLD')
+            item_purchase = request.data.get('item_id')
+            item = ItemPurchase.objects.get(item_id=item_purchase)
+            purchase = Purchase.objects.create(MONTRAPP=MONTRAPP, user=user, MOISSOLD=MOISSOLD, item_purchase=item, quantity=quantity,budget=budget) 
+            purchase.save()
+        except :
+            return Response({'message': 'Purchase not added successfully'})
+        
         return Response({'message': 'Purchase added successfully'})
     
+
 class ListPurchaseView(APIView):
     def get(self, request):
         purchases = Purchase.objects.all()

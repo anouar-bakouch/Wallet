@@ -31,6 +31,7 @@ class ItemPurchase(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
+    is_purchased = models.BooleanField(default=False)
    
     def __str__(self):
         return f"User: {self.user.username} - Item: {self.item.LIBACTGE}"

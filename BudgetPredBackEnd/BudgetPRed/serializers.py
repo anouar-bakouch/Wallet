@@ -56,6 +56,21 @@ class UserSerializer(serializers.ModelSerializer):
            instance.password = make_password(instance.password)
         instance.save()
         return instance
+
+    # update user
+    def update(self, instance, validated_data):
+        instance.username = validated_data.get('username', instance.username)
+        instance.password = validated_data.get('password', instance.password)
+        instance.budget = validated_data.get('month_budget', instance.budget)
+        instance.save()
+        return instance
+    
+    # delete user
+    def delete(self, instance):
+        instance.delete()
+        return instance
+    
+
     
 
         

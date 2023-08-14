@@ -3,7 +3,7 @@ export interface Item {
     CODYTPAC : string;
     LIBACTGE : string;
     categorie : string;
-    budgetPhoto : string;
+    budgetphoto : string;
     MONTSTRU : number;
 }
 
