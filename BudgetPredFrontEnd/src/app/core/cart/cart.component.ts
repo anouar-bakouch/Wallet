@@ -44,7 +44,8 @@ export class CartComponent {
       this.dataArray = data;
       this.dataArray.forEach((x) => {
         this.itemService.getItemInfoById(x.item).subscribe((y: any) => {
-          if( !y.item.is_purchased){
+          console.log(x)
+          if( !x.is_purchased){
             this.itemsCart.push(y.item);
             this.correctImagePath(y.item);
           }
@@ -122,6 +123,8 @@ export class CartComponent {
 
     // making a purchase request
     this.itemService.addToPurchase(item).subscribe((data: any) => {
+      // delete the data from itemsCart 
+      this.itemsCart = this.itemsCart.filter((x) => x.IDEIMPST != this.item_?.IDEIMPST);
       console.log(data);
     } , (error: any) => {
       console.log(error);

@@ -100,10 +100,10 @@ filterItems(category: string) {
 }
 
   addToCart(item: Item) {
-    console.log(item)
     const ItemPurchase:ItemPurchase = {
       item_id : item.IDEIMPST,
-      user_id : this.authService?.getId()
+      user_id : this.authService?.getId(),
+      is_purchased : false
     }
 
     this.budgetService.addToCart(ItemPurchase).subscribe((data: any) => {
