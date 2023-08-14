@@ -13,7 +13,7 @@ export class BudgetService {
 
   private _url_get:string = environment.apiUrl + "/list-item/";
   private _url_post = environment.apiUrl + "/add-item/";
-  private _url_put = environment.apiUrl + "/update-budget/"; 
+  private _url_put = environment.apiUrl + "/update-item/"; 
   private _url_delete = environment.apiUrl + "/delete-budget/";
   
   constructor(private http:HttpClient) { }

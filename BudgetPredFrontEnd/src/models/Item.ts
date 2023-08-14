@@ -4,6 +4,7 @@ export interface Item {
     LIBACTGE : string;
     categorie : string;
     budgetPhoto : string;
+    MONTSTRU : number;
 }
 
 

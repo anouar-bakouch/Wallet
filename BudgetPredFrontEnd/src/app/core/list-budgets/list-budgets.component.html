@@ -34,14 +34,22 @@
   <h3 class="text-primary">Liste des items</h3>
   <div class="row">
     <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let budget of budgets">
-      <div class="card mb-3">
+      <div class="card mb-3 shadow">
         <img class="card-img-top" [src]="budget?.budgetphoto" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">{{ budget.LIBACTGE }}</h5>
-          <p class="card-text">
-            <span class="text-primary">Catégorie: </span>
-            {{ budget.categorie }}
-          </p>
+          <ul class="list-group">
+            <li class="list-group-item">
+              <span class="text-primary">Catégorie: </span>
+              {{ budget.categorie }}
+            </li>
+            <li class="list-group-item">
+              <span class="text-primary">Prix: </span>
+              {{ budget.MONTSTRU }} $
+            </li>
+            
+          </ul>
+       
         </div>
         <div class="card-footer d-flex justify-content-between align-items-center">
           <a href="#" class="btn btn-primary" (click)="fun(mymodal, budget)"><i class="bi bi-pencil-square"></i></a>

@@ -26,6 +26,7 @@ export class ListBudgetsComponent {
   public current_number : number = 1;
   categories: string[] = [];
 
+
   // Property to track whether the filter section should be shown or not
   showFilter: boolean = false;
   
@@ -53,6 +54,8 @@ export class ListBudgetsComponent {
     this.itemsType = this.budgetService.ItemsType;
     this.categories = this.budgetService.ItemsType.map((item: any) => item.value);
   }
+
+ 
 
   getBudgets() {
     this.budgetService.getItems(this.current_number).subscribe((data: any) => {
@@ -100,7 +103,6 @@ filterItems(category: string) {
     console.log(item)
     const ItemPurchase:ItemPurchase = {
       item_id : item.IDEIMPST,
-      quantity : 1,
       user_id : this.authService?.getId()
     }
 

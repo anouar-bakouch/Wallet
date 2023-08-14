@@ -190,16 +190,11 @@ class AddToCartAPIVIEW(APIView):
     def post(self, request):
         user_id = request.data.get('user_id')
         item_id = request.data.get('item_id')
-        quantity = request.data.get('quantity')
-        # search for the item price 
-        item = Item.objects.get(IDEIMPST=item_id)
-        price = item.MONTSTRU
-        total = quantity * price
 
         user = User.objects.get(id=user_id)
         item = Item.objects.get(IDEIMPST=item_id)
 
-        item_purchase = ItemPurchase.objects.create(user=user, item=item, quantity=quantity, MONTSTRU=total)
+        item_purchase = ItemPurchase.objects.create(user=user, item=item,)
         item_purchase.save()
 
         return Response({'message': 'Item added to cart successfully'})
