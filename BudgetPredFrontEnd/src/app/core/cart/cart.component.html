@@ -1,7 +1,7 @@
 <div class="container-fluid">
 <div class="list-group my-5">
 
-    <a *ngFor="let x of itemsCart" href="#" class=" shadow list-group-item list-group-item-action flex-column justify-content-end w-100 align-items-center my-3 border-primary">
+    <div *ngFor="let x of itemsCart" class=" shadow list-group-item list-group-item-action flex-column justify-content-end w-100 align-items-center my-3 border-primary">
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1 fs-4 text-primary fs-bold">{{x.LIBACTGE}}</h5>
         <img class="img img-responsive my-3 shadow" [src]="x.budgetphoto" width="200" height="200" alt="">
@@ -10,14 +10,45 @@
       <ul class="list-group fs-4 fs-bold">
         <li class="list-group-item my-3">Catégorie : {{x.categorie}}</li>
         <li class="list-group-item my-3">Prix Total : <span class="text-primary"> {{x.MONTSTRU}} $ </span></li>
-        <li class="list-group-item my-3">Quantité : <span class="text-primary"> {{x.quantity}}</span></li>
+        <li class="list-group-item my-3">Quantité : <span class="text-primary"> 1 </span></li>
 
 
       </ul>
 
-        <button class="btn btn-primary">confirm purchase</button>
+        <button class="btn btn-primary" (click)="open(mymodal)" >confirm purchase</button>
     
-    </a>
+    </div>
 
   </div>
 </div>
+
+
+<ng-template class="modal fade" tabindex="-1" role="dialog" #mymodal let-modal aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">PURCHASE INFOS</h5>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form_" (ngSubmit)="onClickSubmit()" class="container">
+          <div class="form-group my-3">
+            <label for="Budget">Budget</label>
+            <input id="Budget" type="text" formControlName="Budget" class="my-3 form-control">
+          </div>
+    
+          <div class="form-group my-3">
+            <label for="MOISSOLD">MOISSOLD</label>
+            <input id="MOISSOLD" type="date" formControlName="MOISSOLD" class="my-3 form-control">
+          </div>
+    
+          <div class="form-group my-3">
+            <label for="quantite">Quantite</label>
+            <input id="quantite" type="text" formControlName="quantity" class="my-3 form-control">
+          </div>
+    
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>

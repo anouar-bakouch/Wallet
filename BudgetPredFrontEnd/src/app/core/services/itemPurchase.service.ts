@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
 import { Item } from 'src/models/Item';
 import { ItemPurchase } from 'src/models/ItemPurchase';
+import { Purchase } from 'src/models/Purchase';
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +27,9 @@ export class ItemPurchaseService {
         return this.http.get(url, {params});
     }
 
-
+    addToPurchase(item:Purchase):Observable<any>{
+        const url = environment.apiUrl + "/add-purchase/";
+        return this.http.post(url, item);
+    }
 
 }

@@ -33,7 +33,7 @@ class ItemPurchase(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True)
    
     def __str__(self):
-        return f"User: {self.user.username} - Item: {self.item.LIBACTGE} - Quantity: {self.quantity}"
+        return f"User: {self.user.username} - Item: {self.item.LIBACTGE}"
 
 
 

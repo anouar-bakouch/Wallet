@@ -9,13 +9,15 @@ import { ListBudgetsComponent } from './list-budgets/list-budgets.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RxReactiveFormsModule } from '@rxweb/reactive-form-validators';
 import { Interceptor } from '../interceptors/interceptor.service';
+import { CartComponent } from './cart/cart.component';
 
 @NgModule({
   declarations: [
     HomeBudgetComponent,
     HeaderBudgetComponent,
     ProfileComponent,
-    ListBudgetsComponent
+    ListBudgetsComponent,
+    CartComponent
   ],
   imports: [  
     CoreRoutingModule,
@@ -29,7 +31,7 @@ import { Interceptor } from '../interceptors/interceptor.service';
     HomeBudgetComponent
   ],
   providers: [
-    // { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
   ],
 })
 

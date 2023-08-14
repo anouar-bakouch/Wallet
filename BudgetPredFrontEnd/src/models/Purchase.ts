@@ -6,4 +6,5 @@ export interface Purchase {
     MOISSOLD : Date;
     MONTSTRU : number;
     MONTRAPP : number;
+    Budget : number;
 }

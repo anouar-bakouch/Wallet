@@ -69,7 +69,11 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    return !!this.getToken();
+    // check if the user is logged in
+    if (this.getToken()) {
+      return true;
+    }
+    return false;
   }
 
   logOut() {

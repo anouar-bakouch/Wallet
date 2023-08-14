@@ -194,7 +194,7 @@ class AddToCartAPIVIEW(APIView):
         user = User.objects.get(id=user_id)
         item = Item.objects.get(IDEIMPST=item_id)
 
-        item_purchase = ItemPurchase.objects.create(user=user, item=item,)
+        item_purchase = ItemPurchase.objects.create(user=user, item=item)
         item_purchase.save()
 
         return Response({'message': 'Item added to cart successfully'})
@@ -325,13 +325,14 @@ class PurchaseView(APIView):
         MONTSTRU = request.data.get('MONTSTRU') # total = quantity * price
         budget = request.data.get('budget')
         user_id = request.data.get('user_id')
+        quantity = request.data.get('quantity')
         user = User.objects.get(id=user_id)
         # make a minus of the user month budet : month_budget - MONTSTRU 
-        user.month_budget = user.month_budget - MONTSTRU
+        user.month_budget = user.month_budget - (MONTSTRU * quantity)
         MONTRAPP = budget - MONTSTRU
         MOISSOLD = request.data.get('MOISSOLD')
         item_purchase = request.data.get('item_purchase')
-        purchase = Purchase.objects.create(MONTSTRU=MONTSTRU, MONTRAPP=MONTRAPP, user=user, MOISSOLD=MOISSOLD, item_purchase=item_purchase) 
+        purchase = Purchase.objects.create(MONTSTRU=MONTSTRU, MONTRAPP=MONTRAPP, user=user, MOISSOLD=MOISSOLD, item_purchase=item_purchase, quantity=quantity) 
         purchase.save()
         return Response({'message': 'Purchase added successfully'})
     
