@@ -19,6 +19,12 @@ export class SpaceService {
             const params = new HttpParams().set('user_id', id);
             return this.http.get(url, {params});
         }
+
+        getPurchaseByMonth(id:number,month:string){
+            const url_= environment.apiUrl + '/list-month-purchase/'
+            const params = new HttpParams().set('user_id', id).set('month',month);
+            return this.http.get(url_,{params})
+        }
     
 
 }

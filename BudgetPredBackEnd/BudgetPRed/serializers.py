@@ -85,7 +85,7 @@ class AuthSerializer(serializers.ModelSerializer):
 class PurchaseSerializer(serializers.ModelSerializer):
     class Meta :
         model = Purchase
-        fields = ('budget','user','item_purchase','MOISSOLD')
+        fields = '__all__'
 
     # create a purchase following the model 
 
