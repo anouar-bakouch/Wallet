@@ -12,6 +12,7 @@ import pandas as pd
 import numpy as np
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from django.contrib.auth.hashers import make_password 
+from statsmodels.tsa.arima.model import ARIMA
 
 
 
@@ -70,6 +71,23 @@ class GetItemView(APIView):
 
 # Purchase views 
 
+def forecast_next_3_months(budget_model, expenses_model, revenues_model):
+    """Forecasts the monthly budgets, expenses, and revenues for the next 3 months.
+
+    Args:
+        budget_model: The trained budget model.
+        expenses_model: The trained expenses model.
+        revenues_model: The trained revenues model.
+
+    Returns:
+        The forecasted monthly budgets, expenses, and revenues.
+    """
+    budget_forecast = budget_model.forecast(steps=3)[0]
+    expenses_forecast = expenses_model.forecast(steps=3)[0]
+    revenues_forecast = revenues_model.forecast(steps=3)[0]
+
+    return budget_forecast, expenses_forecast, revenues_forecast
+
 class PredictNextMonthMONTSTRUView(APIView):
 
     def post(self, request):
@@ -78,23 +96,34 @@ class PredictNextMonthMONTSTRUView(APIView):
         user_id = request.data.get('user_id')
         monthly_expenses = request.data.get('monthly_expenses')
         monthly_revenue = request.data.get('monthly_revenue')
+        actual_month = request.data.get('actual_month') 
+        
+        # forecasting 
 
-        # Load the model from the pickle file.
-        model = joblib.load('/models/Forecasting/budget_model.pkl')
+        monthly_p_budgets = ARIMA(monthly_budget, order=(1, 1, 1)).fit().forecast(steps=3)[0]
+        monthly_p_expenses = ARIMA(monthly_expenses, order=(1, 1, 1)).fit().forecast(steps=3)[0]
+        monthly_p_revenues = ARIMA(monthly_revenue, order=(1, 1, 1)).fit().forecast(steps=3)[0]
 
-        # Forecast the monthly budgets, monthly expenses, and monthly revenue.
-        budget_forecast = model.forecast(steps=3)[0]
-        expenses_forecast = model.forecast(steps=3)[1]
-        revenue_forecast = model.forecast(steps=3)[2]
+        # to data Frame 
 
-        # Return the forecasted budgets, monthly expenses, and monthly revenue to the user.
-        response = {
-            'budget_forecast': budget_forecast,
-            'expenses_forecast': expenses_forecast,
-            'revenue_forecast': revenue_forecast
-        }
-        return Response(response) 
-    
+        predicted_budgets = pd.DataFrame(monthly_p_budgets, columns=['budget'],
+                                          index=pd.date_range(start=actual_month, periods=3, freq='M'))
+        predicted_expenses = pd.DataFrame(monthly_p_expenses, columns=['expenses'],
+                                         index=pd.date_range(start=actual_month, periods=3, freq='M'))
+        predicted_revenues = pd.DataFrame(monthly_p_revenues, columns=['revenues'],
+                                         index=pd.date_range(start=actual_month, periods=3, freq='M'))
+        
+        # to json
+
+        predicted_budgets_json = predicted_budgets.to_json()
+        predicted_expenses_json = predicted_expenses.to_json()
+        predicted_revenues_json = predicted_revenues.to_json()
+
+        # return the prediction
+
+        return Response({"predicted_budgets": predicted_budgets_json, "predicted_expenses": predicted_expenses_json, "predicted_revenues": predicted_revenues_json})
+
+
 class PredictedItems(APIView):
     def get(self,request):
         model = pickle.load(open('models/PredictReco_model.pkl', 'rb'))
