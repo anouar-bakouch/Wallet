@@ -74,33 +74,26 @@ class PredictNextMonthMONTSTRUView(APIView):
 
     def post(self, request):
         # Load the ARIMA model from the pickle file
-        model = joblib.load('models/Forecasting/ForecastMONTSTRUmodel.pkl')
-
-        # Get the user's ID from the request
+        monthly_budget = request.data.get('monthly_budget') 
         user_id = request.data.get('user_id')
+        monthly_expenses = request.data.get('monthly_expenses')
+        monthly_revenue = request.data.get('monthly_revenue')
 
-        # Get the user's purchase history from the request
-        purchase_history = request.data.get('purchase_history', [])
+        # Load the model from the pickle file.
+        model = joblib.load('/models/Forecasting/budget_model.pkl')
 
-        # Get the user's budget and spending behavior from the request
-        budget = request.data.get('budget')
-        spending_behavior = request.data.get('spending_behavior')
+        # Forecast the monthly budgets, monthly expenses, and monthly revenue.
+        budget_forecast = model.forecast(steps=3)[0]
+        expenses_forecast = model.forecast(steps=3)[1]
+        revenue_forecast = model.forecast(steps=3)[2]
 
-        # Preprocess the user's data
-        user_data = pd.DataFrame({
-            'user_id': [user_id],
-            'purchase_date': pd.to_datetime(purchase_history),
-            'MONTSTRU': [sum(purchase_history)],
-            'MONTRAPP': [budget - sum(purchase_history) * spending_behavior]
-        })
-
-        # Perform time series analysis and generate the forecast for the next month
-        user_monthly_expenses = user_data.groupby(pd.Grouper(key='purchase_date', freq='M')).sum()['MONTSTRU']
-        user_model_fit = model.fit(user_monthly_expenses)
-        user_forecast = user_model_fit.forecast(steps=1)[0]
-
-        return Response({'next_month_montstru': user_forecast})
-
+        # Return the forecasted budgets, monthly expenses, and monthly revenue to the user.
+        response = {
+            'budget_forecast': budget_forecast,
+            'expenses_forecast': expenses_forecast,
+            'revenue_forecast': revenue_forecast
+        }
+        return Response(response) 
     
 class PredictedItems(APIView):
     def get(self,request):

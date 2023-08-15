@@ -87,3 +87,52 @@ monthly_revenue = df['MONTRAPP'].resample('MS').mean()
 # plt.legend(loc='best')
 # plt.show()
 
+def train_and_save_model(budgets, expenses, montstrap):
+  """Trains the model and saves it to a pickle file.
+
+  Args:
+    budget: The user's monthly budget.
+    expenses: The user's monthly expenses.
+    montstrap: The user's monthly montstrap.
+
+  Returns:
+    The trained model.
+  """
+
+  # Create a DataFrame with the user's inputs.
+#   data = pd.DataFrame({
+#       'Budget': budgets,
+#       'Expenses': expenses,
+#       'MONTRAPP': montstrap
+#   })
+
+  # Train the model on the dataset.
+  model = ARIMA(budgets, order=(1, 1, 1))
+  budget_fit = model.fit()
+
+  model_ = ARIMA(expenses, order=(1, 1, 1))
+  expenses_fit = model_.fit()
+
+  model__ = ARIMA(montstrap, order=(1, 1, 1))
+  montstrap_fit = model__.fit()
+
+  # Save the model to a pickle file.
+  joblib.dump(budget_fit, 'budget.pkl')
+  joblib.dump(expenses_fit, 'expenses.pkl')
+  joblib.dump(montstrap_fit, 'revenues.pkl')
+
+  return budget_fit# train the model on the whole dataset
+
+# calling the func to train the model
+
+model = train_and_save_model(monthly_budgets, monthly_expenses, monthly_revenue)
+
+# In[16]: test with other data 
+
+
+
+
+
+
+
+
