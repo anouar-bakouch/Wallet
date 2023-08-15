@@ -97,7 +97,7 @@ class PredictNextMonthMONTSTRUView(APIView):
         monthly_expenses = request.data.get('monthly_expenses')
         monthly_revenue = request.data.get('monthly_revenue')
         actual_month = request.data.get('actual_month') 
-        
+
         # forecasting 
 
         monthly_p_budgets = ARIMA(monthly_budget, order=(1, 1, 1)).fit().forecast(steps=3)[0]
@@ -372,7 +372,9 @@ class PurchaseView(APIView):
 
 class ListPurchaseView(APIView):
     def get(self, request):
-        purchases = Purchase.objects.all()
-        serializer = PurchaseSerializer(purchases, many=True)
-        return Response({"purchases": serializer.data})
+        user_id = request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        purchase = Purchase.objects.filter(user=user)
+        serializer = PurchaseSerializer(purchase, many=True)
+        return Response(serializer.data)
     

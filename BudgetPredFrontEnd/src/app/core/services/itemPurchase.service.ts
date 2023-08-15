@@ -2,8 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
-import { Item } from 'src/models/Item';
-import { ItemPurchase } from 'src/models/ItemPurchase';
 import { Purchase } from 'src/models/Purchase';
 
 @Injectable({
@@ -30,6 +28,12 @@ export class ItemPurchaseService {
     addToPurchase(item:Purchase):Observable<any>{
         const url = environment.apiUrl + "/add-purchase/";
         return this.http.post(url, item);
+    }
+
+    getPurchaseByUser(id:number){
+        const url = environment.apiUrl + "/get-purchase/";
+        const params = new HttpParams().set('user_id', id);
+        return this.http.get(url, {params});
     }
 
 }
