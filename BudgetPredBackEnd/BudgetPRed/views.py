@@ -70,11 +70,11 @@ class GetItemView(APIView):
 
 # Purchase views 
 
-    
 class PredictNextMonthMONTSTRUView(APIView):
+
     def post(self, request):
         # Load the ARIMA model from the pickle file
-        model = joblib.load('models/ForecastMONTSTRUmodel.pkl')
+        model = joblib.load('models/Forecasting/ForecastMONTSTRUmodel.pkl')
 
         # Get the user's ID from the request
         user_id = request.data.get('user_id')
@@ -96,10 +96,11 @@ class PredictNextMonthMONTSTRUView(APIView):
 
         # Perform time series analysis and generate the forecast for the next month
         user_monthly_expenses = user_data.groupby(pd.Grouper(key='purchase_date', freq='M')).sum()['MONTSTRU']
-        user_model_fit = model.filter(user_monthly_expenses)
+        user_model_fit = model.fit(user_monthly_expenses)
         user_forecast = user_model_fit.forecast(steps=1)[0]
 
         return Response({'next_month_montstru': user_forecast})
+
     
 class PredictedItems(APIView):
     def get(self,request):
