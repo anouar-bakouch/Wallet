@@ -30,10 +30,6 @@ export class ItemPurchaseService {
         return this.http.post(url, item);
     }
 
-    getPurchaseByUser(id:number){
-        const url = environment.apiUrl + "/get-purchase/";
-        const params = new HttpParams().set('user_id', id);
-        return this.http.get(url, {params});
-    }
+    
 
 }

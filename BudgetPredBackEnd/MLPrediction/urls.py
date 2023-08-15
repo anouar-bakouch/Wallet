@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from BudgetPRed.views import GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListPurchaseView,LoginView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index
+from BudgetPRed.views import GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListMonthlyPurchaseView, ListPurchaseView,LoginView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index
 urlpatterns = [
     path('',index),
     path('admin/', admin.site.urls),
@@ -30,5 +30,6 @@ urlpatterns = [
     # PURCHASE ---------------------------
     path('add-purchase/', PurchaseView.as_view()),
     path('list-purchase/', ListPurchaseView.as_view()),
+    path('list-month-purchase/',ListMonthlyPurchaseView.as_view())
 ]
 

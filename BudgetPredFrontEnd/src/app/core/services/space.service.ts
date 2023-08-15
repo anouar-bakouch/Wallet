@@ -9,15 +9,16 @@ import { environment } from 'src/environments/environment.prod';
 
 export class SpaceService {
 
-    monthly_budgets : number [] = [];
-    monthly_expenses : number [] = [];
-    monthly_savings : number [] = [];
-
-    constructor(private http:HttpClient){} 
-
     
+    constructor(
+        private http:HttpClient,
+        ){} 
 
-    
+        getPurchaseByUser(id:number){
+            const url = environment.apiUrl + "/list-purchase/";
+            const params = new HttpParams().set('user_id', id);
+            return this.http.get(url, {params});
+        }
     
 
 }
