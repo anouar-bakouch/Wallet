@@ -9,7 +9,7 @@ from surprise import Reader,Dataset,KNNBasic
 
 # In[2]: Importing the dataset
 
-df = pd.read_excel('../data/budgetDATA.xls')
+df = pd.read_excel('../data/budgetDATA.xlsx')
 
 # In[3]: Data Preprocessing
 

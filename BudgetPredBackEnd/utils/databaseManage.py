@@ -13,7 +13,7 @@ df = pd.read_excel('../data/budgetDATA.xlsx')
 
 # In[3]: Data Preprocessing - taking only the columns we need
 
-df = df[['CODTYPAC','LIBACTGE','CATEGORIE']]
+df = df[['CODTYPAC','LIBACTGE','CATEGORIE','MOISSOLD']]
 # add the budgetphoto column
 df['budgetphoto'] = '../static/items/No-image-available.png'
 
