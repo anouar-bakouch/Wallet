@@ -15,9 +15,7 @@ export class SpaceService {
         ){} 
 
         getPurchaseByUser(id:number){
-            const url = environment.apiUrl + "/list-purchase/";
-            const params = new HttpParams().set('user_id', id);
-            return this.http.get(url, {params});
+            return this.http.get(environment.apiUrl+`/list-purchase/?user_id=${id}`)
         }
 
         getPurchaseByMonth(id:number,month:string){
@@ -26,10 +24,8 @@ export class SpaceService {
             return this.http.get(url_,{params})
         }
 
-        predictBudget(monthly_budget:number[],user_id:number,monthly_expenses:number[],monthly_revenue:number[]){
-            const url = environment.apiUrl + '/predict-budget/'
-            const params = new HttpParams().set('user_id', user_id).set('monthly_budget',monthly_budget.toString()).set('monthly_expenses',monthly_expenses.toString()).set('monthly_revenue',monthly_revenue.toString());
-            return this.http.post(url,{params})
+        predictBudget(user_id:number){
+            return this.http.get(environment.apiUrl+`/predict-budget/?user_id=${user_id}`)
         }
     
 

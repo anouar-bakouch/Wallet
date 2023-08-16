@@ -76,16 +76,22 @@ class PredictNextMonthMONTSTRUView(APIView):
 
   def post(self, request):
 
+    monthly_budget = []
+    monthly_expenses = []
+    monthly_revenue = []
 
-    monthly_budget = request.POST.getlist('monthly_budget')  # list of monthly budget amounts for the past 3 months
-    user_id = request.data.get('user_id')  # the ID of the user making the request
-    monthly_expenses = request.POST.getlist('monthly_expenses')  # list of monthly expenses amounts for the past 3 months
-    monthly_revenue = request.POST.getlist('monthly_revenue')  # list of monthly revenue amounts for the past 3 months
+    # get the user id and search for its puchases in the database
+    user_id = request.POST.get('user_id')
+    user = User.objects.get(id=user_id)
+    purchases = Purchase.objects.filter(user=user)
+    # get the budget and expenses for the past 3 months
+    for purchase in purchases:
+        monthly_budget.append(purchase.budget)
+        monthly_expenses.append(purchase.MONTSTRU)
+        monthly_revenue.append(purchase.MOISSOLD)
+    
 
-    # convert the lists into numpy arrays numerical values 
-    monthly_budget = np.array(monthly_budget, dtype=np.float32)
-    monthly_expenses = np.array(monthly_expenses, dtype=np.float32)
-    monthly_revenue = np.array(monthly_revenue, dtype=np.float32)
+
 
     # call to the models to get the predictions 
 
@@ -94,9 +100,14 @@ class PredictNextMonthMONTSTRUView(APIView):
     revenues_model = joblib.load('models/Forecasting/revenues.pkl')
 
     # make the predictions
-    budget_predictions = budget_model.forecast(1, alpha=0.05, exog=monthly_budget)
-    expenses_predictions = expenses_model.forecast(1, alpha=0.05, exog=monthly_expenses)
-    revenues_predictions = revenues_model.forecast(1, alpha=0.05, exog=monthly_revenue)
+    budget_predictions = budget_model.forecast(1, exog=monthly_budget)
+    expenses_predictions = expenses_model.forecast(1, exog=monthly_expenses)
+    revenues_predictions = revenues_model.forecast(1, exog=monthly_revenue)
+
+    # print the inputs 
+    print('monthly_budget: ', monthly_budget)
+    print('monthly_expenses: ', monthly_expenses)
+    print('monthly_revenue: ', monthly_revenue)
 
     return Response({
         'budget_prediction': budget_predictions,
@@ -356,10 +367,8 @@ class ListPurchaseView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')
         user = User.objects.get(id=user_id)
-        item_purchases = ItemPurchase.objects.filter(user=user, is_purchased=True)
-        item_ids = item_purchases.values_list('item__IDEIMPST', flat=True)
-        items = Item.objects.filter(IDEIMPST__in=item_ids)
-        serializer = ItemSerializer(items, many=True)
+        purchases = Purchase.objects.filter(user=user)
+        serializer = PurchaseSerializer(purchases, many=True)
         return Response(serializer.data)
 
 class ListMonthlyPurchaseView(APIView):

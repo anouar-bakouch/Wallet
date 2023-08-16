@@ -56,6 +56,17 @@ montstrap = [500, 1000, 1500, 2000, 2500, 3000, 3500]
 
 model = train_and_save_model(budgets, expenses, montstrap)
 
+# load the model from the pickle file
+
+budget_model = joblib.load('budget.pkl')
+expenses_model = joblib.load('expenses.pkl')
+revenues_model = joblib.load('revenues.pkl')
+
+# make predictions for the next month
+
+budget_predictions = budget_model.predict(steps=1)
+expenses_predictions = expenses_model.predict(steps=1)
+revenues_predictions = revenues_model.predict(steps=1)
 
 
 # load a dataset to train the models 
@@ -78,6 +89,3 @@ revenues_fit = revenues_model.fit()
 joblib.dump(budget_fit, 'budget.pkl')
 joblib.dump(expenses_fit, 'expenses.pkl')
 joblib.dump(revenues_fit, 'revenues.pkl')
-
-
-
