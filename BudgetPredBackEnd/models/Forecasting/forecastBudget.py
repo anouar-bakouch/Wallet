@@ -56,20 +56,28 @@ montstrap = [500, 1000, 1500, 2000, 2500, 3000, 3500]
 
 model = train_and_save_model(budgets, expenses, montstrap)
 
-# load the model from the pickle file
 
-budget_model = joblib.load('budget.pkl')
-expenses_model = joblib.load('expenses.pkl')
-revenues_model = joblib.load('revenues.pkl')
 
-# make predictions for the next 3 months
+# load a dataset to train the models 
 
-budget_predictions = budget_model.predict(steps=1)
-expenses_predictions = expenses_model.predict(steps=1)
-revenues_predictions = revenues_model.predict(steps=1)
+data = pd.read_excel('../../data/budgetDATA.xlsx')
 
-# print the predictions
+# train the models on the whole dataset
 
-print('Budget predictions:', budget_predictions)
-print('Expenses predictions:', expenses_predictions)
-print('Revenues predictions:', revenues_predictions)
+budget_model = ARIMA(data['Budgets'], order=(1, 1, 1))
+budget_fit = budget_model.fit()
+
+expenses_model = ARIMA(data['MONTSTRU'], order=(1, 1, 1))
+expenses_fit = expenses_model.fit()
+
+revenues_model = ARIMA(data['MONTRAPP'], order=(1, 1, 1))
+revenues_fit = revenues_model.fit()
+
+# save the models to pickle files
+
+joblib.dump(budget_fit, 'budget.pkl')
+joblib.dump(expenses_fit, 'expenses.pkl')
+joblib.dump(revenues_fit, 'revenues.pkl')
+
+
+

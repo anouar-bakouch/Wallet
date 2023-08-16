@@ -13,9 +13,9 @@ export class MySpaceComponent {
   monthly_savings: number[] = [];
   month: string[] = [];
   dataArray: any[] = [];
-  forecast_savings = 0;
-  forecast_expenses = 0;
-  forecast_budget = 0;
+  forecast_savings:number = 0;
+  forecast_expenses:number = 0;
+  forecast_budget:number = 0;
   private user_id = Number(localStorage.getItem('user_id'));
 
   constructor(private spaceService: SpaceService) {}
@@ -36,9 +36,9 @@ export class MySpaceComponent {
 
   predictMonths() {
     this.spaceService.predictBudget(this.monthly_budgets,this.user_id, this.monthly_expenses, this.monthly_savings, ).subscribe((data: any) => {
-      this.forecast_budget = data.budget_forecast.toFixed(2)
-      this.forecast_expenses = data.expenses_forecast.toFixed(2)
-      this.forecast_savings = data.revenues_forecast.toFixed(2)
+      this.forecast_budget = data.budget_prediction
+      this.forecast_expenses = data.expenses_prediction
+      this.forecast_savings = data.revenues_prediction
     } );
   }
 

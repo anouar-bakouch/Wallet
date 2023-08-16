@@ -82,26 +82,29 @@ class PredictNextMonthMONTSTRUView(APIView):
     monthly_expenses = request.POST.getlist('monthly_expenses')  # list of monthly expenses amounts for the past 3 months
     monthly_revenue = request.POST.getlist('monthly_revenue')  # list of monthly revenue amounts for the past 3 months
 
-    # Load the ARIMA models from the pickle files
+    # convert the lists into numpy arrays numerical values 
+    monthly_budget = np.array(monthly_budget, dtype=np.float32)
+    monthly_expenses = np.array(monthly_expenses, dtype=np.float32)
+    monthly_revenue = np.array(monthly_revenue, dtype=np.float32)
+
+    # call to the models to get the predictions 
+
     budget_model = joblib.load('models/Forecasting/budget.pkl')
     expenses_model = joblib.load('models/Forecasting/expenses.pkl')
     revenues_model = joblib.load('models/Forecasting/revenues.pkl')
 
-    # Forecast the next month
-    budget_forecast = budget_model.forecast()[0]
-    expenses_forecast = expenses_model.forecast()[0]
-    revenues_forecast = revenues_model.forecast()[0]    
-
-    # to data frame bc the model needs a dataframe
-    monthly_budget = pd.DataFrame(monthly_budget)
-    monthly_expenses = pd.DataFrame(monthly_expenses)
-    monthly_revenue = pd.DataFrame(monthly_revenue)
+    # make the predictions
+    budget_predictions = budget_model.forecast(1, alpha=0.05, exog=monthly_budget)
+    expenses_predictions = expenses_model.forecast(1, alpha=0.05, exog=monthly_expenses)
+    revenues_predictions = revenues_model.forecast(1, alpha=0.05, exog=monthly_revenue)
 
     return Response({
-        'budget_forecast': budget_forecast,
-        'expenses_forecast': expenses_forecast,
-        'revenues_forecast': revenues_forecast,
-        })
+        'budget_prediction': budget_predictions,
+        'expenses_prediction': expenses_predictions,
+        'revenues_prediction': revenues_predictions
+    })
+
+
   
 
 class PredictedItems(APIView):
