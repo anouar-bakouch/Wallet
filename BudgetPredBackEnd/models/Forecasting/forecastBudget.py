@@ -89,3 +89,8 @@ revenues_fit = revenues_model.fit()
 joblib.dump(budget_fit, 'budget.pkl')
 joblib.dump(expenses_fit, 'expenses.pkl')
 joblib.dump(revenues_fit, 'revenues.pkl')
+
+monthly_budget =  [56100.0, 2300.0]
+monthly_expenses =  [40800.0, 2300.0]
+monthly_revenue =  [15300.0, 0.0]
+

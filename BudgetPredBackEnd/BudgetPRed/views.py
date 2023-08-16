@@ -3,6 +3,7 @@ import pickle
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 import joblib
+from sklearn.linear_model import LinearRegression
 from BudgetPRed.serializers import  ItemPurchaseSerializer, ItemSerializer, PurchaseSerializer, UserSerializer , AuthSerializer
 from BudgetPRed.models import Item, ItemPurchase, Pagination, User , Purchase
 from rest_framework.views import APIView
@@ -74,49 +75,61 @@ class GetItemView(APIView):
 
 class PredictNextMonthMONTSTRUView(APIView):
 
-  def post(self, request):
+  def get(self, request):
 
     monthly_budget = []
     monthly_expenses = []
     monthly_revenue = []
 
     # get the user id and search for its puchases in the database
-    user_id = request.POST.get('user_id')
+    user_id = request.query_params.get('user_id')
     user = User.objects.get(id=user_id)
     purchases = Purchase.objects.filter(user=user)
-    # get the budget and expenses for the past 3 months
+
+    # get the budget and expenses for the past months
     for purchase in purchases:
         monthly_budget.append(purchase.budget)
-        monthly_expenses.append(purchase.MONTSTRU)
-        monthly_revenue.append(purchase.MOISSOLD)
-    
+        monthly_expenses.append(purchase.budget - purchase.MONTRAPP)
+        monthly_revenue.append(purchase.MONTRAPP)
 
+    budget = pd.DataFrame({
+        'month': len(monthly_budget),
+        'budget': monthly_budget
 
-
-    # call to the models to get the predictions 
-
-    budget_model = joblib.load('models/Forecasting/budget.pkl')
-    expenses_model = joblib.load('models/Forecasting/expenses.pkl')
-    revenues_model = joblib.load('models/Forecasting/revenues.pkl')
-
-    # make the predictions
-    budget_predictions = budget_model.forecast(1, exog=monthly_budget)
-    expenses_predictions = expenses_model.forecast(1, exog=monthly_expenses)
-    revenues_predictions = revenues_model.forecast(1, exog=monthly_revenue)
-
-    # print the inputs 
-    print('monthly_budget: ', monthly_budget)
-    print('monthly_expenses: ', monthly_expenses)
-    print('monthly_revenue: ', monthly_revenue)
-
-    return Response({
-        'budget_prediction': budget_predictions,
-        'expenses_prediction': expenses_predictions,
-        'revenues_prediction': revenues_predictions
     })
 
+    expenses = pd.DataFrame({
+        'month': len(monthly_expenses),
+        'expenses': monthly_expenses
+    })
 
-  
+    revenue = pd.DataFrame({
+        'month': len(monthly_revenue),
+        'revenue': monthly_revenue
+    })
+
+    
+    # Create a linear regression model
+    model_ = LinearRegression()
+    model = LinearRegression()
+    model__ = LinearRegression()
+
+    # Fit the model to the data 
+    model_.fit(budget[['month']], budget[['budget']])
+    model.fit(expenses[['month']], expenses[['expenses']])
+    model__.fit(revenue[['month']], revenue[['revenue']])
+    
+    # Predict the budget for the next month
+    next_month_budget = model.predict([[len(monthly_budget) + 1]])
+    next_month_expenses = model_.predict([[len(monthly_expenses) + 1]])
+    next_month_revenue = model__.predict([[len(monthly_revenue) + 1]])
+    print( next_month_budget)
+    print( next_month_expenses[0][0])
+    print( next_month_revenue[0][0])
+
+    return Response({"budget_prediction": next_month_budget[0][0],
+                     "expenses_prediction": next_month_expenses[0][0],
+                     "revenues_prediction": next_month_revenue[0][0]})
 
 class PredictedItems(APIView):
     def get(self,request):
