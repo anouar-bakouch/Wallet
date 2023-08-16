@@ -378,9 +378,10 @@ class ListPurchaseView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')
         user = User.objects.get(id=user_id)
-        purchases = Purchase.objects.filter(user=user)
-        serializer = PurchaseSerializer(purchases, many=True)
+        item_purchase = ItemPurchase.objects.filter(user=user, is_purchased=True)
+        serializer = ItemPurchaseSerializer(item_purchase, many=True)
         return Response(serializer.data)
+        
 
 class ListMonthlyPurchaseView(APIView):
     def get(self, request):

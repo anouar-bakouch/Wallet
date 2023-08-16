@@ -13,10 +13,12 @@
         Filtrer
       </button>
     </div>
-<div class="row my-3 mx-3" *ngIf="showFilter">
+  </div>
+
+  <div class="row my-3 mx-3" *ngIf="showFilter">
     <div class="col">
       <div class="btn-group">
-        <div class="mx-3 " *ngFor="let category of categories" (click)="filterItems(category)">
+        <div class="mx-3" *ngFor="let category of categories" (click)="filterItems(category)">
           <button (click)="getItemsByCategorie(category)" class="btn btn-primary">
             <i class="bi bi-tags-fill text-white"></i> {{ category }}
           </button>
@@ -24,12 +26,6 @@
       </div>
     </div>
   </div>
-
-
-  </div>
-
-  
-  
 
   <h3 class="text-primary">Liste des items</h3>
   <div class="row">
@@ -47,14 +43,12 @@
               <span class="text-primary">Prix: </span>
               {{ budget.MONTSTRU }} $
             </li>
-            
           </ul>
-       
         </div>
         <div class="card-footer d-flex justify-content-between align-items-center">
           <a href="#" class="btn btn-primary" (click)="fun(mymodal, budget)"><i class="bi bi-pencil-square"></i></a>
           <a href="#" class="btn btn-danger" (click)="onDelete(budget.IDEIMPST)"><i class="bi bi-file-x-fill"></i></a>
-          <button class="btn btn-success" (click)="addToCart(budget)" ><i class="bi bi-cart-plus"></i></button>
+          <button class="btn btn-success" (click)="addToCart(budget)"><i class="bi bi-cart-plus"></i></button>
         </div>
       </div>
     </div>
@@ -72,36 +66,37 @@
 <ng-template class="modal fade" tabindex="-1" role="dialog" #mymodal let-modal aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-    <div class="modal-header">
+      <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Item INFOS</h5>
       </div>
-    <div class="modal-body">
-    <form [formGroup]="form" (ngSubmit)="onClickSubmit()" class="container">
-      <div class="form-group my-3">
-        <label for="LIBACTGE">Label - Description</label>
-        <input id="LIBACTGE" type="text" formControlName="LIBACTGE" class="my-3 form-control">
+      <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="onClickSubmit()" class="container">
+          <div class="form-group my-3">
+            <label for="LIBACTGE">Label - Description</label>
+            <input id="LIBACTGE" type="text" formControlName="LIBACTGE" class="my-3 form-control">
+          </div>
+
+          <div class="form-group my-3">
+            <label for="CODYTPAC">CODYTPAC</label>
+            <input id="CODYTPAC" type="text" formControlName="CODYTPAC" class="my-3 form-control" placeholder="codtypac">
+          </div>
+
+          <div class="form-group my-3">
+            <label for="inputGroupFile01">Item Picture</label>
+            <input id="inputGroupFile01" type="file" (change)="onFileSelected($event)" formControlName="budgetphoto"
+              class="form-control">
+          </div>
+
+          <div class="form-group my-3">
+            <label for="categorie">Categorie</label>
+            <select id="categorie" formControlName="categorie" class="form-control">
+              <option *ngFor="let c of categories" [value]="c">{{c}}</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
       </div>
-    
-      <div class="form-group my-3">
-        <label for="CODYTPAC">CODYTPAC</label>
-        <input id="CODYTPAC" type="text" formControlName="CODYTPAC" class=" my-3 form-control" placeholder="codtypac">
-      </div>
-    
-      <div class="form-group my-3">
-        <label for="inputGroupFile01">Item Picture</label>
-        <input id="inputGroupFile01" type="file" (change)="onFileSelected($event)"  formControlName="budgetphoto" class="form-control">
-      </div>
-    
-      <div class="form-group my-3">
-        <label for="categorie">Categorie</label>
-        <select id="categorie" formControlName="categorie" class="form-control">
-          <option *ngFor="let c of categories" [value]="c">{{c}}</option>
-        </select>
-      </div>
-    
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    </div>
   </div>
-  </div>
-</div>
 </ng-template>

@@ -16,4 +16,10 @@ export class PurchaseService {
         getPurchaseByUser(id:number){
             return this.http.get(environment.apiUrl+`/list-purchase/?user_id=${id}`)
         }
+
+        getPurchaseByMonth(id:number,month:string){
+            const url_= environment.apiUrl + '/list-month-purchase/'
+            const params = new HttpParams().set('user_id', id).set('month',month);
+            return this.http.get(url_,{params})
+        }
 }

@@ -9,20 +9,15 @@ import { SpaceService } from '../services/space.service';
 
 export class MySpaceComponent {
 
-  dataArray: any[] = [];
-
   forecast_savings:number = 0;
   forecast_expenses:number = 0;
   forecast_budget:number = 0;
-  private user_id = Number(localStorage.getItem('user_id'));
+
 
   constructor(private spaceService: SpaceService) {}
 
   ngOnInit() {
-     this.spaceService.getPurchaseByUser(this.user_id).subscribe(async(data: any) => {
-      this.dataArray = data;
-      console.log(data)
-    });
+     
    
     this.predictMonths();
   }

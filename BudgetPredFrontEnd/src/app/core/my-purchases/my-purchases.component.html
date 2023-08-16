@@ -1,1 +1,14 @@
-<p>my-purchases works!</p>
+<div class="container-fluid">
+    <div class="list-group my-5 row">
+      <div class="col col-5">
+        <div class="card-container">
+          <div *ngFor="let y of my_purchases" class="card">
+            <img class="card-img-top" [src]="y.budgetphoto" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">{{y.LIBACTGE}}</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
