@@ -1,5 +1,6 @@
 
 import pickle
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 import joblib
 from BudgetPRed.serializers import  ItemPurchaseSerializer, ItemSerializer, PurchaseSerializer, UserSerializer , AuthSerializer
@@ -71,58 +72,37 @@ class GetItemView(APIView):
 
 # Purchase views 
 
-def forecast_next_3_months(budget_model, expenses_model, revenues_model):
-    """Forecasts the monthly budgets, expenses, and revenues for the next 3 months.
-
-    Args:
-        budget_model: The trained budget model.
-        expenses_model: The trained expenses model.
-        revenues_model: The trained revenues model.
-
-    Returns:
-        The forecasted monthly budgets, expenses, and revenues.
-    """
-    budget_forecast = budget_model.forecast(steps=3)[0]
-    expenses_forecast = expenses_model.forecast(steps=3)[0]
-    revenues_forecast = revenues_model.forecast(steps=3)[0]
-
-    return budget_forecast, expenses_forecast, revenues_forecast
-
 class PredictNextMonthMONTSTRUView(APIView):
 
-    def post(self, request):
-        # Load the ARIMA model from the pickle file
-        monthly_budget = request.data.get('monthly_budget') 
-        user_id = request.data.get('user_id')
-        monthly_expenses = request.data.get('monthly_expenses')
-        monthly_revenue = request.data.get('monthly_revenue')
-        actual_month = request.data.get('actual_month') 
+  def post(self, request):
 
-        # forecasting 
 
-        monthly_p_budgets = ARIMA(monthly_budget, order=(1, 1, 1)).fit().forecast(steps=3)[0]
-        monthly_p_expenses = ARIMA(monthly_expenses, order=(1, 1, 1)).fit().forecast(steps=3)[0]
-        monthly_p_revenues = ARIMA(monthly_revenue, order=(1, 1, 1)).fit().forecast(steps=3)[0]
+    monthly_budget = request.POST.getlist('monthly_budget')  # list of monthly budget amounts for the past 3 months
+    user_id = request.data.get('user_id')  # the ID of the user making the request
+    monthly_expenses = request.POST.getlist('monthly_expenses')  # list of monthly expenses amounts for the past 3 months
+    monthly_revenue = request.POST.getlist('monthly_revenue')  # list of monthly revenue amounts for the past 3 months
 
-        # to data Frame 
+    # Load the ARIMA models from the pickle files
+    budget_model = joblib.load('models/Forecasting/budget.pkl')
+    expenses_model = joblib.load('models/Forecasting/expenses.pkl')
+    revenues_model = joblib.load('models/Forecasting/revenues.pkl')
 
-        predicted_budgets = pd.DataFrame(monthly_p_budgets, columns=['budget'],
-                                          index=pd.date_range(start=actual_month, periods=3, freq='M'))
-        predicted_expenses = pd.DataFrame(monthly_p_expenses, columns=['expenses'],
-                                         index=pd.date_range(start=actual_month, periods=3, freq='M'))
-        predicted_revenues = pd.DataFrame(monthly_p_revenues, columns=['revenues'],
-                                         index=pd.date_range(start=actual_month, periods=3, freq='M'))
-        
-        # to json
+    # Forecast the next month
+    budget_forecast = budget_model.forecast()[0]
+    expenses_forecast = expenses_model.forecast()[0]
+    revenues_forecast = revenues_model.forecast()[0]    
 
-        predicted_budgets_json = predicted_budgets.to_json()
-        predicted_expenses_json = predicted_expenses.to_json()
-        predicted_revenues_json = predicted_revenues.to_json()
+    # to data frame bc the model needs a dataframe
+    monthly_budget = pd.DataFrame(monthly_budget)
+    monthly_expenses = pd.DataFrame(monthly_expenses)
+    monthly_revenue = pd.DataFrame(monthly_revenue)
 
-        # return the prediction
-
-        return Response({"predicted_budgets": predicted_budgets_json, "predicted_expenses": predicted_expenses_json, "predicted_revenues": predicted_revenues_json})
-
+    return Response({
+        'budget_forecast': budget_forecast,
+        'expenses_forecast': expenses_forecast,
+        'revenues_forecast': revenues_forecast,
+        })
+  
 
 class PredictedItems(APIView):
     def get(self,request):
@@ -152,7 +132,6 @@ class GetUserView(APIView):
         serializer = UserSerializer(user)
         return Response({"user": serializer.data})
     
-
 class UpdateUserView(APIView):
     def put(self, request, pk):
         saved_user = get_object_or_404(User.objects.all(), pk=pk)
@@ -374,10 +353,12 @@ class ListPurchaseView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')
         user = User.objects.get(id=user_id)
-        purchase = Purchase.objects.filter(user=user)
-        serializer = PurchaseSerializer(purchase, many=True)
+        item_purchases = ItemPurchase.objects.filter(user=user, is_purchased=True)
+        item_ids = item_purchases.values_list('item__IDEIMPST', flat=True)
+        items = Item.objects.filter(IDEIMPST__in=item_ids)
+        serializer = ItemSerializer(items, many=True)
         return Response(serializer.data)
-    
+
 class ListMonthlyPurchaseView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')

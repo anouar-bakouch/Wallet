@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from BudgetPRed.views import GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListMonthlyPurchaseView, ListPurchaseView,LoginView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index
+from BudgetPRed.views import GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListMonthlyPurchaseView, ListPurchaseView,LoginView, PredictNextMonthMONTSTRUView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index
 urlpatterns = [
     path('',index),
     path('admin/', admin.site.urls),
@@ -24,6 +24,7 @@ urlpatterns = [
     path('userinfo/<int:pk>/',GetUserInfoView.as_view(),name='user-info'),
     # PREDICTION ------------------------
     path('predict-items/<int:pk>/', PredictedItems.as_view(), name='PredictItems'),
+    path('predict-budget/',PredictNextMonthMONTSTRUView.as_view(),name='PredictBudget'),
     # path('PredictMONTSTRU')
     path('list-item/',ItemAPIView.as_view() , name='list-item'),
     path('list-item-categorie/',ItemCategorieAPIView.as_view() , name='list-item-categorie'),

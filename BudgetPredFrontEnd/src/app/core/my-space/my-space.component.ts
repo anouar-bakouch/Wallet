@@ -13,6 +13,9 @@ export class MySpaceComponent {
   monthly_savings: number[] = [];
   month: string[] = [];
   dataArray: any[] = [];
+  forecast_savings = 0;
+  forecast_expenses = 0;
+  forecast_budget = 0;
   private user_id = Number(localStorage.getItem('user_id'));
 
   constructor(private spaceService: SpaceService) {}
@@ -20,23 +23,23 @@ export class MySpaceComponent {
   ngOnInit() {
     this.spaceService.getPurchaseByUser(this.user_id).subscribe((data: any) => {
       this.dataArray = data;
-      this.sortDataArray();
-    });
-  }
-
-  sortDataArray() {
-    this.dataArray.sort((a, b) => {
-      const dateA = new Date(a.MOISSOLD);
-      const dateB = new Date(b.MOISSOLD);
-      return dateA.getTime() - dateB.getTime();
+      this.dataArray.forEach((item: any) => {
+        this.monthly_budgets.push(item.budget);
+        this.monthly_savings.push(item.MONTRAPP);
+        this.monthly_expenses.push(item.budget - item.MONTRAPP);
+      });
     });
 
-    this.dataArray.forEach((item: any) => {
-      this.monthly_budgets.push(item.budget);
-      this.monthly_savings.push(item.MONTRAPP);
-      this.monthly_expenses.push(item.budget - item.MONTRAPP);
-      const formattedDate = new Date(item.MOISSOLD).toISOString().split('T')[0];
-      this.month.push(formattedDate);
-    });
+    this.predictMonths();
   }
+
+
+  predictMonths() {
+    this.spaceService.predictBudget(this.monthly_budgets,this.user_id, this.monthly_expenses, this.monthly_savings, ).subscribe((data: any) => {
+      this.forecast_budget = data.budget_forecast.toFixed(2)
+      this.forecast_expenses = data.expenses_forecast.toFixed(2)
+      this.forecast_savings = data.revenues_forecast.toFixed(2)
+    } );
+  }
+
 }

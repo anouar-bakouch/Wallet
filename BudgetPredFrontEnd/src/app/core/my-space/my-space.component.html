@@ -1,9 +1,9 @@
-<div class="container-fluid row border shadow text-primary">
+<div class="container-fluid row border shadow text-primary my-3">
 
-    <div class="col col-5">
+    <div class="col col-6 my-3">
 
         <h3 class="text-center p-3">
-            Next month Predicted Items
+            My Items
         </h3>
 
         <ul class="list-group">
@@ -16,16 +16,25 @@
 
     </div>
 
-    <div class="col col-5">
+    <div class="col col-6 my-3">
             
             <h3 class="text-center p-3">
-                Next month Predicted Budget 
+                My Wallet
             </h3>
 
             <ul class="list-group">
 
                 <li class="list-group-item">
+                   Next month budget : {{forecast_budget}}
+                </li>
 
+                <li class="list-group-item">
+                   Next month dépenses : {{forecast_expenses}}
+                </li>
+
+
+                <li class="list-group-item">
+                   Next month savings : {{forecast_savings}}
                 </li>
 
             </ul>
