@@ -123,13 +123,11 @@ class PredictNextMonthMONTSTRUView(APIView):
     next_month_budget = model.predict([[len(monthly_budget) + 1]])
     next_month_expenses = model_.predict([[len(monthly_expenses) + 1]])
     next_month_revenue = model__.predict([[len(monthly_revenue) + 1]])
-    print( next_month_budget)
-    print( next_month_expenses[0][0])
-    print( next_month_revenue[0][0])
 
     return Response({"budget_prediction": next_month_budget[0][0],
                      "expenses_prediction": next_month_expenses[0][0],
                      "revenues_prediction": next_month_revenue[0][0]})
+
 
 class PredictedItems(APIView):
     def get(self,request):
