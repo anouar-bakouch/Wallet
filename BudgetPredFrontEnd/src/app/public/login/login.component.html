@@ -9,26 +9,33 @@
         
       </div>
       <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <h1 class="text-center text-primary"><i class="bi bi-person-lock "></i>Se Connecter</h1>
+        <h1 class="text-center text-primary fs-2"><i class="bi bi-person-lock "></i>Se Connecter</h1>
 
         <form (ngSubmit)="login()">
           <div class="form-group">
-            <input type="text" class="form-control" [(ngModel)]="username" name="username" placeholder="Username">
+            <input type="text" class="form-control p-3 fs-4" [(ngModel)]="username" name="username" placeholder="Username">
             <div *ngIf="usernameError" class="text-danger">
               {{ usernameError }}
             </div>
           </div>
           <div class="form-group mt-3">
-            <input type="password" class="form-control" [(ngModel)]="password"  name="password" placeholder="Password">
+            <input type="password" class="form-control p-3 fs-4" [(ngModel)]="password"  name="password" placeholder="Password">
             <div *ngIf="passwordError" class="text-danger">
               {{ passwordError }}
             </div>
           </div>
           <img *ngIf="showLoading" src="assets/animations/auth-loading.gif" alt="loading" width="400" height="400">
-
-          <button *ngIf="!showLoading" type="submit" class="btn btn-outline-primary mt-3" [disabled]="username === '' || password === ''">Login
+          <div class="d-flex justify-content-between align-items-center">
+          <button *ngIf="!showLoading" type="submit" class="btn btn-outline-primary mt-3 p-3 fs-4" [disabled]="username === '' || password === ''">Login
           
           </button>
+
+            <button routerLink="/home/signup" type="submit" class="btn btn-outline-primary mt-3 p-3 fs-4"><i class="bi bi-box-arrow-in-right"></i> créer un compte
+          
+          </button>
+        </div>
+
+
         </form>
         
       </div>

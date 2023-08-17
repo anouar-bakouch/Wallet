@@ -16,6 +16,14 @@ export class SignUpComponent implements OnInit {
   firstName: string = "";
   lastName: string = "";
 
+  disabledSignupButton = true;
+  emailError :string | null = null;
+  passwordError :string | null = null;
+  usernameError :string | null = null;
+  firstNameError :string | null = null;
+  lastNameError :string | null = null;
+  showLoading = false;
+
   constructor(
     private router:Router,
     private authService:AuthService) { }
@@ -23,6 +31,52 @@ export class SignUpComponent implements OnInit {
   ngOnInit() { }
 
   signup() {
+
+    // TODO: Add validation
+
+    // check email using regex
+    const emailRegex = new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$");
+    if (!emailRegex.test(this.email)) {
+      this.emailError = "Invalid email";
+      return;
+    }
+    this.emailError = null;
+
+    // check password length
+
+    if (this.password.length < 8) {
+      this.passwordError = "Password must be at least 8 characters long";
+      return;
+    }
+
+    this.passwordError = null;
+
+    // username must contain only letters and numbers
+    const usernameRegex = new RegExp("^[a-zA-Z0-9]+$");
+    if (!usernameRegex.test(this.username)) {
+      this.usernameError = "Username must contain only letters and numbers";
+      return;
+    }
+    this.usernameError = null;
+    
+    // first name must contain only letters
+    const firstNameRegex = new RegExp("^[a-zA-Z]+$");
+    if (!firstNameRegex.test(this.firstName)) {
+      this.firstNameError = "First name must contain only letters";
+      return;
+    }
+
+    this.firstNameError = null;
+
+    // last name must contain only letters
+
+    if (!firstNameRegex.test(this.lastName)) {
+      this.lastNameError = "Last name must contain only letters";
+      return;
+    }
+
+    this.lastNameError = null;
+
     const user = {
       username: this.username,
       email: this.email,
@@ -41,8 +95,11 @@ export class SignUpComponent implements OnInit {
 
     }, error => {
       console.log(error);
+    }, () => {
+      console.log("complete");
     }
     );
   }
+
    
 }
