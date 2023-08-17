@@ -12,6 +12,9 @@ export class LoginComponent implements OnInit {
   username: string = '';
   password: string = '';
   showLoading: boolean = false;
+  loginButtonDisabled: boolean = true;
+  usernameError: string | null = null;
+  passwordError: string | null = null;
 
   constructor(
   private authService: AuthService,
@@ -21,6 +24,22 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.showLoading = true;
+    // Add validators to the username and password fields
+    if (this.username === '') {
+      this.usernameError = 'Username is required.';
+    } else {
+      this.usernameError = null;
+    }
+
+    if (this.password === '') {
+      this.passwordError = 'Password is required.';
+    } else {
+      this.passwordError = null;
+    }
+
+    // Disable the login button if the username or password fields are empty
+    this.loginButtonDisabled = this.username === '' || this.password === '';
+
     this.authService.login(this.username, this.password).subscribe((response) => {
       localStorage.setItem('access', response.access);
       localStorage.setItem('refresh', response.refresh);

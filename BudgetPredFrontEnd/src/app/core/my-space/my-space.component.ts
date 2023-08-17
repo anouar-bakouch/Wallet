@@ -14,27 +14,36 @@ export class MySpaceComponent {
   forecast_savings:number = 0;
   forecast_expenses:number = 0;
   forecast_budget:number = 0;
+  show_loading = false;
+  show_items = false;
 
   items:Item[] = []
 
   constructor(private spaceService: SpaceService) {}
 
   ngOnInit() {
+    
     this.predictMonths();
     this.predictItems();
   }
 
 
   predictMonths() {
+    this.show_items = true;
     const user_id = Number(localStorage.getItem('user_id'));
     this.spaceService.predictBudget(user_id).subscribe((data: any) => {
       this.forecast_budget = data.budget_prediction
       this.forecast_expenses = data.expenses_prediction
       this.forecast_savings = data.revenues_prediction
+    }, error => {
+      console.log(error);
+    }, () => {
+      this.show_items = false;
     } );
   }
  
   predictItems() {
+    this.show_loading = true;
     const user_id = Number(localStorage.getItem('user_id'));
     this.spaceService.predictItems(user_id).subscribe((data: Item[]) => {
       // fix the budget photo
@@ -42,7 +51,12 @@ export class MySpaceComponent {
         item.budgetphoto = environment.apiUrl + item.budgetphoto  
       } );
       this.items = data
-    } );
+    }, error => {
+      console.log(error);
+    }, () => {
+      this.show_loading = false;
+    }
+    );
   }
 
 }

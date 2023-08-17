@@ -1,12 +1,12 @@
 <div class="container-fluid row border shadow text-primary my-3">
 
-    <div class="col col-6 my-3">
+    <div class="col col-6 my-3" >
 
         <h3 class="text-center p-3">
             Items you might like
         </h3>
-
-        <div class="col col-12">
+        <img src = "assets/animations/items.gif" *ngIf="show_items" alt="loading" width="300" height="300">
+        <div class="col col-12" *ngIf="!show_items">
             <div class="card-container">
               <div class="row">
                 <div class="d-flex align-items-center justify-content-between flex-wrap">
@@ -31,19 +31,21 @@
                 My Wallet
             </h3>
 
-            <ul class="list-group">
+            <img src = "assets/animations/loading.gif" *ngIf="show_loading" alt="loading" width="300" height="300">
+
+            <ul class="list-group fs-4" *ngIf="!show_loading" >
 
                 <li class="list-group-item">
-                   Next month budget : {{forecast_budget}}
+                   Next month budget : {{forecast_budget}} MAD
                 </li>
 
                 <li class="list-group-item">
-                   Next month dépenses : {{forecast_expenses}}
+                   Next month spendings : {{forecast_expenses}} MAD
                 </li>
 
 
-                <li class="list-group-item">
-                   Next month savings : {{forecast_savings}}
+                <li class="list-group-item ">
+                   Next month savings : {{forecast_savings}} MAD
                 </li>
 
             </ul>
