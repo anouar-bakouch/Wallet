@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 export class MyPurchasesComponent {
   my_purchases: any[] = [];
   user_id: number = 0;
+  show_loading = false;
 
   constructor(
     private puchaseservice: PurchaseService,
@@ -20,7 +21,7 @@ export class MyPurchasesComponent {
 
   ngOnInit() {
     this.user_id = Number(localStorage.getItem('user_id'));
-
+    this.show_loading = true;
     this.puchaseservice.getPurchaseByUser(this.user_id).subscribe(
       (data: any) => {
         this.my_purchases = data;
@@ -46,11 +47,11 @@ export class MyPurchasesComponent {
               processedCount++;
               if (processedCount === totalPurchases) {
                 this.my_purchases = updatedPurchases;
-                console.log(this.my_purchases.length); // should give 2
               }
             }
           );
         });
+        this.show_loading = false;
       }
     );
   }

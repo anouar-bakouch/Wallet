@@ -1,9 +1,15 @@
+
+
 <section class="vh-100 ">
-  <div class="container py-5 h-100">
+
+
+  <div  class="container py-5 h-100">
     <div class="animated-login row d-flex align-items-center justify-content-center h-100">
       <div class="col-md-8 col-lg-7 col-xl-6">
-        <img src="assets/images/login.svg"
+        <img *ngIf="!showLoading" src="assets/images/login.svg"
           class="img-fluid" alt="Phone image">
+          <img *ngIf="showLoading" src="assets/animations/auth-loading.gif" alt="loading" width="400" height="400">
+
       </div>
       <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
         <h1 class="text-center text-primary"><i class="bi bi-person-lock "></i>Se Connecter</h1>
@@ -15,7 +21,9 @@
           <div class="form-group mt-3">
             <input type="password" class="form-control" [(ngModel)]="password"  name="password" placeholder="Password">
           </div>
-          <button type="submit" class="btn btn-outline-primary mt-3">Login</button>
+          <button type="submit" class="btn btn-outline-primary mt-3">Login
+          
+          </button>
         </form>
         
       </div>

@@ -7,9 +7,11 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
   username: string = '';
   password: string = '';
+  showLoading: boolean = false;
 
   constructor(
   private authService: AuthService,
@@ -18,6 +20,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {}
 
   login() {
+    this.showLoading = true;
     this.authService.login(this.username, this.password).subscribe((response) => {
       localStorage.setItem('access', response.access);
       localStorage.setItem('refresh', response.refresh);
@@ -26,6 +29,8 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/budgetHome/budgets']);
     }, error => {
       console.log(error);
+    }, () => {
+      this.showLoading = false;
     }
     );
     

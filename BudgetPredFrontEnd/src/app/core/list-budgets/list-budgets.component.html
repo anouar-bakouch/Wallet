@@ -1,4 +1,6 @@
 <div class="container-fluid mt-3">
+
+  <div *ngIf="!showLoading">
   <div class="row mb-3">
     <div class="col-6">
       <button class="btn btn-primary btn-sm" type="button" (click)="open(mymodal)">
@@ -15,7 +17,7 @@
     </div>
   </div>
 
-  <div class="row my-3 mx-3" *ngIf="showFilter">
+  <div class="row my-3 mx-3"  *ngIf="showFilter">
     <div class="col">
       <div class="btn-group">
         <div class="mx-3" *ngFor="let category of categories" (click)="filterItems(category)">
@@ -26,9 +28,14 @@
       </div>
     </div>
   </div>
+</div>
 
-  <h3 class="text-primary">Liste des items</h3>
-  <div class="row">
+  <img src = "assets/animations/items.gif" *ngIf="showLoading" alt="loading" width="300" height="300">
+
+  
+  <div *ngIf="!showLoading" class="row">
+    <h3 class="text-primary">Liste des items</h3>
+
     <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let budget of budgets">
       <div class="card mb-3 shadow">
         <img class="card-img-top" [src]="budget?.budgetphoto" alt="Card image cap">

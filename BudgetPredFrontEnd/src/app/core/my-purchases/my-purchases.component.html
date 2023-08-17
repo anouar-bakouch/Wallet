@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div *ngIf="show_loading" class="container-fluid">
     <div class="list-group my-5 row">
       <div class="col col-5">
         <div class="card-container">
@@ -12,3 +12,5 @@
       </div>
     </div>
   </div>
+<div class="w-100 container-fluid">
+  <img class="img img-responsive text-center "  src = "assets/animations/loading-core.gif" *ngIf="show_loading" alt="loading" width="400" height="400"></div>

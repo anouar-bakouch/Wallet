@@ -25,6 +25,7 @@ export class ListBudgetsComponent {
   public base_url = environment.apiUrl+"/";
   public current_number : number = 1;
   categories: string[] = [];
+  showLoading = false;
 
 
   // Property to track whether the filter section should be shown or not
@@ -58,12 +59,17 @@ export class ListBudgetsComponent {
  
 
   getBudgets() {
+    this.showLoading = true;
     this.budgetService.getItems(this.current_number).subscribe((data: any) => {
       this.budgets = data.results;
       this.budgets.forEach((budget: any) => {
         budget.budgetphoto = this.base_url + budget.budgetphoto;
       } );
-    });
+    }, error => {
+      console.log(error);
+    }, () => {
+      this.showLoading = false;
+    } );
   }
 
   getItemsByCategorie(categorie:string){
