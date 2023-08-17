@@ -23,7 +23,7 @@ urlpatterns = [
     path('UpdateUser/<int:pk>/',UpdateUserView.as_view()),
     path('userinfo/<int:pk>/',GetUserInfoView.as_view(),name='user-info'),
     # PREDICTION ------------------------
-    path('predict-items/<int:pk>/', PredictedItems.as_view(), name='PredictItems'),
+    path('predict-items/', PredictedItems.as_view(), name='PredictItems'),
     path('predict-budget/',PredictNextMonthMONTSTRUView.as_view(),name='PredictBudget'),
     # path('PredictMONTSTRU')
     path('list-item/',ItemAPIView.as_view() , name='list-item'),

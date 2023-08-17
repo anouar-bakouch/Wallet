@@ -16,6 +16,9 @@ from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from django.contrib.auth.hashers import make_password 
 from statsmodels.tsa.arima.model import ARIMA
 
+# Recommendation ML
+from sklearn.calibration import LabelEncoder
+from surprise import Reader,Dataset,KNNBasic
 
 
 def index(request):
@@ -128,21 +131,82 @@ class PredictNextMonthMONTSTRUView(APIView):
                      "expenses_prediction": next_month_expenses[0][0],
                      "revenues_prediction": next_month_revenue[0][0]})
 
-
 class PredictedItems(APIView):
+    
     def get(self,request):
-        model = pickle.load(open('models/PredictReco_model.pkl', 'rb'))
-        # Get the user's ID from the request
-        user_id = request.data.get('user_id')
-        user_items = request.data.get('items')
-        # convert the user_items into a numerical representatiol 
-        input_items = np.array([user_items])
-        # make the prediction
-        prediction = model.predict(user_id,input_items)
-        # return the prediction
-        return Response({"prediction": prediction.tolist()})
 
+        user_id = request.query_params.get('user_id')
 
+        # the users purchases
+        user = User.objects.get(id=user_id)
+        purchases = ItemPurchase.objects.filter(user=user, is_purchased=True)
+        items = Item.objects.all()
+        items_purchased = []
+
+        for item in items :
+            for purchase in purchases :
+                if purchase.item == item :
+                    items_purchased.append(item)
+        
+        purchased_items = ItemSerializer(items_purchased, many=True).data
+        all_items = ItemSerializer(items, many=True).data
+
+        dataset = pd.DataFrame(all_items) # all items
+        dataset_purchased = pd.DataFrame(purchased_items) # purchased items
+
+        # Data Preprocessing
+        encoder = LabelEncoder() # LabelEncoder is used to encode the categorical data into numerical data
+        dataset['categorie'] = encoder.fit_transform(dataset['categorie']) # it means 
+
+        # define the surprise reader to parse the dataset
+        min = 1
+        max = 1000
+        reader = Reader(rating_scale=(min, max))
+
+        # Load the dataset into the Surprise format
+        data = Dataset.load_from_df(dataset[['IDEIMPST', 'categorie', 'MONTSTRU']], reader)
+        data_purchased = Dataset.load_from_df(dataset_purchased[['IDEIMPST', 'categorie', 'MONTSTRU']], reader)
+
+        # Build the training set
+        trainset = data.build_full_trainset()
+        trainset_purchased = data_purchased.build_full_trainset()
+
+        # Choose a collaborative filtering algorithm (e.g., KNNBasic)
+        algo = KNNBasic()
+
+        # Train the algorithm
+        algo.fit(trainset)
+        algo.fit(trainset_purchased)
+
+        # generate recommendations for a user - same categorie items as the user purchased
+        id_user = user_id  # Provide the user ID for whom you want to generate recommendations
+        n_rec_items = 5  # Number of items to recommend
+        predictions = []
+        
+        for x in dataset_purchased['categorie'].unique():
+            if x not in dataset['categorie'].unique():
+                predicted_rating = algo.predict(id_user, x).est
+                predictions.append((x, predicted_rating))
+        
+       
+                # Sort the recommendations by predicted rating
+        predictions.sort(key=lambda x: x[1], reverse=True)
+
+        # Get the recommended category IDs
+        recommended_category_ids = [category_id for category_id, _ in predictions[:n_rec_items]]
+
+        # Filter the recommended items based on the original category IDs
+        recommended_items = Item.objects.filter(categorie__in=recommended_category_ids)
+
+        # Serialize the recommended items
+        recommended_serializer = ItemSerializer(recommended_items, many=True)
+        recommended_items_data = recommended_serializer.data
+
+        return Response(recommended_items_data)
+
+    
+
+ 
 class ListUserView(APIView):
 
     def get(self, request):
@@ -373,7 +437,6 @@ class PurchaseView(APIView):
         
         return Response({'message': 'Purchase added successfully'})
     
-
 class ListPurchaseView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')
@@ -382,7 +445,6 @@ class ListPurchaseView(APIView):
         serializer = ItemPurchaseSerializer(item_purchase, many=True)
         return Response(serializer.data)
         
-
 class ListMonthlyPurchaseView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')

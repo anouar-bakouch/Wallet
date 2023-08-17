@@ -19,6 +19,9 @@ export class SpaceService {
         predictBudget(user_id:number){
             return this.http.get(environment.apiUrl+`/predict-budget/?user_id=${user_id}`)
         }
-    
 
+        predictItems(user_id:number,items:any[]){
+            return this.http.post(environment.apiUrl+`/predict-items/?user_id=${user_id}`,items)
+        }
+    
 }

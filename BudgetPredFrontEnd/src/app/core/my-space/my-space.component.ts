@@ -13,11 +13,10 @@ export class MySpaceComponent {
   forecast_expenses:number = 0;
   forecast_budget:number = 0;
 
-
   constructor(private spaceService: SpaceService) {}
 
   ngOnInit() {
-     
+
    
     this.predictMonths();
   }
@@ -31,5 +30,6 @@ export class MySpaceComponent {
       this.forecast_savings = data.revenues_prediction
     } );
   }
+  
 
 }
