@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { SpaceService } from '../services/space.service';
+import { Item } from 'src/models/Item';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-my-space',
@@ -13,12 +15,13 @@ export class MySpaceComponent {
   forecast_expenses:number = 0;
   forecast_budget:number = 0;
 
+  items:Item[] = []
+
   constructor(private spaceService: SpaceService) {}
 
   ngOnInit() {
-
-   
     this.predictMonths();
+    this.predictItems();
   }
 
 
@@ -30,6 +33,16 @@ export class MySpaceComponent {
       this.forecast_savings = data.revenues_prediction
     } );
   }
-  
+ 
+  predictItems() {
+    const user_id = Number(localStorage.getItem('user_id'));
+    this.spaceService.predictItems(user_id).subscribe((data: Item[]) => {
+      // fix the budget photo
+      data.forEach((item:Item) => {
+        item.budgetphoto = environment.apiUrl + item.budgetphoto  
+      } );
+      this.items = data
+    } );
+  }
 
 }
