@@ -77,6 +77,8 @@ export class SignUpComponent implements OnInit {
 
     this.lastNameError = null;
 
+    this.disabledSignupButton = this.username === '' || this.email === '' || this.password === '' || this.firstName === '' || this.lastName === '';
+
     const user = {
       username: this.username,
       email: this.email,

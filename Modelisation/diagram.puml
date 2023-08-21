@@ -1,0 +1,54 @@
+@startuml PredictionWallet
+
+class User {
+  id: int
+  username: str
+  password: str
+  email: str
+  first_name: str
+  last_name: str
+  path_photo: str
+  month_budget: float
+  objectives: List[Objective]
+  devise_type: str
+}
+
+class Objective {
+  id: int
+  description: str
+  budget: float
+  month: str
+}
+
+class Item {
+  IDEIMPST: int
+  CODTYPAC: str
+  LIBACTGE: str
+  budgetphoto: str
+  categorie: str
+  MONTSTRU: float
+}
+
+class ItemPurchase {
+  id: int
+  user: User
+  item: Item
+  is_purchased: bool
+}
+
+class Purchase {
+  id: int
+  budget: float
+  MOISSOLD: Date
+  MONTRAPP: float
+  user: User
+  item_purchase: ItemPurchase
+  quantity: int
+}
+
+User "1" -- "*" Objective : has
+User "1" -- "0..*" ItemPurchase : makes
+ItemPurchase "1" -- "1" Item : purchases
+ItemPurchase "1" -- "1" User : made by
+
+@enduml

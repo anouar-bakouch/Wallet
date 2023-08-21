@@ -1,36 +1,39 @@
-<section class="vh-100 ">
+<div class="container-fluid w-50">
 
+<h1 class="text-center mt-3 text-primary fs-2"> <i class="bi bi-person-bounding-box"></i> Inscription</h1>
 
-  <div  class="container py-5 h-100">
-    <div class="animated-login row d-flex align-items-center justify-content-center h-100">
-      <div class="col-md-8 col-lg-7 col-xl-6">
-        <img *ngIf="!showLoading" src="assets/images/login.svg"
-          class="img-fluid" alt="Phone image">
-          <img *ngIf="showLoading" src="assets/animations/auth-loading.gif" alt="loading" width="400" height="400">
-
-      </div>
-      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
-        <h1 class="text-center text-primary"><i class="bi bi-person-lock "></i>Se Connecter</h1>
-
-        <form (ngSubmit)="login()">
-          <div class="form-group">
-            <input type="text" class="form-control" [(ngModel)]="username" name="username" placeholder="Username">
-            <div *ngIf="usernameError" class="text-danger">
-              {{ usernameError }}
-            </div>
-          </div>
-          <div class="form-group mt-3">
-            <input type="password" class="form-control" [(ngModel)]="password"  name="password" placeholder="Password">
-            <div *ngIf="passwordError" class="text-danger">
-              {{ passwordError }}
-            </div>
-          </div>
-          <button type="submit" class="btn btn-outline-primary mt-3" [disabled]="username === '' || password === ''">Login
-          
-          </button>
-        </form>
-        
-      </div>
+<form (ngSubmit)="signup()" class="">
+  <div class="form-group mt-3 my-3">
+    <input type="text" class="form-control fs-4" [(ngModel)]="username" name="username" placeholder="Username">
+    <div *ngIf="usernameError" class="text-danger">
+      {{ usernameError }}
     </div>
   </div>
-</section>
+  <div class="form-group mt-3">
+    <input type="email" class="form-control fs-4" [(ngModel)]="email" name="email" placeholder="Email">
+    <div *ngIf="emailError" class="text-danger">
+      {{ emailError }}
+    </div>
+  </div>
+  <div class="form-group mt-3 my-3">
+    <input type="password" class="form-control fs-4" [(ngModel)]="password" name="password" placeholder="Password">
+    <div *ngIf="passwordError" class="text-danger">
+      {{ passwordError }}
+    </div>
+  </div>
+  <div class="form-group mt-3">
+    <input type="text" class="form-control fs-4" [(ngModel)]="firstName" name="firstname" placeholder="First Name">
+    <div *ngIf="firstNameError" class="text-danger">
+      {{ firstNameError }}
+    </div>
+  </div>
+  <div class="form-group mt-3 my-3">
+    <input type="text" class="form-control fs-4" [(ngModel)]="lastName" name="lastName" placeholder="Last Name">
+    <div *ngIf="lastNameError" class="text-danger">
+      {{ lastNameError }}
+      </div>
+    </div>
+
+  <button [disabled]="this.username === '' || this.email === '' || this.password === '' || this.firstName === '' || this.lastName === ''" type="submit" class="btn btn-primary mt-3 my-3 fs-4"><i class="bi bi-box-arrow-in-right"></i> se connecter</button>
+</form>
+</div>  

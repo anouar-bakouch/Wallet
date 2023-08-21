@@ -26,6 +26,8 @@ export class ListBudgetsComponent {
   public current_number : number = 1;
   categories: string[] = [];
   showLoading = false;
+  itemsError: string | null = null;
+  itemsFound = false;
 
 
   // Property to track whether the filter section should be shown or not
@@ -51,9 +53,15 @@ export class ListBudgetsComponent {
   }
 
   ngOnInit() {
+    if(this.budgets.length == 0 ) {
+      this.itemsError = "No items found";
+      this.itemsFound = true;
+    } 
     this.getBudgets();
     this.itemsType = this.budgetService.ItemsType;
     this.categories = this.budgetService.ItemsType.map((item: any) => item.value);
+    this.itemsFound = false;
+    
   }
 
  
