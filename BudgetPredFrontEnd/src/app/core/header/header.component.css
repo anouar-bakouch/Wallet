@@ -2,3 +2,8 @@
     width :100%;
     height: 60vh;
 }
+
+.text-coloring {
+    color: rgb(3, 157, 72);
+    font-size: 19px;
+}

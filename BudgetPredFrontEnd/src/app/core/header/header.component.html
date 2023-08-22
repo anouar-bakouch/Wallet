@@ -2,8 +2,8 @@
   <div class="container">
     <a class="navbar-brand" href=""><img
       class="img-fluid img-thumbnail"
-      src="/assets/images/core-logo.png"
-      width="180"
+      src="/assets/public/wallet.png"
+      width="60"
       height="40"
       alt="budget predictor"
       srcset=""
@@ -39,26 +39,37 @@
               </ul>
             </div>
             <li>
-              <a class="dropdown-item text-primary  fs-bold " routerLink="/budgetHome/budgets"
+              <a class="dropdown-item text-coloring  fs-bold " routerLink="/budgetHome/budgets"
                 ><i class="bi bi-house"></i> Home</a
               >
             </li>
             <li>
-              <a class="dropdown-item text-primary  fs-bold" routerLink="/budgetHome/mySpace"
-                ><i class="bi bi-person-workspace"></i> My SPACE</a
+              <a class="dropdown-item text-coloring  fs-bold" routerLink="/budgetHome/mySpace"
+                ><i class="bi bi-person-workspace"></i> My Space</a
               >
             </li>
             <li>
-              <a class="dropdown-item text-primary fs-bold" routerLink="/budgetHome/cart"
-                ><i class="bi bi-cart-fill"></i> CART</a
+              <a class="dropdown-item text-coloring  fs-bold" routerLink="/budgetHome/mySpace"
+                ><i class="bi bi-person-workspace"></i> Profile</a
               >
             </li>
             <li>
-              <a class="dropdown-item text-primary  fs-bold " routerLink="/budgetHome/myPurchases"
-                ><i class="bi bi-cash-coin"></i> My Purchases</a
+              <a class="dropdown-item text-coloring fs-bold" routerLink="/budgetHome/cart"
+                ><i class="bi bi-cart-fill"></i> Cart</a
               >
             </li>
             <li>
+              <a class="dropdown-item text-coloring  fs-bold " routerLink="/budgetHome/myPurchases"
+                ><i class="bi bi-cash-coin"></i> Purchases</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-coloring  fs-bold" routerLink="/budgetHome/mySpace"
+                ><i class="bi bi-person-workspace"></i> Graphique des dépenses</a
+              >
+            </li>
+            <li>
+            
               <a (click)="onLogout()" class="dropdown-item text-darkblue" href=""
                 >se déconnecter</a
               >
