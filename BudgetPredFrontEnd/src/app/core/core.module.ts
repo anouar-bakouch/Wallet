@@ -12,6 +12,8 @@ import { Interceptor } from '../interceptors/interceptor.service';
 import { CartComponent } from './cart/cart.component';
 import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
 import { MySpaceComponent } from './my-space/my-space.component';
+import { NgChartsModule } from 'ng2-charts';
+
 
 @NgModule({
   declarations: [
@@ -30,6 +32,7 @@ import { MySpaceComponent } from './my-space/my-space.component';
     FormsModule,
     ReactiveFormsModule,
     RxReactiveFormsModule,
+    NgChartsModule
   ],
   exports : [
     HomeBudgetComponent
