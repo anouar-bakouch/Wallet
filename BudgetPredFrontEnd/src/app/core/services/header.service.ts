@@ -26,6 +26,6 @@ export class HeaderService {
           value : Currencies[name as keyof typeof Currencies],
         }   
       }
-        );
+    );
 
 }

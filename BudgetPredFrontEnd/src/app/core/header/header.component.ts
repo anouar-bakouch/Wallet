@@ -5,6 +5,7 @@ import { RxFormBuilder, RxFormGroup } from '@rxweb/reactive-form-validators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/models/User';
+import { HeaderService } from '../services/header.service';
 
 @Component({
   selector: '[app-budget-header]',
@@ -20,6 +21,8 @@ export class HeaderBudgetComponent {
   show_loading : boolean = false;
   closeResult:string = ''
   notSetup:boolean = true;
+  currencies = this.hservice.currencies;
+  languages = this.hservice.Languages;
 
   userForm = <RxFormGroup> this.fservice.group({
     currency : ['',Validators.required],
@@ -27,7 +30,10 @@ export class HeaderBudgetComponent {
   });
 
   constructor(
-    public authService:AuthService,public fservice : RxFormBuilder,  private modalService: NgbModal,
+    public authService:AuthService,
+    public fservice : RxFormBuilder,
+    private modalService: NgbModal,
+    private hservice:HeaderService
   ) {
 
     const id = Number(localStorage.getItem('user_id'));
