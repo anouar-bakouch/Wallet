@@ -1,5 +1,8 @@
 <section class="vh-100 ">
 
+  <div *ngIf="showErrorMessage" class="w-50 w-auto text-center my-3 text-danger fs-4 text-center border border-danger">
+    <h3>{{errorMessage}}</h3>
+  </div>
 
   <div  class="container py-5 h-100">
     <div class="animated-login row d-flex align-items-center justify-content-center h-100">
@@ -10,6 +13,7 @@
       </div>
       <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
         <h1 class="text-center text-primary fs-2"><i class="bi bi-person-lock "></i>Se Connecter</h1>
+        <p class="mt-3">Entrez votre nom d'utilisateur et votre mot de passe pour vous connecter.</p>
 
         <form (ngSubmit)="login()">
           <div class="form-group">

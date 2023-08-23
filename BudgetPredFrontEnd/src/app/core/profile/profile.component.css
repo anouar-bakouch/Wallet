@@ -1,0 +1,31 @@
+.form-control {
+    border-radius: 0.25rem;
+    border-color: #ccc;
+    box-shadow: none;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+  }
+  
+  .form-control-lg {
+    font-size: 1.25rem;
+    padding: 1rem 1.25rem;
+  }
+  
+  .btn {
+    border-radius: 0.25rem;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    transition: 0.2s;
+  }
+  
+  .btn:hover {
+    background-color: #0062cc;
+  }
+  
+label {
+    color: #0062cc;
+    font-size : 1.25rem;
+}

@@ -55,3 +55,15 @@ class Pagination(PageNumberPagination):
     page_query_param = 'page'
     page_size_query_param = 'page_size'
     max_page_size = 10 
+
+
+class MonthlyBudget(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    month = models.DateField()
+    savings = models.FloatField(default=0)
+    budget = models.FloatField(default=0)
+    spendings = models.FloatField(default=0)
+
+    def __str__(self):
+        return f"MonthlyBudget: {self.user.username} - {self.month}"

@@ -203,9 +203,6 @@ class PredictedItems(APIView):
         recommended_items_data = recommended_serializer.data
 
         return Response(recommended_items_data)
-
-    
-
  
 class ListUserView(APIView):
 

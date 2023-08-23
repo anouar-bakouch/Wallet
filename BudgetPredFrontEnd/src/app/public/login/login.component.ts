@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit {
   loginButtonDisabled: boolean = true;
   usernameError: string | null = null;
   passwordError: string | null = null;
+  errorMessage: string | null = null;
+  showErrorMessage: boolean = false;
 
   constructor(
   private authService: AuthService,
@@ -24,6 +26,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.showLoading = true;
+    this.showErrorMessage = false;
     // Add validators to the username and password fields
     if (this.username === '') {
       this.usernameError = 'Username is required.';
@@ -47,9 +50,26 @@ export class LoginComponent implements OnInit {
       this.authService.refreshToken();
       this.router.navigate(['/budgetHome/budgets']);
     }, error => {
-      console.log(error);
+
+
+      // for only 7 seconds
+      setTimeout(() => {
+        this.errorMessage = error.error.message;
+        this.showErrorMessage = true;
+        this.showLoading = false;
+
+        // reset the form  
+        this.username = '';
+        this.password = '';
+        this.loginButtonDisabled = true;        
+
+      } , 3000);
+
+      
+
     }, () => {
       this.showLoading = false;
+      
     }
     );
     

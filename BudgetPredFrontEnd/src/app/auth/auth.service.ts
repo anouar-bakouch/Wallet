@@ -92,6 +92,11 @@ export class AuthService {
     return this.http.get<User>(url);
   }
 
+  updateUser(id:number,user:any): Observable<any> {
+    const url = environment.apiUrl + '/updateuser/' + id + '/';
+    return this.http.put<User>(url,user);
+  }
+
   }
 
 

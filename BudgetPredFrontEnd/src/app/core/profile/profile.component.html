@@ -1,32 +1,36 @@
-<form [formGroup]="userForm">
-    <div class="form-group">
+<div class="container-fluid my-3">
+  <form [formGroup]="userForm" (ngSubmit)="submit()" class="row g-3">
+    <div class="col-md-6">
       <label for="username">Username</label>
-      <input type="text" formControlName="username" class="form-control" />
+      <input type="text" formControlName="username" class="form-control form-control-lg" placeholder="Username" />
     </div>
-    <div class="form-group">
+    <div class="col-md-6">
       <label for="password">Password</label>
-      <input type="password" formControlName="password" class="form-control" />
+      <input type="password" formControlName="password" class="form-control form-control-lg" placeholder="Password" />
     </div>
-    <div class="form-group">
+    <div class="col-md-6">
       <label for="email">Email</label>
-      <input type="email" formControlName="email" class="form-control" />
+      <input type="email" formControlName="email" class="form-control form-control-lg" placeholder="Email" />
     </div>
-    <div class="form-group">
+    <div class="col-md-6">
       <label for="first_name">First Name</label>
-      <input type="text" formControlName="first_name" class="form-control" />
+      <input type="text" formControlName="first_name" class="form-control form-control-lg" placeholder="First Name" />
     </div>
-    <div class="form-group">
+    <div class="col-md-6">
       <label for="last_name">Last Name</label>
-      <input type="text" formControlName="last_name" class="form-control" />
+      <input type="text" formControlName="last_name" class="form-control form-control-lg" placeholder="Last Name" />
     </div>
-    <div class="form-group">
-      <label for="path_photo">Path Photo</label>
-      <input type="text" formControlName="path_photo" class="form-control" />
+    <div class="col-md-6">
+      <img [src]="profile_pic" class="img img-responsive border border-radius" width="100" height="100" alt="" srcset="">
+      <input type="file" id="inputGroupFile01"  (change)="onFileSelected($event)" formControlName="path_photo" class="form-control my-1" />
     </div>
-    <div class="form-group">
+    <div class="col-md-6">
       <label for="month_budget">Month Budget</label>
-      <input type="number" formControlName="month_budget" class="form-control" />
+      <input type="number" formControlName="month_budget" class="form-control form-control-lg" placeholder="Month Budget" />
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+    </div>
   </form>
   
+</div>
