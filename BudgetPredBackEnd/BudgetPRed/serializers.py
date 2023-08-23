@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from BudgetPRed.models import Item, Purchase, User , ItemPurchase
+from BudgetPRed.models import Item, Purchase, User , ItemPurchase , MonthlyBudget
 from rest_framework.parsers import MultiPartParser, FormParser , JSONParser
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password 
@@ -40,8 +40,6 @@ class ItemPurchaseSerializer(serializers.ModelSerializer):
             instance.delete()
             return instance
             
-         
-    
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -70,10 +68,6 @@ class UserSerializer(serializers.ModelSerializer):
         instance.delete()
         return instance
     
-
-    
-
-        
 class AuthSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -106,12 +100,13 @@ class PurchaseSerializer(serializers.ModelSerializer):
         instance.delete()
         return instance
 
+class MonthlyBudgetSerializer(serializers.ModelSerializer) :
+    class Meta :
+        model = MonthlyBudget
+        fields = '__all__'
 
-    
-
-    
-
-        
+    def create(self,validated_data):
+        return MonthlyBudget.objects.create(**validated_data)
 
 
     
