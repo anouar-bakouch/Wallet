@@ -407,32 +407,40 @@ class deleteItemPurchaseView(APIView):
 
 # Purchase PART YEHOOOOO 
 
-class PurchaseView(APIView):
-    # follow the serializer PurchaseSerializer
-    def post(self, request):
+def post(self, request):
 
-        MONTSTRU = request.data.get('MONTSTRU') # total = quantity * price
-        budget = request.data.get('Budget')
-        user_id = request.data.get('user_id')
-        quantity = request.data.get('quantity')
-        user = User.objects.get(id=user_id)
+    MONTSTRU = request.data.get('MONTSTRU') # total = quantity * price
+    budget = request.data.get('Budget')
+    user_id = request.data.get('user_id')
+    quantity = request.data.get('quantity')
+    user = User.objects.get(id=user_id)
 
-        # make a minus of the user month budet : month_budget - MONTSTRU 
-        try :
-            MONTRAPP = float(budget) - float(MONTSTRU)
-            user.month_budget = user.month_budget - float(MONTSTRU)
-            user.save()
-            MOISSOLD = request.data.get('MOISSOLD')
-            item_purchase = request.data.get('item_id')
-            item = ItemPurchase.objects.get(item_id=item_purchase)
-            item.is_purchased = True;
-            item.save()
-            purchase = Purchase.objects.create(MONTRAPP=MONTRAPP, user=user, MOISSOLD=MOISSOLD, item_purchase=item, quantity=quantity,budget=budget) 
-            purchase.save()
-        except :
-            return Response({'message': 'Purchase not added successfully'})
+    # make a minus of the user month budet : month_budget - MONTSTRU 
+    try :
+        MONTRAPP = float(budget) - float(MONTSTRU)
+        user.month_budget = user.month_budget - float(MONTSTRU)
+        user.save()
+        MOISSOLD = request.data.get('MOISSOLD')
+        item_purchase = request.data.get('item_id')
+        item = ItemPurchase.objects.get(item_id=item_purchase)
+        item.is_purchased = True;
+        item.save()
+        purchase = Purchase.objects.create(MONTRAPP=MONTRAPP, user=user, MOISSOLD=MOISSOLD, item_purchase=item, quantity=quantity,budget=budget) 
+        purchase.save()
+
+        # update the MonthlyBudget object
+        monthly_budget = MonthlyBudget.objects.filter(user=user, month=MOISSOLD).first()
+        if monthly_budget:
+            monthly_budget.spendings = monthly_budget.spendings + MONTSTRU
+            monthly_budget.save()
+        else:
+            monthly_budget = MonthlyBudget.objects.create(user=user, month=MOISSOLD)
+            monthly_budget.spendings = MONTSTRU
+            monthly_budget.save()
+    except :
+        return Response({'message': 'Purchase not added successfully'})
         
-        return Response({'message': 'Purchase added successfully'})
+    return Response({'message': 'Purchase added successfully'})
     
 class ListPurchaseView(APIView):
     def get(self, request):
@@ -450,3 +458,4 @@ class ListMonthlyPurchaseView(APIView):
         purchase = Purchase.objects.filter(user=user, MOISSOLD=month)
         serializer = PurchaseSerializer(purchase, many=True)
         return Response(serializer.data)
+
