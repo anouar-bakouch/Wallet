@@ -9,7 +9,6 @@ class User(models.Model):
     first_name = models.CharField(max_length=255, default='no name')
     last_name = models.CharField(max_length=255, default='no name')
     path_photo = models.ImageField(upload_to='static/images', default='images/no-user-img.jpg')
-    month_budget = models.FloatField(default=0)
 
     def __str__(self):
         return self.username
@@ -35,7 +34,6 @@ class ItemPurchase(models.Model):
    
     def __str__(self):
         return f"User: {self.user.username} - Item: {self.item.LIBACTGE}"
-
 
 
 class Purchase(models.Model):

@@ -25,6 +25,7 @@ export class MyPurchasesComponent {
     this.puchaseservice.getPurchaseByUser(this.user_id).subscribe(
       (data: any) => {
         this.my_purchases = data;
+        console.log(data)
       },
       error => {
         console.log(error);

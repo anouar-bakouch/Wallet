@@ -4,8 +4,8 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 import joblib
 from sklearn.linear_model import LinearRegression
-from BudgetPRed.serializers import  ItemPurchaseSerializer, ItemSerializer, PurchaseSerializer, UserSerializer , AuthSerializer
-from BudgetPRed.models import Item, ItemPurchase, Pagination, User , Purchase
+from BudgetPRed.serializers import  ItemPurchaseSerializer, ItemSerializer, PurchaseSerializer, UserSerializer , AuthSerializer , MonthlyBudgetSerializer
+from BudgetPRed.models import Item, ItemPurchase, Pagination, User , Purchase , MonthlyBudget
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -406,42 +406,44 @@ class deleteItemPurchaseView(APIView):
         }, status=204)    
 
 # Purchase PART YEHOOOOO 
+from django.db.models import Sum
 
 class PurchaseView(APIView):
-    # follow the serializer PurchaseSerializer
     def post(self, request):
-        MONTSTRU = request.data.get('MONTSTRU') # total = quantity * price
+        MONTSTRU = request.data.get('MONTSTRU')
         budget = request.data.get('Budget')
         user_id = request.data.get('user_id')
         quantity = request.data.get('quantity')
         user = User.objects.get(id=user_id)
 
-        # make a minus of the user month budet : month_budget - MONTSTRU 
-        try :
+        try:
+            print('yeah')
             MONTRAPP = float(budget) - float(MONTSTRU)
             user.month_budget = user.month_budget - float(MONTSTRU)
             user.save()
+
             MOISSOLD = request.data.get('MOISSOLD')
             item_purchase = request.data.get('item_id')
             item = ItemPurchase.objects.get(item_id=item_purchase)
-            item.is_purchased = True;
+            item.is_purchased = True
             item.save()
-            purchase = Purchase.objects.create(MONTRAPP=MONTRAPP, user=user, MOISSOLD=MOISSOLD, item_purchase=item, quantity=quantity,budget=budget) 
+
+            purchase = Purchase.objects.create(
+                MONTRAPP=MONTRAPP,
+                user=user,
+                MOISSOLD=MOISSOLD,
+                item_purchase=item,
+                quantity=quantity,
+                budget=budget
+            )
             purchase.save()
 
-            # update the MonthlyBudget object
-            monthly_budget = MonthlyBudget.objects.filter(user=user, month=MOISSOLD).first()
-            if monthly_budget:
-                monthly_budget.spendings = monthly_budget.spendings + MONTSTRU
-                monthly_budget.save()
-            else:
-                monthly_budget = MonthlyBudget.objects.create(user=user, month=MOISSOLD)
-                monthly_budget.spendings = MONTSTRU
-                monthly_budget.save()
-        except :
+ 
+        except:
             return Response({'message': 'Purchase not added successfully'})
-            
+
         return Response({'message': 'Purchase added successfully'})
+
 
 class ListPurchaseView(APIView):
     def get(self, request):
@@ -467,6 +469,59 @@ class ListMonthlyBudgetView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')
         user = User.objects.get(id=user_id)
+        # get the purchases of each month ( MOISSOLD )
+        purchases = Purchase.objects.filter(user=user)
+        # get the budget of each month ( MOISSOLD )
+        budgets = MonthlyBudget.objects.filter(user=user) # bc we have the budget of each month
+        # get the months of the purchases
+        months = []
+        for purchase in purchases:
+            months.append(purchase.MOISSOLD)
+        # get the months of the budgets
+        for budget in budgets:
+            # month is in format YYYY-MM-DD , we only want MM
+            
+            months.append(budget.month)
+        # get the unique months
+        months = list(set(months))
+
+        # for each month, get the budget, spendings and savings
+        # and save them in the database
+        # if the month already exists, update the data
+        # else, create a new monthly budget
+        for month in months:
+            purchases = Purchase.objects.filter(user=user, MOISSOLD=month)
+            budgets = MonthlyBudget.objects.filter(user=user, month=month)
+            budget = 0
+            spendings = 0
+            savings = 0
+
+            for purchase in purchases:
+                budget += purchase.budget
+                spendings += purchase.MONTSTRU
+            for budget_ in budgets:
+                budget += budget_.budget
+                spendings += budget_.spendings
+                savings += budget_.savings
+            if len(budgets) == 0:
+                monthly_budget = MonthlyBudget.objects.create(
+                    user=user,
+                    month=month.strftime("%Y-%m-%d"),
+                    budget=budget,
+                    spendings=spendings,
+                    savings=budget - spendings
+                )
+                monthly_budget.save()
+            else:
+                monthly_budget = MonthlyBudget.objects.get(user=user, month=month)
+                monthly_budget.budget = budget
+                monthly_budget.spendings = spendings
+                monthly_budget.savings = budget - spendings
+                monthly_budget.save()
+
+        # get the monthly budgets of the user
         monthly_budgets = MonthlyBudget.objects.filter(user=user)
+        serializer = MonthlyBudgetSerializer(monthly_budgets, many=True)
+        return Response(serializer.data)
         
     

@@ -105,8 +105,26 @@ class MonthlyBudgetSerializer(serializers.ModelSerializer) :
         model = MonthlyBudget
         fields = '__all__'
 
-    def create(self,validated_data):
+    # create a monthly budget following the model
+    def create(self, validated_data):
         return MonthlyBudget.objects.create(**validated_data)
+
+    # update a monthly budget following the model
+    def update(self, instance, validated_data):
+        instance.user = validated_data.get('user', instance.user)
+        instance.budget = validated_data.get('budget', instance.budget)
+        instance.MOISSOLD = validated_data.get('spendings', instance.spendings)
+        instance.savings = validated_data.get('savings', instance.savings)
+        instance.month = validated_data.get('month', instance.month)
+        instance.save()
+        return instance
+
+    # delete a monthly budget following the model
+    def delete(self, instance):
+        instance.delete()
+        return instance
+
+
 
 
     
