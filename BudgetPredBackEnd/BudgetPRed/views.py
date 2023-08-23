@@ -416,10 +416,9 @@ class PurchaseView(APIView):
         user = User.objects.get(id=user_id)
 
         try:
-            print('yeah')
-            MONTRAPP = float(budget) - float(MONTSTRU)
-            user.month_budget = user.month_budget - float(MONTSTRU)
-            user.save()
+            # MONTRAPP = float(budget) - float(MONTSTRU)
+            # user.month_budget = user.month_budget - float(MONTSTRU)
+            # user.save()
 
             MOISSOLD = request.data.get('MOISSOLD')
             item_purchase = request.data.get('item_id')
@@ -462,65 +461,55 @@ class ListMonthlyPurchaseView(APIView):
         return Response(serializer.data)
 
 # Saving each month data 
+from django.db.models import Sum
 
 class ListMonthlyBudgetView(APIView):
     # the user's monthly budget data 
     def get(self, request):
         user_id = request.query_params.get('user_id')
         user = User.objects.get(id=user_id)
-        # get the purchases of each month ( MOISSOLD )
-        purchases = Purchase.objects.filter(user=user)
-        # get the budget of each month ( MOISSOLD )
-        budgets = MonthlyBudget.objects.filter(user=user) # bc we have the budget of each month
-        # get the months of the purchases
-        months = []
-        for purchase in purchases:
-            months.append(purchase.MOISSOLD)
-        # get the months of the budgets
-        for budget in budgets:
-            # month is in format YYYY-MM-DD , we only want MM
-            
-            months.append(budget.month)
+        purchase = Purchase.objects.filter(user=user)
+        months = list()
+        # for each month , a monthly budget is created
+        for month in purchase:
+            months.append(month.MOISSOLD)
         # get the unique months
         months = list(set(months))
-
-        # for each month, get the budget, spendings and savings
-        # and save them in the database
-        # if the month already exists, update the data
-        # else, create a new monthly budget
+        print(months)
+        # for each month , a monthly budget is created or updated 
         for month in months:
+            # get the user's purchases for the month
             purchases = Purchase.objects.filter(user=user, MOISSOLD=month)
-            budgets = MonthlyBudget.objects.filter(user=user, month=month)
-            budget = 0
-            spendings = 0
-            savings = 0
+            # get the user's budget for the month
+            mbudget = MonthlyBudget.objects.filter(user=user, month=month)
+            budget = mbudget.first().budget
+            # get the user's spendings for the month
+            savings = purchases.aggregate(Sum('MONTRAPP'))
+            # get the user's savings for the month
+            spendings = purchases.aggregate(Sum('budget'))['budget__sum'] - savings['MONTRAPP__sum']
 
-            for purchase in purchases:
-                budget += purchase.budget
-                spendings += purchase.MONTSTRU
-            for budget_ in budgets:
-                budget += budget_.budget
-                spendings += budget_.spendings
-                savings += budget_.savings
-            if len(budgets) == 0:
-                monthly_budget = MonthlyBudget.objects.create(
-                    user=user,
-                    month=month.strftime("%Y-%m-%d"),
-                    budget=budget,
-                    spendings=spendings,
-                    savings=budget - spendings
-                )
-                monthly_budget.save()
-            else:
-                monthly_budget = MonthlyBudget.objects.get(user=user, month=month)
+            # check if the monthly budget exists
+            monthly_budget = MonthlyBudget.objects.filter(user=user, month=month).first()
+            if monthly_budget:
+                # update 
                 monthly_budget.budget = budget
                 monthly_budget.spendings = spendings
-                monthly_budget.savings = budget - spendings
+                monthly_budget.savings = savings['MONTRAPP__sum']
                 monthly_budget.save()
 
-        # get the monthly budgets of the user
+            else:
+                # create a new monthly budget
+                monthly_budget = MonthlyBudget.objects.create(
+                    user=user,
+                    month=month,
+                    budget=budget['budget__sum'],
+                    spendings=spendings,
+                    savings=savings['MONTRAPP__sum']
+                )
+                monthly_budget.save()
+
+        # get the user's monthly budgets
         monthly_budgets = MonthlyBudget.objects.filter(user=user)
         serializer = MonthlyBudgetSerializer(monthly_budgets, many=True)
         return Response(serializer.data)
-        
-    
+

@@ -62,6 +62,7 @@ class MonthlyBudget(models.Model):
     savings = models.FloatField(default=0)
     budget = models.FloatField(default=0) # budget allowed to spend
     spendings = models.FloatField(default=0)
+    devise = models.CharField(max_length=50, default='EURO')
 
     def __str__(self):
         return f"MonthlyBudget: {self.user.username} - {self.month}"
