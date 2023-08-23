@@ -9,7 +9,7 @@ class User(models.Model):
     first_name = models.CharField(max_length=255, default='no name')
     last_name = models.CharField(max_length=255, default='no name')
     path_photo = models.ImageField(upload_to='static/images', default='images/no-user-img.jpg')
-    devise = models.CharField(max_length=50, default='EURO')
+    currency = models.CharField(max_length=50, default='EURO')
     language = models.CharField(max_length=50, default='French')
 
     def __str__(self):

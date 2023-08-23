@@ -8,4 +8,6 @@ export interface User {
     first_name: string;
     last_name: string;
     path_photo : string | undefined ;
+    language : string;
+    
 }
