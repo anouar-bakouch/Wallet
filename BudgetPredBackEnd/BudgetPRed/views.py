@@ -513,3 +513,4 @@ class ListMonthlyBudgetView(APIView):
         serializer = MonthlyBudgetSerializer(monthly_budgets, many=True)
         return Response(serializer.data)
 
+# class setDeviseType
