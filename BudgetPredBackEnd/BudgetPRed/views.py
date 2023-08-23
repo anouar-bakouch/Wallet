@@ -1,4 +1,3 @@
-
 import pickle
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -15,7 +14,7 @@ import numpy as np
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from django.contrib.auth.hashers import make_password 
 from statsmodels.tsa.arima.model import ARIMA
-
+from django.db.models import Sum
 # Recommendation ML
 from sklearn.calibration import LabelEncoder
 from surprise import Reader,Dataset,KNNBasic
@@ -25,7 +24,7 @@ def index(request):
     # return index.html in templates folder
     return render(request, 'index.html')
 
-# budgets 
+# items 
 
 class AddItemView(APIView):
     parser_classes = (MultiPartParser, FormParser)
@@ -44,7 +43,6 @@ class ListItemsView(APIView):
         budgets = Item.objects.all()
         serializer = ItemSerializer(budgets, many=True)
         return Response({"budgets": serializer.data})
-
 
 class UpdateItemView(APIView):
     def put(self, request, pk):
@@ -65,7 +63,6 @@ class DeleteItemView(APIView):
         return Response({
             "message": "Budget with id `{}` has been deleted.".format(pk)
         }, status=204)
-    
     
 class GetItemView(APIView):
     def get(self, request):
@@ -204,6 +201,8 @@ class PredictedItems(APIView):
 
         return Response(recommended_items_data)
  
+# USER 
+
 class ListUserView(APIView):
 
     def get(self, request):
@@ -461,7 +460,6 @@ class ListMonthlyPurchaseView(APIView):
         return Response(serializer.data)
 
 # Saving each month data 
-from django.db.models import Sum
 
 class ListMonthlyBudgetView(APIView):
     # the user's monthly budget data 
