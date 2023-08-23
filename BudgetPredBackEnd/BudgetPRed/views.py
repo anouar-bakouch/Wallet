@@ -406,7 +406,6 @@ class deleteItemPurchaseView(APIView):
         }, status=204)    
 
 # Purchase PART YEHOOOOO 
-from django.db.models import Sum
 
 class PurchaseView(APIView):
     def post(self, request):

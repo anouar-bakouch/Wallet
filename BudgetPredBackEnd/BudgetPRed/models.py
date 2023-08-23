@@ -60,7 +60,7 @@ class MonthlyBudget(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     month = models.DateField()
     savings = models.FloatField(default=0)
-    budget = models.FloatField(default=0)
+    budget = models.FloatField(default=0) # budget allowed to spend
     spendings = models.FloatField(default=0)
 
     def __str__(self):
