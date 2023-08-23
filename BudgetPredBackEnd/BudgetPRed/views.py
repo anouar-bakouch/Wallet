@@ -218,7 +218,7 @@ class GetUserView(APIView):
         return Response({"user": serializer.data})
     
 class UpdateUserView(APIView):
-    def put(self, request, pk):
+    def patch(self, request, pk):
         saved_user = get_object_or_404(User.objects.all(), pk=pk)
         data = request.data.get('user')
         serializer = UserSerializer(instance=saved_user, data=data, partial=True)
@@ -227,6 +227,7 @@ class UpdateUserView(APIView):
         return Response({
             "success": "User '{}' updated successfully".format(user_saved.id)
         })
+
     
 class DeleteUserView(APIView):
     def delete(self, request, pk):

@@ -94,7 +94,8 @@ export class AuthService {
 
   updateUser(id:number,user:any): Observable<any> {
     const url = environment.apiUrl + '/updateuser/' + id + '/';
-    return this.http.put<User>(url,user);
+    // using the patch method to update the user
+    return this.http.patch(url,{'user':user});
   }
 
   }

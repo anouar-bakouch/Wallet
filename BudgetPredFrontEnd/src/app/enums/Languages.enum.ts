@@ -1,6 +1,6 @@
 
 
-export enum Languagges {
+export enum Languages {
     
     ENG = "english",
     FR = "french",
