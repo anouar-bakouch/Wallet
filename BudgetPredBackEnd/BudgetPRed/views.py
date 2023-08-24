@@ -17,6 +17,7 @@ from statsmodels.tsa.arima.model import ARIMA
 from django.db.models import Sum
 from datetime import date, datetime
 import calendar
+from dateutil.relativedelta import relativedelta
 # Recommendation ML
 from sklearn.calibration import LabelEncoder
 from surprise import Reader,Dataset,KNNBasic
@@ -518,52 +519,67 @@ class ListMonthlyBudgetView(APIView):
         return Response(serializer.data)
 
 # OBJECTIVES
-
-def get_end_of_month():
-    today = date.today()
-    _, last_day = calendar.monthrange(today.year, today.month)
-    end_of_month = datetime(today.year, today.month, last_day)
-    return end_of_month.date()
-
-
+def check_date(month):
+    # to check if we are in a new month
+    actual_month = date.today().month # example : 7
+    if month == actual_month:
+        return True
+    else:
+        return False
 
 class NewFormAPIView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')
         user = User.objects.get(id=user_id)
+        month_of_request = request.query_params.get('month')
+
         #date.today() == get_end_of_month()
-        if True : # for test purposes
+        if check_date(month_of_request) : # for test purposes
             # create a new form
-            monthly_budget = MonthlyBudget.objects.get(user=user, month=get_end_of_month())
-            monthly_budget.needs_new_form = True
+            # example : 
+                # get_end_of_month() = 2021-05-31
+                # user = 1
+                # budget = 0
+                # spendings = 0
+                # savings = 0
+                # needs_new_form = True because the user has not filled the form yet
+            # so month must the next month of the current month
+            month = get_end_of_month() + relativedelta(months=1)
+
+            monthly_budget = MonthlyBudget.objects.create(
+                user=user,
+                month=month,
+                budget=0,
+                spendings=0,
+                savings=0,
+                needs_new_form=True 
+            )
             monthly_budget.save()
             # return the monthly budget id so i can update it later with the budget 
             serializer = MonthlyBudgetSerializer(monthly_budget)
-            return Response(serializer.data)
+            return Response({"data":serializer.data,"id":monthly_budget.id})
         else:
             # end a http 204 response
             return Response(status=status.HTTP_204_NO_CONTENT)   
 
 class SaveFormAPIView(APIView):
-    def post(self, request):
-        # Save the form data in the database
-        user_id = request.data.get('user_id')
-        user = User.objects.get(id=user_id)
-        monthly_budget = MonthlyBudget.objects.get(user=user, month=get_end_of_month())
-
-        monthly_budget.budget = request.data.get('budget')
-        monthly_budget.savings = request.data.get('savings')
-        monthly_budget.spendings = request.data.get('spendings')
-        monthly_budget.needs_new_form = False
-        monthly_budget.save()
-
-        return Response({'message': 'Form saved successfully'})
+    def patch(self,request):
+        monthly_budget_id = request = request.data.get('monthly_budget_id')
+        MonthlyBudgetOBJ = MonthlyBudget.objects.get(id=monthly_budget_id)
+        # update the monthly budget
+        MonthlyBudgetOBJ.budget = request.data.get('budget')
+        MonthlyBudgetOBJ.month = request.data.get('month')
+        # set needs new form to false
+        MonthlyBudgetOBJ.needs_new_form = False
+        # save the monthly budget
+        MonthlyBudgetOBJ.save()
+        # return a response
+        return Response(status=status.HTTP_200_OK)
 
 # GET the user's actual budget and expenses for the current month
-
 def actual_month():
     today = date.today()
-    return datetime(today.year, today.month, 1).date()
+    return today
 
 class GetActualBudgetExpensesView(APIView):
     def get(self, request):
@@ -571,6 +587,15 @@ class GetActualBudgetExpensesView(APIView):
         user = User.objects.get(id=user_id)
         monthly_budget = MonthlyBudget.objects.get(user=user, month=actual_month())
         serializer = MonthlyBudgetSerializer(monthly_budget)
+        return Response(serializer.data)
+
+# GET the user's actual budget and expenses for the last months 
+class GetLastMonthsBudgetExpensesView(APIView):
+    def get(self, request):
+        user_id = request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        monthly_budgets = MonthlyBudget.objects.filter(user=user)
+        serializer = MonthlyBudgetSerializer(monthly_budgets, many=True)
         return Response(serializer.data)
 
 

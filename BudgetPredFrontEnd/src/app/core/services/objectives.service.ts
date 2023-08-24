@@ -12,9 +12,9 @@ export class ObjectivesService  {
 
     constructor(private http:HttpClient){}
 
-    getNewForm(user_id:number){
+    getNewForm(user_id:number,month:number){
         const _url = environment.apiUrl + '/get-new-form/';
-        const params = {user_id:user_id}
+        const params = {user_id:user_id,month:month}
         return this.http.get<MonthlyBudget>(_url,{params})
     }
 
