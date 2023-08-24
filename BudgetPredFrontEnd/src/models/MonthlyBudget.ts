@@ -7,4 +7,5 @@ export interface MonthlyBudget {
     savings : number;
     spendings : number;
     budget : number;
+    needs_new_form : boolean;
 }
