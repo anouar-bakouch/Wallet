@@ -535,3 +535,34 @@ class NewFormAPIView(APIView):
         form_data = generate_form_data(monthly_budget)
 
         return Response(form_data)
+
+class SaveFormAPIView(APIView):
+    def post(self, request):
+        # Save the form data in the database
+        user_id = request.data.get('user_id')
+        user = User.objects.get(id=user_id)
+        monthly_budget = MonthlyBudget.objects.get(user=user, month=get_end_of_month())
+
+        monthly_budget.budget = request.data.get('budget')
+        monthly_budget.savings = request.data.get('savings')
+        monthly_budget.spendings = request.data.get('spendings')
+        monthly_budget.needs_new_form = False
+        monthly_budget.save()
+
+        return Response({'message': 'Form saved successfully'})
+
+# GET the user's actual budget and expenses for the current month
+
+def actual_month():
+    today = date.today()
+    return datetime(today.year, today.month, 1).date()
+
+class GetActualBudgetExpensesView(APIView):
+    def get(self, request):
+        user_id = request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        monthly_budget = MonthlyBudget.objects.get(user=user, month=actual_month())
+        serializer = MonthlyBudgetSerializer(monthly_budget)
+        return Response(serializer.data)
+
+

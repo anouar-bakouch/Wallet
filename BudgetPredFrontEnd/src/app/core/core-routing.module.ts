@@ -7,6 +7,7 @@ import { StatsComponent } from "./stats/stats.component";
 import { CartComponent } from "./cart/cart.component";
 import { MySpaceComponent } from "./my-space/my-space.component";
 import { MyPurchasesComponent } from "./my-purchases/my-purchases.component";
+import { ObjectivesComponent } from "./objectives/objectives.component";
 
 
 const routes:Routes = [
@@ -42,6 +43,10 @@ const routes:Routes = [
             {
                 path : "myPurchases",
                 component : MyPurchasesComponent
+            },
+            {
+                path: "objectives",
+                component : ObjectivesComponent
             }
 
         ]
