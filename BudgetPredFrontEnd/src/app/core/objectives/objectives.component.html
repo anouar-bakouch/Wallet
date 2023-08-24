@@ -1,1 +1,14 @@
-<p>objectives works!</p>
+<div class="container-fluid">
+
+    <form>
+        <h3>set your budget objectif for this month</h3>
+        <div *ngFor="let field of formData">
+          <label for="budget">budget</label>
+          <input type="number" id="budget" [(ngModel)]="field.budget" name="{{ field.budget }}">
+           <label for="month">month</label>
+           <input type="date" [(ngModel)]="field.month" name="{{field.month}}" id="month" readonly value="field.budget"> 
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+
+</div>

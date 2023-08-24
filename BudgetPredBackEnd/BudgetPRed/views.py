@@ -526,15 +526,22 @@ def get_end_of_month():
     return end_of_month.date()
 
 
+
 class NewFormAPIView(APIView):
     def get(self, request):
-        # Generate the form dynamically based on user data and requirements
         user_id = request.query_params.get('user_id')
         user = User.objects.get(id=user_id)
-        monthly_budget = MonthlyBudget.objects.get(user=user, month=get_end_of_month())
-        form_data = generate_form_data(monthly_budget)
-
-        return Response(form_data)
+        if date.today() == get_end_of_month():
+            # create a new form
+            monthly_budget = MonthlyBudget.objects.get(user=user, month=get_end_of_month())
+            monthly_budget.needs_new_form = True
+            monthly_budget.save()
+            # return the monthly budget id so i can update it later with the budget 
+            serializer = MonthlyBudgetSerializer(monthly_budget)
+            return Response(serializer.data)
+        else:
+            # end a http 204 response
+            return Response(status=status.HTTP_204_NO_CONTENT)   
 
 class SaveFormAPIView(APIView):
     def post(self, request):
