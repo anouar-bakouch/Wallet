@@ -515,4 +515,16 @@ class ListMonthlyBudgetView(APIView):
         serializer = MonthlyBudgetSerializer(monthly_budgets, many=True)
         return Response(serializer.data)
 
-# class setDeviseType
+# class to set a new monthly budget for the user for each month 
+# must check for the end of the month to set a new budget for the next month 
+# if it is the end of the month , se
+
+# from datetime import date, datetime
+# import calendar
+
+# def get_end_of_month():
+#     today = date.today()
+#     _, last_day = calendar.monthrange(today.year, today.month)
+#     end_of_month = datetime(today.year, today.month, last_day)
+#     return end_of_month.date()
+# ``
