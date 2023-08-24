@@ -15,6 +15,8 @@ from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from django.contrib.auth.hashers import make_password 
 from statsmodels.tsa.arima.model import ARIMA
 from django.db.models import Sum
+from datetime import date, datetime
+import calendar
 # Recommendation ML
 from sklearn.calibration import LabelEncoder
 from surprise import Reader,Dataset,KNNBasic
@@ -515,16 +517,21 @@ class ListMonthlyBudgetView(APIView):
         serializer = MonthlyBudgetSerializer(monthly_budgets, many=True)
         return Response(serializer.data)
 
-# class to set a new monthly budget for the user for each month 
-# must check for the end of the month to set a new budget for the next month 
-# if it is the end of the month , se
+# OBJECTIVES
 
-# from datetime import date, datetime
-# import calendar
+def get_end_of_month():
+    today = date.today()
+    _, last_day = calendar.monthrange(today.year, today.month)
+    end_of_month = datetime(today.year, today.month, last_day)
+    return end_of_month.date()
 
-# def get_end_of_month():
-#     today = date.today()
-#     _, last_day = calendar.monthrange(today.year, today.month)
-#     end_of_month = datetime(today.year, today.month, last_day)
-#     return end_of_month.date()
-# ``
+
+class NewFormAPIView(APIView):
+    def get(self, request):
+        # Generate the form dynamically based on user data and requirements
+        user_id = request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        monthly_budget = MonthlyBudget.objects.get(user=user, month=get_end_of_month())
+        form_data = generate_form_data(monthly_budget)
+
+        return Response(form_data)

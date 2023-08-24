@@ -13,6 +13,7 @@ import { CartComponent } from './cart/cart.component';
 import { MyPurchasesComponent } from './my-purchases/my-purchases.component';
 import { MySpaceComponent } from './my-space/my-space.component';
 import { NgChartsModule } from 'ng2-charts';
+import { ObjectivesComponent } from './objectives/objectives.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { NgChartsModule } from 'ng2-charts';
     ListBudgetsComponent,
     CartComponent,
     MyPurchasesComponent,
-    MySpaceComponent
+    MySpaceComponent,
+    ObjectivesComponent
   ],
   imports: [  
     CoreRoutingModule,
