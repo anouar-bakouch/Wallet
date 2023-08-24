@@ -531,7 +531,8 @@ class NewFormAPIView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')
         user = User.objects.get(id=user_id)
-        if date.today() == get_end_of_month():
+        #date.today() == get_end_of_month()
+        if True : # for test purposes
             # create a new form
             monthly_budget = MonthlyBudget.objects.get(user=user, month=get_end_of_month())
             monthly_budget.needs_new_form = True
