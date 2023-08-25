@@ -1,0 +1,8 @@
+h3 {
+    font-size: 33px;
+    font-weight: 700;
+    background: linear-gradient(to right, #ff6a00, #ee0979);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    border-bottom: 2px solid #ee0979;
+}

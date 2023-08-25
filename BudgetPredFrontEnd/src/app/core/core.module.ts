@@ -15,7 +15,6 @@ import { MySpaceComponent } from './my-space/my-space.component';
 import { NgChartsModule } from 'ng2-charts';
 import { ObjectivesComponent } from './objectives/objectives.component';
 
-
 @NgModule({
   declarations: [
     HomeBudgetComponent,
@@ -34,7 +33,8 @@ import { ObjectivesComponent } from './objectives/objectives.component';
     FormsModule,
     ReactiveFormsModule,
     RxReactiveFormsModule,
-    NgChartsModule
+    NgChartsModule,
+
   ],
   exports : [
     HomeBudgetComponent

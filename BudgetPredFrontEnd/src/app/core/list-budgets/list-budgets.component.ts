@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { BudgetService } from '../services/budget.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+
 import {
   RxFormBuilder,
   RxFormGroup,
@@ -28,6 +29,8 @@ export class ListBudgetsComponent {
   showLoading = false;
   itemsError: string | null = null;
   itemsFound = false;
+  searchText: string = "";
+  searchResults: any[]=[];
 
 
   // Property to track whether the filter section should be shown or not
@@ -92,13 +95,19 @@ export class ListBudgetsComponent {
 
   nextPage() {
     this.current_number = this.current_number + 1;
+    this.showLoading = true;
     this.budgetService.getItems(this.current_number).subscribe((data: any) => {
       this.budgets = data.results;
       this.budgets.forEach((budget: any) => {
         budget.budgetphoto = this.base_url + budget.budgetphoto;
       }
       );
-    });
+    }, error => {
+      console.log(error);
+    }, () => {
+        this.showLoading = false;
+    }
+      );
   }
 
 
@@ -110,7 +119,7 @@ toggleFilter() {
   setTimeout(() => {
     this.showFilter = false;
   } , 3000);
-  
+
 }
 
 // Method to filter the items based on the selected category
@@ -201,4 +210,16 @@ filterItems(category: string) {
       this.getBudgets();
     });
   }
+
+  performSearch() {
+    if (this.searchText !== '') {
+      this.budgets = this.budgets.filter(item => {
+        return item.LIBACTGE.toLowerCase().includes(this.searchText.toLowerCase());
+      });
+    } else {
+      this.getBudgets(); // Reset the items array to the original state
+    }
+  }
+
+
 }
