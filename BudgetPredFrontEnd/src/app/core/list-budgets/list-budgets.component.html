@@ -68,7 +68,7 @@
             </li>
             <li class="list-group-item">
               <span class="text-primary">Prix: </span>
-              {{ budget.MONTSTRU }} $
+              {{ budget.MONTSTRU }} {{currency}}
             </li>
           </ul>
         </div>
@@ -82,6 +82,7 @@
   </div>
 
 </div>
+
 
 <ng-template class="modal fade" tabindex="-1" role="dialog" #mymodal let-modal aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -97,7 +98,7 @@
           </div>
 
           <div class="form-group my-3">
-            <label for="CODYTPAC">CODYTPAC</label>
+            <label for="CODYTPAC">Code de Catégorie</label>
             <input id="CODYTPAC" type="text" formControlName="CODYTPAC" class="my-3 form-control" placeholder="codtypac">
           </div>
 
@@ -114,9 +115,61 @@
             </select>
           </div>
 
+          <div class="form-group my-3">
+            <label for="price">Prix</label>
+            <input id="price" type="text" formControlName="MONTSTRU" class="my-3 form-control" placeholder="prix">
+          </div>
+
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>
     </div>
   </div>
 </ng-template>
+
+<!--- update section --->
+
+<ng-template class="modal fade" tabindex="-1" role="dialog" #my_modal let-modal aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Update Item INFOS</h5>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="onClickSubmit()" class="container">
+          <div class="form-group my-3">
+            <label for="LIBACTGE">Label - Description</label>
+            <input id="LIBACTGE" type="text" formControlName="LIBACTGE" class="my-3 form-control">
+          </div>
+
+          <div class="form-group my-3">
+            <label for="CODYTPAC">Code de Catégorie</label>
+            <input id="CODYTPAC" type="text" formControlName="CODYTPAC" class="my-3 form-control" placeholder="codtypac">
+          </div>
+
+          <div class="form-group my-3">
+            <label for="inputGroupFile01">Item Picture</label>
+            <input id="inputGroupFile01" type="file" (change)="onFileSelected($event)" formControlName="budgetphoto"
+              class="form-control">
+          </div>
+
+          <div class="form-group my-3">
+            <label for="categorie">Categorie</label>
+            <select id="categorie" formControlName="categorie" class="form-control">
+              <option *ngFor="let c of categories" [value]="c">{{c}}</option>
+            </select>
+          </div>
+
+          <div class="form-group my-3">
+            <label for="price">Prix</label>
+            <input id="price" type="text" formControlName="MONTSTRU" class="my-3 form-control" placeholder="prix">
+          </div>
+
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+

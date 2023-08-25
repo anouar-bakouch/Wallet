@@ -1,5 +1,13 @@
 <div class="container-fluid">
 <div class="list-group my-5 row">
+  <div class="row m-auto w-50">
+    <h2 class="col col-3 fs-1 text-center text-primary border-bottom border-3 border-primary " >
+      Your Cart 
+    </h2>
+    <h2 class="col col-3 fs-1 text-danger border-bottom border-3 border-danger" *ngIf="showMessage">
+      {{message}}
+    </h2>
+  </div>
 
     <div *ngFor="let x of itemsCart" class="col col-5 shadow list-group-item list-group-item-action flex-column justify-content-end w-50 m-auto align-items-center my-3 border-primary">
       <div class="d-flex w-100 justify-content-between">

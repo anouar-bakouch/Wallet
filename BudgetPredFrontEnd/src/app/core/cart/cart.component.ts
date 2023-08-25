@@ -21,6 +21,8 @@ export class CartComponent {
   public itemsCart: any[] = [];
   public dataArray: any[] = [];
   closeResult: string = '';
+  showMessage = false;
+  message = '';
 
   public form_ = <RxFormGroup> this.fservice.group(
     { 
@@ -53,6 +55,11 @@ export class CartComponent {
         });
       });
     });
+
+    if(this.itemsCart.length == 0 ) {
+      this.showMessage = true;
+      this.message = "is empty";
+    }
   }
 
   correctImagePath(item: any): void {

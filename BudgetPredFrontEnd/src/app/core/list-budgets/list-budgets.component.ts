@@ -33,6 +33,7 @@ export class ListBudgetsComponent {
   searchResults: any[]=[];
   messageItemAdded = ""
   showAdded = false;
+  currency :string = "";
 
   // Property to track whether the filter section should be shown or not
   showFilter: boolean = false;
@@ -46,6 +47,7 @@ export class ListBudgetsComponent {
       CODYTPAC: ['', Validators.required],
       budgetphoto: ['', Validators.required],
       categorie : ['', Validators.required],
+      MONTSTRU: ['', Validators.required],
     }
   );
 
@@ -65,7 +67,7 @@ export class ListBudgetsComponent {
     this.itemsType = this.budgetService.ItemsType;
     this.categories = this.budgetService.ItemsType.map((item: any) => item.value);
     this.itemsFound = false;
-    
+    this.currency = localStorage.getItem('currency') || "USD";
   }
 
  
