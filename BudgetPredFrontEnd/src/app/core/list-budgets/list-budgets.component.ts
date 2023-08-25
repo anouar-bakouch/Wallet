@@ -223,7 +223,10 @@ filterItems(category: string) {
   onDelete(id: number) {
     this.budgetService.deleteBudget(id).subscribe(() => {
       this.getBudgets();
-    });
+    }
+    
+    );
+
   }
 
   performSearch() {

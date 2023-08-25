@@ -14,7 +14,7 @@ export class BudgetService {
   private _url_get:string = environment.apiUrl + "/list-item/";
   private _url_post = environment.apiUrl + "/add-item/";
   private _url_put = environment.apiUrl + "/update-item/"; 
-  private _url_delete = environment.apiUrl + "/delete-budget/";
+  private _url_delete = environment.apiUrl + "/delete-item/";
   
   constructor(private http:HttpClient) { }
 
@@ -52,7 +52,7 @@ export class BudgetService {
   }
 
   deleteBudget(id:number){
-    return this.http.delete(this._url_delete + id);
+    return this.http.delete(this._url_delete + id+'/');
   }
 
   public ItemsType = Object.keys(CategorieItem).map(name => { 
