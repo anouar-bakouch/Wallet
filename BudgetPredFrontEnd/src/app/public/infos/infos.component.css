@@ -38,3 +38,45 @@
   .animated-section:nth-child(even) {
     animation-delay: 0.4s;
   }
+
+  .sec-1 {
+    border: 0.5px solid aliceblue;
+    border-radius: 17px;
+    background-color: white;
+  }
+
+  img {
+    background-color: white;
+    border-radius: 17px;
+
+  }
+
+
+  h3{
+    font-size : 43px;
+    background: linear-gradient(to right, #00ff6a, #0557d2);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+  }
+  .sec-1>p {
+    font-size : 18px;
+  }
+
+  .list-group-item {
+    font-size: 19px;
+    border : 1px solid aliceblue;
+    border-radius: 17px;
+  }
+
+  strong {
+    background: linear-gradient(to right, #006eff, #ee0959);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size : 23px;
+  }
+
+
+  /**wave***/
+
+  
