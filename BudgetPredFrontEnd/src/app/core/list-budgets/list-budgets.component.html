@@ -40,6 +40,12 @@
   <img src = "assets/animations/items.gif" *ngIf="showLoading" alt="loading" width="300" height="300">
 
   
+  <div *ngIf="showAdded" class="row">
+    <div class="col col-6 m-auto bg-primary text-light text-center">
+      <h3>{{messageItemAdded}}</h3>
+    </div>
+  </div>
+
   <div *ngIf="!showLoading" class="row">
     
     <div class="col-12">
@@ -56,7 +62,7 @@
         <div class="card-body">
           <h5 class="card-title">{{ budget.LIBACTGE }}</h5>
           <ul class="list-group">
-            <li class="list-group-item">
+            <li class="list-group-item my-2">
               <span class="text-primary">Catégorie: </span>
               {{ budget.categorie }}
             </li>

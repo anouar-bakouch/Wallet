@@ -31,7 +31,8 @@ export class ListBudgetsComponent {
   itemsFound = false;
   searchText: string = "";
   searchResults: any[]=[];
-
+  messageItemAdded = ""
+  showAdded = false;
 
   // Property to track whether the filter section should be shown or not
   showFilter: boolean = false;
@@ -181,6 +182,7 @@ filterItems(category: string) {
   }
 
   onClickSubmit() {
+    this.showAdded = false;
     if (this.form.valid) {
       // budgetphoto
       const formData = this.form.toFormData();
@@ -191,10 +193,23 @@ filterItems(category: string) {
   
       this.budgetService.addItem(formData).subscribe( response => {
         this.getBudgets();
+        setTimeout(() => {
+          this.showAdded = true;
+          this.messageItemAdded = "Added successfully !";
+        }, 3000);
       },
         error => {
           console.log(error);
-        }
+          setTimeout(() => {
+            this.showAdded = true;
+            this.messageItemAdded = "something went wrong";
+          }, 3000);
+          
+        },()=>{
+        
+            this.showAdded = false;
+         
+        } 
         );
       }
       // close the model 

@@ -1,0 +1,19 @@
+.url-list {
+    list-style-type: none;
+    padding: 13px;
+    color: rgb(255, 0, 102);
+  }
+  
+  .url-list li {
+    margin-bottom: 10px;
+  }
+  
+  .url-list li a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+  }
+  
+  .url-list li a:hover {
+    text-decoration: underline;
+  }
