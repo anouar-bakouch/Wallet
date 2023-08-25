@@ -42,7 +42,14 @@
   .sec-1 {
     border: 0.5px solid aliceblue;
     border-radius: 17px;
+    
+  }
+
+  .bg-change {
     background-color: white;
+    font-size: 23px;
+    border-radius: 17px;
+    padding: 7px;
   }
 
   img {
@@ -54,13 +61,18 @@
 
   h3{
     font-size : 43px;
-    background: linear-gradient(to right, #00ff6a, #0557d2);
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color : #ee0959;
+    font-weight: 700;
 
   }
-  .sec-1>p {
-    font-size : 18px;
+
+  .about {
+    background-color : white;
+    border:1px solid aliceblue ;
+    border-radius: 17px;
+    font-size: 23px;
+    margin-top: 7px;
+    padding: 7px;
   }
 
   .list-group-item {
@@ -77,6 +89,30 @@
   }
 
 
-  /**wave***/
+
+  @keyframes popUp {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+
+  .btn-animated {
+    background-color: #ee0959;
+    border-radius: 13px;
+    color: white;
+    font-size: 23px;
+    padding: 7px;
+    margin-top: 7px;
+    border: 1px solid aliceblue;
+    animation: popUp 1s infinite;
+  }
+
 
   
