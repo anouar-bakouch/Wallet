@@ -73,7 +73,7 @@
           </ul>
         </div>
         <div class="card-footer d-flex justify-content-between align-items-center">
-          <a href="#" class="btn btn-primary" (click)="fun(mymodal, budget)"><i class="bi bi-pencil-square"></i></a>
+          <button  class="btn btn-primary" (click)="fun(my_modal,budget)"><i class="bi bi-pencil-square"></i></button>
           <button  class="btn btn-danger" (click)="onDelete(budget.IDEIMPST)"><i class="bi bi-file-x-fill"></i></button>
           <button class="btn btn-success" (click)="addToCart(budget)"><i class="bi bi-cart-plus"></i></button>
         </div>
@@ -136,7 +136,7 @@
         <h5 class="modal-title" id="exampleModalLongTitle">Update Item INFOS</h5>
       </div>
       <div class="modal-body">
-        <form [formGroup]="form" (ngSubmit)="onClickSubmit()" class="container">
+        <form [formGroup]="form" (ngSubmit)="onClickUpdate()" class="container">
           <div class="form-group my-3">
             <label for="LIBACTGE">Label - Description</label>
             <input id="LIBACTGE" type="text" formControlName="LIBACTGE" class="my-3 form-control">
@@ -144,7 +144,7 @@
 
           <div class="form-group my-3">
             <label for="CODYTPAC">Code de Catégorie</label>
-            <input id="CODYTPAC" type="text" formControlName="CODYTPAC" class="my-3 form-control" placeholder="codtypac">
+            <input id="CODYTPAC" type="text" formControlName="CODTYPAC" class="my-3 form-control" placeholder="codtypac">
           </div>
 
           <div class="form-group my-3">
@@ -165,7 +165,7 @@
             <input id="price" type="text" formControlName="MONTSTRU" class="my-3 form-control" placeholder="prix">
           </div>
 
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">update</button>
         </form>
       </div>
     </div>

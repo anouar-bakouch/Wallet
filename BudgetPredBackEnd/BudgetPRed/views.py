@@ -48,14 +48,14 @@ class ListItemsView(APIView):
         return Response({"budgets": serializer.data})
 
 class UpdateItemView(APIView):
-    def put(self, request, pk):
-        saved_budget = get_object_or_404(Item.objects.all(), pk=pk)
-        data = request.data.get('budget')
-        serializer = ItemSerializer(instance=saved_budget, data=data, partial=True)
+    def patch(self, request):
+        saved_item = get_object_or_404(Item.objects.all(), pk=pk)
+        data = request.data.get('item')
+        serializer = ItemSerializer(instance=saved_item, data=data, partial=True)
         if serializer.is_valid(raise_exception=True):
-            budget_saved = serializer.save()
+            item_saved = serializer.save()
         return Response({
-            "success": "Budget '{}' updated successfully".format(budget_saved.id)
+            "success": "Item '{}' updated successfully".format(item_saved.id)
         })
     
 class DeleteItemView(APIView):

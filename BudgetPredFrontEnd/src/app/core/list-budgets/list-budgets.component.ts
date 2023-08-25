@@ -34,6 +34,7 @@ export class ListBudgetsComponent {
   messageItemAdded = ""
   showAdded = false;
   currency :string = "";
+  public id_to_update:number = 0;
 
   // Property to track whether the filter section should be shown or not
   showFilter: boolean = false;
@@ -44,7 +45,7 @@ export class ListBudgetsComponent {
   public form = <RxFormGroup> this.fservice.group(
     { 
       LIBACTGE: ['', Validators.required],
-      CODYTPAC: ['', Validators.required],
+      CODTYPAC: ['', Validators.required],
       budgetphoto: ['', Validators.required],
       categorie : ['', Validators.required],
       MONTSTRU: ['', Validators.required],
@@ -70,7 +71,6 @@ export class ListBudgetsComponent {
     this.currency = localStorage.getItem('currency') || "USD";
   }
 
- 
 
   getBudgets() {
     this.showLoading = true;
@@ -87,7 +87,6 @@ export class ListBudgetsComponent {
   }
 
   getItemsByCategorie(categorie:string){
-    console.group(categorie);
     this.budgetService.getItemsByCategorie(categorie,1).subscribe((data: any) => {
       this.budgets = data.results;
       this.budgets.forEach((budget: any) => {
@@ -130,7 +129,7 @@ filterItems(category: string) {
   this.filteredBudgets = this.budgets.filter(budget => budget.CODTYPAC === category);
 }
 
-  addToCart(item: Item) {
+addToCart(item: Item) {
     const ItemPurchase:ItemPurchase = {
       item_id : item.IDEIMPST,
       user_id : this.authService?.getId(),
@@ -140,20 +139,20 @@ filterItems(category: string) {
     this.budgetService.addToCart(ItemPurchase).subscribe((data: any) => {
       console.log(data);
     });
-  }
+}
 
 
 
-  fun(content: any, s: Item) {
-
-    // this.form.setValue({
-    //   LIBACTGE: s.LIBACTGE,
-    //   MONTSTRU: s.MONTSTRU,
-    //   MONTRAPP: s.MONTRAPP,
-    //   MOISSOLD: s.MOISSOLD,
-    //   CODYTPAC: s.CODYTPAC,
-    //   Budgets: s.Budgets
-    // });
+  fun(content: any, s: any) {
+    this.form.setValue({
+      LIBACTGE: s.LIBACTGE,
+      CODTYPAC: s.CODTYPAC,
+      budgetphoto: s.budgetphoto,
+      categorie : s.categorie,
+      MONTSTRU: s.MONTSTRU,
+    });
+    this.id_to_update = s.IDEIMPST;
+  
     this.open(content);
   }
 
@@ -239,6 +238,18 @@ filterItems(category: string) {
     } else {
       this.getBudgets(); // Reset the items array to the original state
     }
+  }
+
+  onClickUpdate(){
+
+    this.budgetService.updateItem(this.id_to_update,this.form.value).subscribe( response => {
+      this.getBudgets();
+    }, 
+    error => {
+      console.log(error);
+    }
+    );
+
   }
 
 

@@ -45,10 +45,10 @@ export class BudgetService {
     return this.http.post(this._url_post, item);
   }
 
-  
 
-  updateBudget(item:Item){
-    return this.http.put(this._url_put + item.IDEIMPST, item);
+  updateItem(item_id:number,item:any){
+    const _url = this._url_put + item_id+"/";
+    return this.http.patch(_url ,{"item":item});
   }
 
   deleteBudget(id:number){

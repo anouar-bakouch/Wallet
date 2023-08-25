@@ -24,13 +24,11 @@
       <img [src]="profile_pic" class="img img-responsive border border-radius" width="100" height="100" alt="" srcset="">
       <input type="file" id="inputGroupFile01"  (change)="onFileSelected($event)" formControlName="path_photo" class="form-control my-1" />
     </div>
-    <div class="col-md-6">
-      <label for="month_budget">Month Budget</label>
-      <input type="number" formControlName="month_budget" class="form-control form-control-lg" placeholder="Month Budget" />
-    </div>
+
     <div class="col-12">
       <button type="submit" class="btn btn-primary btn-lg">Submit</button>
     </div>
   </form>
+
   
 </div>
