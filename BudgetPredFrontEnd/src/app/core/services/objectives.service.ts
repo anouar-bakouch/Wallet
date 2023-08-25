@@ -23,4 +23,11 @@ export class ObjectivesService  {
         return this.http.post<MonthlyBudget>(_url,data)
     }
 
+    getLastMonths(user_id:number){
+        const _url = environment.apiUrl + '/get-last-months-objectives/';
+        const params = {user_id:user_id}
+        return this.http.get<MonthlyBudget[]>(_url,{params})
+    }
+
+
 }

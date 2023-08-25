@@ -23,6 +23,8 @@ export class HeaderBudgetComponent {
   notSetup:boolean = true;
   currencies = this.hservice.currencies;
   languages = this.hservice.Languages;
+  actual_budget = 0;
+  actual_month = 0;
 
   userForm = <RxFormGroup> this.fservice.group({
     currency : ['',Validators.required],
@@ -58,6 +60,7 @@ export class HeaderBudgetComponent {
     if (localStorage.getItem('language') !== null && localStorage.getItem('currency') !== null) {
       this.notSetup = false;
     }
+    this.actualMonthBudget();
   }
 
   SaveSelection(){
@@ -104,6 +107,14 @@ export class HeaderBudgetComponent {
     }
   }
   
-
+  actualMonthBudget(){
+    this.hservice.actualMonthBudget(this.authService.getId()).subscribe((data:any) => {
+      this.actual_budget = data.budget;
+      this.actual_month = data.month.split('-')[1];
+    }
+    ,(error:any) => {
+      console.log(error);
+    });
+  }
  
 }

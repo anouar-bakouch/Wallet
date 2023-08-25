@@ -18,6 +18,7 @@ export class ObjectivesComponent implements OnInit {
   public messageError:string = "";
   public monthly_budget_id:number = 0;
   public displayForm:boolean = false;
+  public lastMonths:MonthlyBudget[] = [];
 
   public form = <RxFormGroup> this.formService.group(
     {
@@ -35,11 +36,12 @@ export class ObjectivesComponent implements OnInit {
   ngOnInit() {
     this.user_id = this.authService.getId();
     this.getForm();
+    this.getLastMonths();
   }
 
   getForm(){
     const today = new Date();
-    const month = today.getMonth();
+    const month = today.getMonth()+1; // 0 indexed
 
     this.objService.getNewForm(this.user_id,month).subscribe(
       (data:any) => {
@@ -89,5 +91,17 @@ export class ObjectivesComponent implements OnInit {
 
   }
 
+  getLastMonths(){
+    this.objService.getLastMonths(this.user_id).subscribe(
+      (data:any) => {
+        this.lastMonths = data;
+        console.log(data);  
+      },
+      (error) => {
+        this.messageError = error;
+        console.log(error);
+      }
+    );
+  }
 
 }

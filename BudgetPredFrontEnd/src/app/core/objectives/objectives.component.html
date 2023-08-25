@@ -1,11 +1,11 @@
 <div class="row container-fluid">
 
     <h3 *ngIf="!displayForm"
-    class="m-auto bg-danger col-6 text-light p-3"
+    class="m-auto bg-danger col-4 text-light p-3"
     > {{messageError}}
     </h3>
 
-    <form *ngIf="displayForm" class="col-6 m-auto"  [formGroup]="form" (ngSubmit)="saveForm()">
+    <form *ngIf="displayForm" class="col-8 m-auto"  [formGroup]="form" (ngSubmit)="saveForm()">
         <div class="form-group fs-4">
           <label for="budget">Budget</label>
           <input type="number" class="form-control" id="budget" formControlName="budget">
@@ -16,5 +16,24 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
+
+      <div class="col-8" *ngIf="!displayForm">
+  
+        <div class="list-group my-5 row">
+          <div class="col col-8">
+            <div class="card-container">
+              <h3 class="text-primary ">Previous budgets</h3>
+              <div *ngFor="let y of lastMonths" class="card my-2">
+                <div class="card-body">
+                  <h5 class="card-title"><span class="text-primary">Month</span> {{y.month}}</h5>
+                  <p class="card-text">Budget: {{y.budget}}</p>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
 
 </div>

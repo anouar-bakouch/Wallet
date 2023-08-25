@@ -532,20 +532,8 @@ class NewFormAPIView(APIView):
         user_id = request.query_params.get('user_id')
         user = User.objects.get(id=user_id)
         month_of_request = request.query_params.get('month')
-
-        #date.today() == get_end_of_month()
-        if check_date(month_of_request) : # for test purposes
-            # create a new form
-            # example : 
-                # get_end_of_month() = 2021-05-31
-                # user = 1
-                # budget = 0
-                # spendings = 0
-                # savings = 0
-                # needs_new_form = True because the user has not filled the form yet
-            # so month must the next month of the current month
+        if check_date(month_of_request) : 
             month = get_end_of_month() + relativedelta(months=1)
-
             monthly_budget = MonthlyBudget.objects.create(
                 user=user,
                 month=month,
@@ -581,13 +569,24 @@ def actual_month():
     today = date.today()
     return today
 
+from datetime import date
+
 class GetActualBudgetExpensesView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')
         user = User.objects.get(id=user_id)
-        monthly_budget = MonthlyBudget.objects.get(user=user, month=actual_month())
-        serializer = MonthlyBudgetSerializer(monthly_budget)
-        return Response(serializer.data)
+        month = actual_month().month
+        # Get all monthly budgets for the user
+        monthly_budgets = MonthlyBudget.objects.filter(user=user)
+        
+        # Find the monthly budget with the same month as the actual month
+        for monthly_budget in monthly_budgets:
+            if monthly_budget.month.month == month:
+                serializer = MonthlyBudgetSerializer(monthly_budget)
+                return Response(serializer.data)
+        
+        # If no matching monthly budget is found, return a 204 No Content response
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 # GET the user's actual budget and expenses for the last months 
 class GetLastMonthsBudgetExpensesView(APIView):

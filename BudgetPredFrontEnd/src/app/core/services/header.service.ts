@@ -28,4 +28,11 @@ export class HeaderService {
       }
     );
 
+    actualMonthBudget(user_id:number){
+      const _url = environment.apiUrl + '/get-objectives/';
+      const params = new HttpParams().set('user_id', user_id.toString());
+      return this.http.get(_url, {params});
+
+    }
+
 }
