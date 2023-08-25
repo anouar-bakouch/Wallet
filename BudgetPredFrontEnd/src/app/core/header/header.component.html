@@ -33,9 +33,7 @@
                   <li class="list-group-item text-primary ">
                     {{user?.first_name}} {{user?.last_name}}
                   </li>
-                  <li class="list-group-item text-success  fs-bold text-center">
-                 this month's {{actual_month}} {{actual_budget}} : <i class="bi bi-wallet2 "></i>
-                  </li>
+              
               </ul>
             </div>
             <li>
@@ -94,7 +92,15 @@
 
 </nav>
 <div class="container-fluid">
-<img class="img img-responsive"  src="assets/images/coe-animation.gif" alt="">
+  <div class="card my-3">
+    <div class="card-content">
+      <h2 class="card-title">Month : {{actual_month}}</h2>
+      <p class="card-text">Budget :{{actual_budget}}</p>
+      <p class="card-text">Spendings :{{spendings}}</p>
+      <p class="card-text">Savings :{{savings}}</p>
+
+    </div>
+  </div>
 </div>
 
 <!-- Currency and Language Selection Popup -->

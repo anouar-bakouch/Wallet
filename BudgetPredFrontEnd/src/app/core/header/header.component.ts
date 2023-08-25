@@ -24,7 +24,23 @@ export class HeaderBudgetComponent {
   currencies = this.hservice.currencies;
   languages = this.hservice.Languages;
   actual_budget = 0;
-  actual_month = 0;
+  actual_month:string="";
+  spendings = 0;
+  savings = 0;
+  months = [
+    {id:1,name:'January'},
+    {id:2,name:'February'},
+    {id:3,name:'March'},
+    {id:4,name:'April'},
+    {id:5,name:'May'},
+    {id:6,name:'June'},
+    {id:7,name:'July'},
+    {id:8,name:'August'},
+    {id:9,name:'September'},
+    {id:10,name:'October'},
+    {id:11,name:'November'},
+    {id:12,name:'December'},
+  ]
 
   userForm = <RxFormGroup> this.fservice.group({
     currency : ['',Validators.required],
@@ -110,7 +126,9 @@ export class HeaderBudgetComponent {
   actualMonthBudget(){
     this.hservice.actualMonthBudget(this.authService.getId()).subscribe((data:any) => {
       this.actual_budget = data.budget;
-      this.actual_month = data.month.split('-')[1];
+      this.actual_month =  this.months.filter((month:any) => month.id == data.month.split('-')[1])[0].name;
+      this.spendings = data.spendings;
+      this.savings = data.savings;
     }
     ,(error:any) => {
       console.log(error);

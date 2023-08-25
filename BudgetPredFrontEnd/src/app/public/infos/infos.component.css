@@ -46,7 +46,6 @@
   }
 
   .bg-change {
-    background-color: white;
     font-size: 23px;
     border-radius: 17px;
     padding: 7px;
@@ -67,7 +66,6 @@
   }
 
   .about {
-    background-color : white;
     border:1px solid aliceblue ;
     border-radius: 17px;
     font-size: 23px;
@@ -114,5 +112,8 @@
     animation: popUp 1s infinite;
   }
 
-
+  .list-group-item {
+    border : 1px solid aliceblue;
+    background-color: aliceblue;
+  }
   

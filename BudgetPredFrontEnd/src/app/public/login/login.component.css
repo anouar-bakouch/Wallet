@@ -6,6 +6,10 @@ height: 1px;
 background: #eee;
 }
 
+section {
+  background-color:white ;
+}
+
 @keyframes slideInDown {
     from {
         transform: translateY(-100%);

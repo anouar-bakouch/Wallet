@@ -1,4 +1,4 @@
-<section class="vh-100 ">
+<section class="vh-100 bg-light">
 
 
 
@@ -13,29 +13,29 @@
         <div *ngIf="showErrorMessage" class="w-50 w-auto text-center my-3 bg-danger p-3 text-white fs-4 text-center border border-danger">
           <h3>{{errorMessage}}</h3>
         </div>
-        <h1 class="text-center text-primary fs-2"><i class="bi bi-person-lock "></i>Se Connecter</h1>
+        <h1 class="text-center text-primary fs-2 fs-bold"><i class="bi bi-person-lock "></i>Se Connecter</h1>
         <p class="mt-3">Entrez votre nom d'utilisateur et votre mot de passe pour vous connecter.</p>
 
         <form (ngSubmit)="login()">
           <div class="form-group">
-            <input type="text" class="form-control p-3 fs-4" [(ngModel)]="username" name="username" placeholder="Username">
+            <input type="text" class="form-control p-2 fs-4" [(ngModel)]="username" name="username" placeholder="Username">
             <div *ngIf="usernameError" class="text-danger">
               {{ usernameError }}
             </div>
           </div>
           <div class="form-group mt-3">
-            <input type="password" class="form-control p-3 fs-4" [(ngModel)]="password"  name="password" placeholder="Password">
+            <input type="password" class="form-control p-2 fs-4" [(ngModel)]="password"  name="password" placeholder="Password">
             <div *ngIf="passwordError" class="text-danger">
               {{ passwordError }}
             </div>
           </div>
           <img *ngIf="showLoading" src="assets/animations/auth-loading.gif" alt="loading" width="400" height="400">
           <div class="d-flex justify-content-between align-items-center">
-          <button *ngIf="!showLoading" type="submit" class="btn btn-outline-primary mt-3 p-3 fs-4" [disabled]="username === '' || password === ''">Login
+          <button *ngIf="!showLoading" type="submit" class="btn btn-outline-primary mt-3 p-2 fs-4" [disabled]="username === '' || password === ''">Login
           
           </button>
 
-            <button routerLink="/home/signup" type="submit" class="btn btn-outline-primary mt-3 p-3 fs-4"><i class="bi bi-box-arrow-in-right"></i> créer un compte
+            <button routerLink="/home/signup" type="submit" class="btn btn-primary mt-3 p-2 fs-4 fs-bold"><i class="bi bi-box-arrow-in-right"></i> créer un compte
           
           </button>
         </div>

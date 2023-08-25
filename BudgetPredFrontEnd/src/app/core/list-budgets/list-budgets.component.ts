@@ -106,6 +106,11 @@ export class ListBudgetsComponent {
 // Method to toggle the filter section visibility
 toggleFilter() {
   this.showFilter = !this.showFilter;
+  // close it automatically after 3 s
+  setTimeout(() => {
+    this.showFilter = false;
+  } , 3000);
+  
 }
 
 // Method to filter the items based on the selected category

@@ -3,16 +3,20 @@
   <div *ngIf="!showLoading">
   <div class="row mb-3">
     <div class="col-6">
-      <button class="btn btn-primary btn-sm" type="button" (click)="open(mymodal)">
+      <button class="btn btn-primary btn-lg" type="button" (click)="open(mymodal)">
         <i class="bi bi-plus-square-dotted"></i>
-        Ajouter un item de budget
+        Add to Cart
+      </button>
+      <button class="btn btn-primary btn-lg mx-3" type="button" (click)="toggleFilter()">
+        <i class="bi bi-funnel"></i>
+        Filter
       </button>
     </div>
 
     <div class="col-6 text-end">
-      <button class="btn btn-primary btn-sm" type="button" (click)="toggleFilter()">
-        <i class="bi bi-funnel"></i>
-        Filtrer
+      <button class="btn btn-primary btn-lg" type="button" (click)="nextPage()">
+        <i class="bi bi-arrow-right-square"></i>
+        Next page
       </button>
     </div>
   </div>
@@ -67,14 +71,7 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col my-3">
-      <button class="btn btn-primary btn-sm" type="button" (click)="nextPage()">
-        <i class="bi bi-arrow-right-square"></i>
-        Next page
-      </button>
-    </div>
-  </div>
+
 </div>
 
 <ng-template class="modal fade" tabindex="-1" role="dialog" #mymodal let-modal aria-hidden="true">
