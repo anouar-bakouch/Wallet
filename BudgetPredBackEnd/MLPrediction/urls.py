@@ -20,7 +20,7 @@ urlpatterns = [
     # USER ------------------------------
     path('GetUser/<int:pk>/',GetUserView.as_view()),
     path('DeleteUser/<int:pk>/',DeleteItemView.as_view()),
-    path('updateuser/<int:pk>/',UpdateUserView.as_view()),
+    path('updateuser/',UpdateUserView.as_view()),
     path('userinfo/<int:pk>/',GetUserInfoView.as_view(),name='user-info'),
     # PREDICTION ------------------------
     path('predict-items/', PredictedItems.as_view(), name='PredictItems'),

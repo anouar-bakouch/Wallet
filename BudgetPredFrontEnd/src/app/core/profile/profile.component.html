@@ -21,6 +21,10 @@
       <input type="text" formControlName="last_name" class="form-control form-control-lg" placeholder="Last Name" />
     </div>
     <div class="col-md-6">
+      <label for="currency">Currency</label>
+      <input type="text" formControlName="currency" class="form-control form-control-lg" placeholder="currency" />
+    </div>
+    <div class="col-md-6">
       <img [src]="profile_pic" class="img img-responsive border border-radius" width="100" height="100" alt="" srcset="">
       <input type="file" id="inputGroupFile01"  (change)="onFileSelected($event)" formControlName="path_photo" class="form-control my-1" />
     </div>

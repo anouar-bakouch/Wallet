@@ -28,7 +28,8 @@ export class ProfileComponent {
     email : ['',Validators.required],
     password : ['',Validators.required],
     path_photo : ['',Validators.required],
-    month_budget : ['',Validators.required]
+    month_budget : ['',Validators.required],
+    currency : ['',Validators.required]
   }) 
 
   ngOnInit(): void {
@@ -52,9 +53,12 @@ export class ProfileComponent {
     if(selectedF != null){
     formData.append('path_photo', selectedF[0], selectedF[0].name);
     }
+    console.log(this.userForm.value)
     this.authService.updateUser(this.user_id,formData).subscribe(
       (data:any) => {
         console.log(data);
+        // 
+        localStorage.setItem('currency',data.user.currency);
       }
     )
   }
