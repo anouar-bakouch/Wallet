@@ -10,6 +10,7 @@ import { Validators } from '@angular/forms';
 import { Purchase } from 'src/models/Purchase';
 import { Item } from 'src/models/Item';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -43,27 +44,30 @@ export class CartComponent {
     private router : Router
     ) {}
 
-  ngOnInit(): void {
-    this.itemService.getItemsCart().subscribe((data: any) => {
-      this.dataArray = data;
-      this.dataArray.forEach((x) => {
-        this.itemService.getItemInfoById(x.item).subscribe((y: any) => {
-          if( !x.is_purchased){
-            this.itemsCart.push(y.item);
-            this.correctImagePath(y.item);
+    ngOnInit(): void {
+      this.itemService.getItemsCart().subscribe((data: any) => {
+        this.dataArray = data;
+        const itemInfoRequests = this.dataArray.map((x) => this.itemService.getItemInfoById(x.item));
+        forkJoin(itemInfoRequests).subscribe((responses: any) => {
+          responses.forEach((y: any, index: number) => {
+            const x = this.dataArray[index];
+            if (!x.is_purchased) {
+              const item = y.item;
+              this.itemsCart.push(item);
+              this.correctImagePath(item);
+            }
+          });
+    
+          if (this.itemsCart.length == 0) {
+            this.showMessage = true;
+            this.message = "is empty";
+          } else {
+            this.showMessage = false;
           }
         });
       });
-    });
-
-    if(this.itemsCart.length == 0 ) {
-      this.showMessage = true;
-      this.message = "is empty";
-    }else {
-      this.showMessage = false;
     }
-  }
-
+    
   correctImagePath(item: any): void {
     item.budgetphoto = environment.apiUrl + '/' + item.budgetphoto;
   }

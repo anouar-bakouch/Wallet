@@ -46,9 +46,9 @@ export class BudgetService {
   }
 
 
-  updateItem(item_id:number,item:any){
-    const _url = this._url_put;
-    return this.http.patch(_url ,{"item":item,"item_id":item_id});
+  updateItem(item:any,id:number){
+    const _url = this._url_put + id + '/';
+    return this.http.patch(_url ,item);
   }
 
   deleteBudget(id:number){

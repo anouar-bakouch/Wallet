@@ -51,25 +51,26 @@ class ListItemsView(APIView):
 
 class UpdateItemView(APIView):
     parser_classes = (MultiPartParser, FormParser)
-    def patch(self, request, *args, **kwargs):
-        saved_item = get_object_or_404(Item.objects.all(), pk=request.data.get('item_id'))
-        data = request.data.get('item')
+    def patch(self, request,pk):
+        ItemSerializer = get_object_or_404(Item.objects.all(), pk=pk)
+        data = request.data
         try :
-            saved_item.CODTYPAC = data['CODTYPAC']
-            saved_item.LIBACTGE = data['LIBACTGE']
-            saved_item.budgetphoto = data['budgetphoto']
-            saved_item.categorie = data['categorie']
-            saved_item.MONTSTRU = data['MONTSTRU']
-            saved_item.save()
+            ItemSerializer.LIBACTGE = data['LIBACTGE']
+            ItemSerializer.categorie = data['categorie']
+            ItemSerializer.MONTSTRU = data['MONTSTRU']
+            ItemSerializer.CODTYPAC = data['CODTYPAC']
+            ItemSerializer.budgetphoto = data['budgetphoto'] 
+            ItemSerializer.save()
             return Response({
-                "success": "Item '{}' updated successfully".format(saved_item.IDEIMPST)
+                "success": "Item '{}' updated successfully".format(ItemSerializer.LIBACTGE),
+                "data": ItemSerializer(ItemSerializer).data
             })
         except:
             return Response({
-                "error": "Item '{}' not updated successfully".format(saved_item.IDEIMPST)
+                "error": "Item '{}' not updated successfully".format(ItemSerializer.LIBACTGE)
             })
 
-    
+
 class DeleteItemView(APIView):
     def delete(self, request, pk):
         # Get object with this pk

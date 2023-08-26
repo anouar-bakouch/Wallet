@@ -243,14 +243,14 @@ addToCart(item: Item) {
 
   onClickUpdate(){
 
-    const form_data = this.form.value;
+    const form_data = this.form.toFormData();
     // budgetphoto
     const selectedFile = (document.getElementById('inputGroupFile02') as HTMLInputElement).files;
     if (selectedFile != null) {
-      form_data.budgetphoto = selectedFile[0];
+      form_data.append('budgetphoto', selectedFile[0], selectedFile[0].name);
     }
-
-    this.budgetService.updateItem(this.id_to_update,form_data).subscribe( response => {
+    
+    this.budgetService.updateItem(form_data,this.id_to_update).subscribe( response => {
       this.getBudgets();
       console.log(response)
       // setTimeout(() => {
