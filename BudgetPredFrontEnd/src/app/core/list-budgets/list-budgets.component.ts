@@ -69,6 +69,7 @@ export class ListBudgetsComponent {
     this.categories = this.budgetService.ItemsType.map((item: any) => item.value);
     this.itemsFound = false;
     this.currency = localStorage.getItem('currency') || "USD";
+    
   }
 
 
@@ -242,22 +243,22 @@ addToCart(item: Item) {
 
   onClickUpdate(){
 
-    const form_data = this.form.toFormData();
-    const selectedFile = (document.getElementById('inputGroupFile01') as HTMLInputElement).files;
-
+    const form_data = this.form.value;
+    // budgetphoto
+    const selectedFile = (document.getElementById('inputGroupFile02') as HTMLInputElement).files;
     if (selectedFile != null) {
-      form_data.append('budgetphoto', selectedFile[0], selectedFile[0].name);
+      form_data.budgetphoto = selectedFile[0];
     }
 
     this.budgetService.updateItem(this.id_to_update,form_data).subscribe( response => {
       this.getBudgets();
       console.log(response)
-      setTimeout(() => {
-        this.showAdded = true;
-        this.messageItemAdded = "Updated successfully !";
-      } , 2000);
-      this.showAdded = false;
-      
+      // setTimeout(() => {
+      //   this.showAdded = true;
+      //   this.messageItemAdded = "Updated successfully !";
+      //   window.location.reload();
+      // } , 2000);
+
     }, 
     error => {
       console.log(error);
@@ -266,5 +267,8 @@ addToCart(item: Item) {
 
   }
 
+  onFileSelected_(event: any) {
+    this.selectedFie = event.target.files[0];
+  }
 
 }

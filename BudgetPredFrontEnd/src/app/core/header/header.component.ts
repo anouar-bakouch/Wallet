@@ -41,6 +41,7 @@ export class HeaderBudgetComponent {
     {id:11,name:'November'},
     {id:12,name:'December'},
   ]
+  most_bought_categories = []
 
   userForm = <RxFormGroup> this.fservice.group({
     currency : ['',Validators.required],
@@ -77,6 +78,13 @@ export class HeaderBudgetComponent {
       this.notSetup = false;
     }
     this.actualMonthBudget();
+    this.hservice.mostBoughtCategories(this.authService.getId()).subscribe((data:any) => {
+      this.most_bought_categories = data;
+    }
+    ,(error:any) => {
+      console.log(error);
+    }
+    );
   }
 
   SaveSelection(){

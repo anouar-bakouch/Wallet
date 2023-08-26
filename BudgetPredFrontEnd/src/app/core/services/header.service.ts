@@ -35,4 +35,10 @@ export class HeaderService {
 
     }
 
+    mostBoughtCategories(user_id:number){
+      const _url = environment.apiUrl + '/most-bought-categories/';
+      const params = new HttpParams().set('user_id', user_id.toString());
+      return this.http.get(_url, {params});
+    }
+
 }

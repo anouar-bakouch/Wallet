@@ -52,6 +52,7 @@ class UpdateItemView(APIView):
     def patch(self, request):
         saved_item = get_object_or_404(Item.objects.all(), pk=request.data.get('item_id'))
         data = request.data.get('item')
+        print(data)
         try :
             saved_item.CODTYPAC = data['CODTYPAC']
             saved_item.LIBACTGE = data['LIBACTGE']
@@ -66,7 +67,7 @@ class UpdateItemView(APIView):
             return Response({
                 "error": "Item '{}' not updated successfully".format(saved_item.IDEIMPST)
             })
-            
+
     
 class DeleteItemView(APIView):
     def delete(self, request, pk):
@@ -491,7 +492,7 @@ class ListMonthlyBudgetView(APIView):
             # get the user's spendings for the month
             savings = purchases.aggregate(Sum('MONTRAPP'))
             # get the user's savings for the month
-            spendings = purchases.aggregate(Sum('budget'))['budget__sum'] - savings['MONTRAPP__sum']
+            spendings = purchases.aggregate(Sum('budget'))['budget__sum'] 
 
             # check if the monthly budget exists
             monthly_budget = MonthlyBudget.objects.filter(user=user, month=month).first()
@@ -596,4 +597,13 @@ class GetLastMonthsBudgetExpensesView(APIView):
         serializer = MonthlyBudgetSerializer(monthly_budgets, many=True)
         return Response(serializer.data)
 
-
+class MostBoughtCategoryView(APIView):
+    def get(self,request):
+        user_id = request.query_params.get('user_id')
+        user = User.objects.get(id=user_id)
+        purchases = Purchase.objects.filter(user=user)
+        categories = []
+        for purchase in purchases:
+            categories.append(purchase.item_purchase.item.categorie)
+        top_categories = categories[:3]
+        return Response(top_categories)

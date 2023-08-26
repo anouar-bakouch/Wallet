@@ -1,12 +1,9 @@
-- most bought category 
-
-- alert when reaching a budget limit
+- alert when reaching a budget limit => budget is lower than purchase
 
 - problem in update
 
-- 404 page
+- spendings 
 
-- profile preferences section
+- profile preferences section ( update profile picture)
 
-- internalization
 

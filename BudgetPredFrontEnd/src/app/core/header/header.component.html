@@ -92,13 +92,21 @@
 
 
 </nav>
-<div class="container-fluid">
-  <div class="card my-3">
+<div class="container-fluid row w-100">
+  <div class="card my-3 col col-3 mx-3">
     <div class="card-content">
       <h2 class="card-title">Month : {{actual_month}}</h2>
       <p class="card-text">Budget :{{actual_budget}}</p>
       <p class="card-text">Spendings :{{spendings}}</p>
       <p class="card-text">Savings :{{savings}}</p>
+
+    </div>
+  </div>
+  <div class="card my-3 col col-5">
+    <div class="card-content">
+      <h2 class="card-title">Most Wanted Categories</h2>
+      <p class="card-text fs-bold" *ngFor="let x of most_bought_categories">{{x}}</p>
+
 
     </div>
   </div>
