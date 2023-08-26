@@ -319,7 +319,16 @@ class ItemsCartAPIView(APIView):
         items = ItemPurchase.objects.filter(user=user)
         serializer = ItemPurchaseSerializer(items, many=True)
         return Response(serializer.data)
-    
+
+class ItemCartDeleteAPIView(APIView):
+    def delete(self,request,pk):
+        item_purchase = get_object_or_404(ItemPurchase.objects.all(), pk=pk)
+        item_purchase.delete()
+        return Response({
+            "message": "ItemPurchase with id `{}` has been deleted.".format(pk)
+        }, status=204)
+
+
 # JWT 
 
 class UserRegistrationView(APIView):

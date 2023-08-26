@@ -12,7 +12,7 @@ urlpatterns = [
     # CART 
     path('add-cart/', AddToCartAPIVIEW.as_view()), 
     path('get-cart/',ItemsCartAPIView.as_view()),
-    path('delete-item/<int:pk>/',DeleteItemView.as_view()),
+    path('delete-cart/<int:pk>/',DeleteItemView.as_view()),
     #TOKEN 
     path('register/', UserRegistrationView.as_view(), name='user-registration'),
     path('login/', LoginView.as_view(), name='token-obtain-pair'),

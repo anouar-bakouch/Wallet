@@ -30,6 +30,10 @@ export class ItemPurchaseService {
         return this.http.post(url, {"item":item});
     }
 
+    deleteItemCart(id:number):Observable<any>{
+        const url = environment.apiUrl + "/delete-cart/"+id+"/";
+        return this.http.delete(url);
+    }
     
 
 }

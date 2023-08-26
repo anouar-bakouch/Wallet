@@ -140,8 +140,12 @@ export class CartComponent {
   }else {
     alert("You don't have enough money to buy this item");
   }
-
   }
 
+  OnDelete(item:number){
+    this.itemService.deleteItemCart(item).subscribe((data:any) => {
+      this.itemsCart = this.itemsCart.filter((x) => x.IDEIMPST != item);
+    });
+  }
 
 }
