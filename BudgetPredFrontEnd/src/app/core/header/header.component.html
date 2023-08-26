@@ -78,11 +78,7 @@
                 >se déconnecter</a
               >
             </li>
-            <li class="dropdown-item" *ngIf="notSetup">
-                <button class="button--pulsed w-100 btn btn-md bnt-outline-danger" (click)="open(mymodal_)" >
-                  Preferences 
-                </button>
-            </li>
+
           </ul>
         </li>
            
@@ -112,39 +108,3 @@
   </div>
 </div>
 
-<!-- Currency and Language Selection Popup -->
-
-<ng-template class="modal fade" tabindex="-1" role="dialog" #mymodal_ let-modal aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-    <h2>Select Currency and Language</h2>
-    <form [formGroup]="userForm" (ngSubmit)="SaveSelection()">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <label for="currency">Currency:</label>
-            <select id="currency" name="currency" formControlName="currency" class="form-control">
-              <option *ngFor="let c of currencies" [value]="c.name">{{c.value}}</option>
-              
-            </select>
-          </div>
-          <div class="col-md-6">
-            <label for="language">Language:</label>
-            <select id="language" name="language" formControlName="language" class="form-control">
-              <option *ngFor="let l of languages" [value]="l.name">{{l.value}}</option>
-              
-            </select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <button id="saveSelectionButton" type="submit" class="my-3 btn btn-primary">Save</button>
-          </div>
-        </div>
-      </div>
-    </form>
-    
-  </div>
-</div>
-
-</ng-template>

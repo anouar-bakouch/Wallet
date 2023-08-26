@@ -66,6 +66,8 @@ export class ProfileComponent {
           this.profile_pic = environment.apiUrl + "/" + data.data.path_photo;
           this.showMessage = true;
           this.messageupdate = "Profile updated successfully";
+          localStorage.setItem('currency',data.data.currency);
+          localStorage.setItem('language',data.data.language);
           setTimeout(() => {
             this.showMessage = false;
             this.messageupdate = "";

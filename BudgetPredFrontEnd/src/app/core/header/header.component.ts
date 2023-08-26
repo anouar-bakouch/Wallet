@@ -20,9 +20,6 @@ export class HeaderBudgetComponent {
   public photoPath = '';
   show_loading : boolean = false;
   closeResult:string = ''
-  notSetup:boolean = true;
-  currencies = this.hservice.currencies;
-  languages = this.hservice.Languages;
   actual_budget = 0;
   actual_month:string="";
   spendings = 0;
@@ -42,11 +39,6 @@ export class HeaderBudgetComponent {
     {id:12,name:'December'},
   ]
   most_bought_categories = []
-
-  userForm = <RxFormGroup> this.fservice.group({
-    currency : ['',Validators.required],
-    language : ['',Validators.required],
-  });
 
   constructor(
     public authService:AuthService,
@@ -72,11 +64,6 @@ export class HeaderBudgetComponent {
   }
 
   ngOnInit(): void {
-    this.notSetup = true;
-    // open the modal if language and currency are not saved in the local storage
-    if (localStorage.getItem('language') !== null && localStorage.getItem('currency') !== null) {
-      this.notSetup = false;
-    }
     this.actualMonthBudget();
     this.hservice.mostBoughtCategories(this.authService.getId()).subscribe((data:any) => {
       this.most_bought_categories = data;
@@ -87,22 +74,7 @@ export class HeaderBudgetComponent {
     );
   }
 
-  SaveSelection(){
-    
-    const user_id = this.authService.getId();
-    this.authService.updateUser(user_id,this.userForm.value).subscribe((data:any) => {
-      localStorage.setItem('language',this.userForm.value.language);
-      localStorage.setItem('currency',this.userForm.value.currency);
-    },
-    (error:any) => {
-      console.log(error);
-    },
-    ()=>{
-      this.notSetup = false;
-      // close the modal
-      this.modalService.dismissAll();
-    });
-  }
+
 
   open(content: any) {
     if (content._declarationTContainer.localNames[0] == 'mymodal_') {
