@@ -9,5 +9,5 @@ export interface User {
     last_name: string;
     path_photo : string | undefined ;
     language : string;
-    
+    currency : string; 
 }

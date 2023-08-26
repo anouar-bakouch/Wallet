@@ -42,6 +42,7 @@ class AddItemView(APIView):
             print('error', item_serializer.errors)
             return Response(item_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class ListItemsView(APIView):
     def get(self, request):
         budgets = Item.objects.all()
@@ -49,10 +50,10 @@ class ListItemsView(APIView):
         return Response({"budgets": serializer.data})
 
 class UpdateItemView(APIView):
-    def patch(self, request):
+    parser_classes = (MultiPartParser, FormParser)
+    def patch(self, request, *args, **kwargs):
         saved_item = get_object_or_404(Item.objects.all(), pk=request.data.get('item_id'))
         data = request.data.get('item')
-        print(data)
         try :
             saved_item.CODTYPAC = data['CODTYPAC']
             saved_item.LIBACTGE = data['LIBACTGE']
@@ -230,17 +231,27 @@ class GetUserView(APIView):
         return Response({"user": serializer.data})
     
 class UpdateUserView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
     def patch(self, request, pk):
         saved_user = get_object_or_404(User.objects.all(), pk=pk)
-        data = request.data.get('user')
-        print(data)
-        serializer = UserSerializer(instance=saved_user, data=data, partial=True)
-        if serializer.is_valid(raise_exception=True):
-            user_saved = serializer.save()
-        return Response({
-            "success": "User '{}' updated successfully".format(user_saved.id)
-        })
-
+        data = request.data
+        try :
+            saved_user.username = data['username']
+            saved_user.email = data['email']
+            saved_user.first_name = data['first_name']
+            saved_user.last_name = data['last_name']
+            saved_user.password = data['password']
+            saved_user.path_photo = data['path_photo']
+            saved_user.currency = data['currency']
+            saved_user.language = data['language']
+            saved_user.save()
+            return Response({
+                "success": "User '{}' updated successfully".format(saved_user.username)
+            })
+        except:
+            return Response({
+                "error": "User '{}' not updated successfully".format(saved_user.username)
+            })
     
 class DeleteUserView(APIView):
     def delete(self, request, pk):

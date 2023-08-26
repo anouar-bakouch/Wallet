@@ -41,6 +41,7 @@ class ItemPurchaseSerializer(serializers.ModelSerializer):
             return instance
             
 class UserSerializer(serializers.ModelSerializer):
+    parser_classes = (MultiPartParser, FormParser,JSONParser)
     class Meta:
         model = User
         fields = '__all__'

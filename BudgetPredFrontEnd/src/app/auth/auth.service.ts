@@ -92,10 +92,11 @@ export class AuthService {
     return this.http.get<User>(url);
   }
 
-  updateUser(id:number,user:any): Observable<any> {
-    const url = environment.apiUrl + '/updateuser/';
+  updateUser(id:number,user:any){
+    const url = environment.apiUrl + '/updateuser/'+ id +'/';
+
     // using the patch method to update the user
-    return this.http.patch(url,{"user":user,"user_id":id});
+    return this.http.patch(url,user);
   }
 
   }
