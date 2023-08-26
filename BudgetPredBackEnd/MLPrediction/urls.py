@@ -6,7 +6,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # ITEM ------------------------------
     path('add-item/', AddItemView.as_view()),
-    path('update-item/<int:pk>/', UpdateItemView.as_view()),
+    path('update-item/', UpdateItemView.as_view()),
     path('delete-item/<int:pk>/', DeleteItemView.as_view()),
     path('get-item/', GetItemView.as_view()),
     # CART 

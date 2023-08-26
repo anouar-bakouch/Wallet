@@ -1,0 +1,59 @@
+/* 404.component.css */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #dde4ed;
+    width: 100%;
+  }
+  
+  .error-wrapper {
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 8rem;
+    color: #0e52f3;
+    margin-bottom: 0;
+    animation: blink 3s infinite;
+  }
+  
+  h2 {
+    font-size: 3rem;
+    color: #333;
+    margin-top: 0;
+  }
+  
+  p {
+    font-size: 1.5rem;
+    color: #666;
+  }
+  
+  @keyframes blink {
+    0% {
+      opacity: 0.2;
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.2;
+    }
+  }
+
+  a {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #0944e6;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+    animation : blink 1s infinite;
+  }
+  
+  a:hover {
+    background-color: #2980b9;
+  }

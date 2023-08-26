@@ -2,8 +2,11 @@
 
 - alert when reaching a budget limit
 
-- problem from cart to purchases 
-
 - problem in update
 
 - 404 page
+
+- profile preferences section
+
+- internalization
+

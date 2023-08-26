@@ -21,6 +21,7 @@ from dateutil.relativedelta import relativedelta
 # Recommendation ML
 from sklearn.calibration import LabelEncoder
 from surprise import Reader,Dataset,KNNBasic
+from datetime import date
 
 
 def index(request):
@@ -49,14 +50,23 @@ class ListItemsView(APIView):
 
 class UpdateItemView(APIView):
     def patch(self, request):
-        saved_item = get_object_or_404(Item.objects.all(), pk=pk)
+        saved_item = get_object_or_404(Item.objects.all(), pk=request.data.get('item_id'))
         data = request.data.get('item')
-        serializer = ItemSerializer(instance=saved_item, data=data, partial=True)
-        if serializer.is_valid(raise_exception=True):
-            item_saved = serializer.save()
-        return Response({
-            "success": "Item '{}' updated successfully".format(item_saved.id)
-        })
+        try :
+            saved_item.CODTYPAC = data['CODTYPAC']
+            saved_item.LIBACTGE = data['LIBACTGE']
+            saved_item.budgetphoto = data['budgetphoto']
+            saved_item.categorie = data['categorie']
+            saved_item.MONTSTRU = data['MONTSTRU']
+            saved_item.save()
+            return Response({
+                "success": "Item '{}' updated successfully".format(saved_item.IDEIMPST)
+            })
+        except:
+            return Response({
+                "error": "Item '{}' not updated successfully".format(saved_item.IDEIMPST)
+            })
+            
     
 class DeleteItemView(APIView):
     def delete(self, request, pk):
@@ -134,9 +144,7 @@ class PredictNextMonthMONTSTRUView(APIView):
 class PredictedItems(APIView):
     
     def get(self,request):
-
         user_id = request.query_params.get('user_id')
-
         # the users purchases
         user = User.objects.get(id=user_id)
         purchases = ItemPurchase.objects.filter(user=user, is_purchased=True)
@@ -247,7 +255,6 @@ class GetUserInfoView(APIView):
         user = get_object_or_404(User.objects.all(), pk=pk)
         serializer = UserSerializer(user)
         return Response({"user": serializer.data})
-
 
 # PAGINATION -----
 class ItemAPIView(APIView):
@@ -432,6 +439,8 @@ class PurchaseView(APIView):
             )
             purchase.save()
 
+            # update the monthly budget
+
         except:
             return Response({'message': 'Purchase not added successfully'})
 
@@ -560,7 +569,6 @@ def actual_month():
     today = date.today()
     return today
 
-from datetime import date
 
 class GetActualBudgetExpensesView(APIView):
     def get(self, request):

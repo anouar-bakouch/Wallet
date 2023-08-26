@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IsUserGuard } from './guards/is-user.guard';
+import { InvalidComponent } from './shared/invalid/invalid.component';
+import { CoreRoutingModule } from './core/core-routing.module';
+import { PublicRoutingModule } from './public/public-routing.module';
+
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'home/infos',
-    pathMatch: 'full'
-  },
   {
     path: 'home',
     loadChildren: () => import('./public/public.module').then(m => m.PublicModule)
@@ -16,11 +15,15 @@ const routes: Routes = [
     path: 'budgetHome',
     loadChildren: () => import('./core/core.module').then(m => m.CoreModule),
     canActivate: [IsUserGuard] // Apply the AuthGuard to this route
+  },
+  {
+    path : '**', 
+    component : InvalidComponent
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes),CoreRoutingModule,PublicRoutingModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
