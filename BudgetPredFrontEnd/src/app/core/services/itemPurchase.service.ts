@@ -27,7 +27,7 @@ export class ItemPurchaseService {
 
     addToPurchase(item:Purchase):Observable<any>{
         const url = environment.apiUrl + "/add-purchase/";
-        return this.http.post(url, item);
+        return this.http.post(url, {"item":item});
     }
 
     

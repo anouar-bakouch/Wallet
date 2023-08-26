@@ -59,6 +59,8 @@ export class CartComponent {
     if(this.itemsCart.length == 0 ) {
       this.showMessage = true;
       this.message = "is empty";
+    }else {
+      this.showMessage = false;
     }
   }
 

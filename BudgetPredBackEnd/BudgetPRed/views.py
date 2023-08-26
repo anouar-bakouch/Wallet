@@ -409,42 +409,32 @@ class deleteItemPurchaseView(APIView):
         }, status=204)    
 
 # Purchase PART YEHOOOOO 
-
 class PurchaseView(APIView):
     def post(self, request):
-        MONTSTRU = request.data.get('MONTSTRU')
-        budget = request.data.get('Budget')
-        user_id = request.data.get('user_id')
-        quantity = request.data.get('quantity')
-        user = User.objects.get(id=user_id)
-
+        purchase = request.data.get('item')
+        print(purchase)
         try:
-            # MONTRAPP = float(budget) - float(MONTSTRU)
-            # user.month_budget = user.month_budget - float(MONTSTRU)
-            # user.save()
-
-            MOISSOLD = request.data.get('MOISSOLD')
-            item_purchase = request.data.get('item_id')
-            item = ItemPurchase.objects.get(item_id=item_purchase)
-            item.is_purchased = True
-            item.save()
-
+            item = Item.objects.get(IDEIMPST=purchase['IDEIMPST'])
+            user = User.objects.get(id=purchase['user_id'])
+            item_purchase = ItemPurchase.objects.get(user=user, item=item)
+            item_purchase.is_purchased = True
+            item_purchase.save()
+            
+            # create a new purchase
             purchase = Purchase.objects.create(
-                MONTRAPP=MONTRAPP,
+                budget=purchase['Budget'],
+                MOISSOLD=purchase['MOISSOLD'],
+                MONTRAPP=purchase['MONTRAPP'],
                 user=user,
-                MOISSOLD=MOISSOLD,
-                item_purchase=item,
-                quantity=quantity,
-                budget=budget
+                item_purchase=item_purchase,
+                quantity=purchase['quantity']
             )
             purchase.save()
 
- 
         except:
             return Response({'message': 'Purchase not added successfully'})
 
         return Response({'message': 'Purchase added successfully'})
-
 
 class ListPurchaseView(APIView):
     def get(self, request):
