@@ -246,7 +246,8 @@ class UpdateUserView(APIView):
             saved_user.language = data['language']
             saved_user.save()
             return Response({
-                "success": "User '{}' updated successfully".format(saved_user.username)
+                "success": "User '{}' updated successfully".format(saved_user.username),
+                "data": UserSerializer(saved_user).data
             })
         except:
             return Response({

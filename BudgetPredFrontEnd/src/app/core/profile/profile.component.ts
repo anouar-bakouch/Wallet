@@ -3,7 +3,6 @@ import { Validators } from '@angular/forms';
 import { RxFormBuilder, RxFormGroup } from '@rxweb/reactive-form-validators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { environment } from 'src/environments/environment';
-import { User } from 'src/models/User';
 
 @Component({
   selector: 'app-profile',
@@ -16,6 +15,7 @@ export class ProfileComponent {
   public selectedFie: null | null = null; // Adjusted the type to File
   messageupdate = "";
   showMessage = false;
+  showButton = false;
 
   constructor(
     private fservice: RxFormBuilder,
@@ -45,9 +45,8 @@ export class ProfileComponent {
   }
 
   submit() {
-
-    if(this.userForm.valid){
-      console.log(this.userForm.value)
+    if (this.userForm.valid) {
+      this.showButton = true;
       const formData = new FormData();
       formData.append('username', this.userForm.value.username);
       formData.append('last_name', this.userForm.value.last_name);
@@ -61,19 +60,34 @@ export class ProfileComponent {
       if (selectedFile != null) {
         formData.append('path_photo', selectedFile[0], selectedFile[0].name);
       }
-      this.authService.updateUser(this.user_id,formData ).subscribe(
+      this.authService.updateUser(this.user_id, formData).subscribe(
         (data: any) => {
-         
+          console.log(data);
+          this.profile_pic = environment.apiUrl + "/" + data.data.path_photo;
+          this.showMessage = true;
+          this.messageupdate = "Profile updated successfully";
+          setTimeout(() => {
+            this.showMessage = false;
+            this.messageupdate = "";
+          }, 3000);
+        },
+        (error: any) => {
+          console.log(error);
+          this.showMessage = true;
+          this.messageupdate = "Error";
+          setTimeout(() => {
+            this.showMessage = false;
+            this.messageupdate = "";
+          }, 3000);
         }
       );
     } else {
       console.log("error");
+      this.showButton = false;
     }
- 
   }
 
   onFileSelected(event: any) {
     this.selectedFie = event.target.files[0];
   }
-
 }

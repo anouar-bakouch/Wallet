@@ -1,9 +1,5 @@
 - alert when reaching a budget limit => budget is lower than purchase
 
-- problem in update
-
 - spendings 
-
-- profile preferences section ( update profile picture)
 
 
