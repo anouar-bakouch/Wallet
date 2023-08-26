@@ -23,6 +23,7 @@ export class CartComponent {
   closeResult: string = '';
   showMessage = false;
   message = '';
+  prix_item:number = 0;
 
   public form_ = <RxFormGroup> this.fservice.group(
     { 
@@ -30,7 +31,6 @@ export class CartComponent {
       MOISSOLD: ['', Validators.required],
       quantity: ['', Validators.required],
       item_id : ['', Validators.required],
-      MONTSTRU : ['', Validators.required]
     }
   );
 
@@ -68,16 +68,6 @@ export class CartComponent {
     item.budgetphoto = environment.apiUrl + '/' + item.budgetphoto;
   }
 
-  // modal LOGIC
-
-
-  // fun(content: any, s: any) {
-
-  //   this.form_.setValue({
-  //     MONTSTRU: s.MONTSTRU,
-  //   });
-  //   this.open(content,{});
-  // }
 
   open(content: any,x:Item) {
 
@@ -89,9 +79,9 @@ export class CartComponent {
         Budget : x.MONTSTRU ,
         MOISSOLD : '2021-04-23',
         quantity : 1,
-         MONTSTRU : x.MONTSTRU
-
       })
+
+      this.prix_item = x.MONTSTRU;
     
     }
     this.modalService
@@ -118,19 +108,20 @@ export class CartComponent {
   }
 
   onClickSubmit() {
+    const cost = this.form_.value.quantity * this.prix_item;  
 
-    const MONTRAPP = this.form_.value.Budget - this.form_.value.MONTSTRU;
+    if(cost <= this.form_.value.Budget){
+
+    const MONTRAPP = this.form_.value.Budget - cost;
 
     const item:Purchase = {
       Budget: this.form_.value.Budget,
       quantity: this.form_.value.quantity,
       MOISSOLD: this.form_.value.MOISSOLD,
-      MONTSTRU : this.form_.value.MONTSTRU,
       MONTRAPP : MONTRAPP,
       user_id : Number(localStorage.getItem('user_id')) ,
       item_id : this.item_?.IDEIMPST,
     }
-
     // making a purchase request
     this.itemService.addToPurchase(item).subscribe((data: any) => {
       // delete the data from itemsCart 
@@ -142,17 +133,11 @@ export class CartComponent {
 
       this.modalService.dismissAll();
     });
+  }else {
+    alert("You don't have enough money to buy this item");
+  }
 
   }
 
-   updateMontant() {
-    const quantity :number = this.form_.value.quantity;
-    const montant : number = this.form_.value.MONTSTRU * quantity;
-    this.form_.get('MONTSTRU')?.setValue(montant);
-    // update Budget also 
-    const Budget : number = this.form_.value.Budget;
-    const newBudget : number = Budget + this.form_.value.MONTSTRU; 
-    this.form_.get('Budget')?.setValue(newBudget);
-  }
 
 }

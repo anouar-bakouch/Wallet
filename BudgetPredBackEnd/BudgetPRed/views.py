@@ -414,7 +414,8 @@ class PurchaseView(APIView):
         purchase = request.data.get('item')
         print(purchase)
         try:
-            item = Item.objects.get(IDEIMPST=purchase['IDEIMPST'])
+            
+            item = Item.objects.get(IDEIMPST=purchase['item_id'])
             user = User.objects.get(id=purchase['user_id'])
             item_purchase = ItemPurchase.objects.get(user=user, item=item)
             item_purchase.is_purchased = True

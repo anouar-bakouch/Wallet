@@ -52,19 +52,13 @@
           </div>
 
           <div class="form-group my-3">
-            <label for="Budget">Montant </label>
-            <input id="Budget" type="text" readonly formControlName="MONTSTRU" class="my-3 form-control">
-          </div>
-
-          
-          <div class="form-group my-3">
             <label for="MOISSOLD">Mois d'achat</label>
             <input id="MOISSOLD" type="date" formControlName="MOISSOLD" class="my-3 form-control">
           </div>
     
           <div class="form-group my-3">
             <label for="quantite">Quantite</label>
-            <input (input)="updateMontant()" min="1" max="7" id="quantite" type="number" formControlName="quantity" class="my-3 form-control">
+            <input min="1" max="7" id="quantite" type="number" formControlName="quantity" class="my-3 form-control">
           </div>
     
           <button type="submit" class="btn btn-primary">Submit</button>

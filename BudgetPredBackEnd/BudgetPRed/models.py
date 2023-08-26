@@ -40,7 +40,7 @@ class ItemPurchase(models.Model):
 
 class Purchase(models.Model):
     id = models.AutoField(primary_key=True)
-    budget = models.FloatField(default=0)
+    budget = models.FloatField(default=0)  
     MOISSOLD = models.DateField(default='2021-01-01')
     MONTRAPP = models.FloatField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True) # because one user can have many purchases
