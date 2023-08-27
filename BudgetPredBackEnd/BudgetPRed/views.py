@@ -439,35 +439,41 @@ class deleteItemPurchaseView(APIView):
 # Purchase PART YEHOOOOO 
 class PurchaseView(APIView):
     def post(self, request):
-        purchase = request.data.get('item')
+        data = request.data.get('item')
+        print(request.data)
         try:
             
-            item = Item.objects.get(IDEIMPST=purchase['item_id'])
-            user = User.objects.get(id=purchase['user_id'])
+            item = Item.objects.get(IDEIMPST=data['item_id'])
+            user = User.objects.get(id=data['user_id'])
             item_purchase = ItemPurchase.objects.get(user=user, item=item)
             item_purchase.is_purchased = True
             item_purchase.save()
             
             # create a new purchase
             purchase = Purchase.objects.create(
-                budget=purchase['Budget'],
-                MOISSOLD=purchase['MOISSOLD'],
-                MONTRAPP=purchase['MONTRAPP'],
+                budget=data['Budget'],
+                MOISSOLD=data['MOISSOLD'],
+                MONTRAPP=data['MONTRAPP'],
                 user=user,
                 item_purchase=item_purchase,
-                quantity=purchase['quantity']
+                quantity=data['quantity']
             )
             purchase.save()
 
-            # update the monthly budget
-            monthly_budget = MonthlyBudget.objects.get(user=user, month=purchase.MOISSOLD)
-            monthly_budget.spendings -= ((purchase.budget * purchase.quantity) - purchase.MONTRAPP) 
-            monthly_budget.savings += purchase.MONTRAPP 
-            print(monthly_budget)
-            monthly_budget.save()
-
+            try :
+                # update the monthly budget
+                monthly_budget = MonthlyBudget.objects.get(user=user, month=purchase.MOISSOLD)
+                monthly_budget.spendings -= ((purchase.budget * purchase.quantity) - purchase.MONTRAPP) 
+                monthly_budget.savings += purchase.MONTRAPP 
+                monthly_budget.budget -= purchase.budget * purchase.quantity
+                print(monthly_budget)
+                monthly_budget.save()
+            except Exception as e :
+                 # get the exact error 
+                 print(e)
+        
         except:
-            return Response({'message': 'Purchase not added successfully'})
+                return Response({'message': 'Purchase not added successfully'})
 
         return Response({'message': 'Purchase added successfully'})
 
