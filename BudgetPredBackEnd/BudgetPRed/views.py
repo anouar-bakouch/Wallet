@@ -501,7 +501,6 @@ class ListMonthlyBudgetView(APIView):
             months.append(month.MOISSOLD)
         # get the unique months
         months = list(set(months))
-        print(months)
         # for each month , a monthly budget is created or updated 
         for month in months:
             # get the user's purchases for the month
@@ -545,49 +544,50 @@ class ListMonthlyBudgetView(APIView):
 # OBJECTIVES
 def check_date(month):
     # to check if we are in a new month
-    actual_month = date.today().month # example : 7
-    if month == actual_month:
-        return True
-    else:
-        return False
+    actual_month = date.today().month
+    return month == actual_month
 
 class NewFormAPIView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')
-        user = User.objects.get(id=user_id)
-        month_of_request = request.query_params.get('month')
-        if check_date(month_of_request) : 
-            month = get_end_of_month() + relativedelta(months=1)
+        month_of_request = int(request.query_params.get('month'))
+        
+        if check_date(month_of_request):
+            user = User.objects.get(id=user_id)
+            month = date.today().replace(day=1).replace(month=month_of_request) + relativedelta(months=1)
+            
             monthly_budget = MonthlyBudget.objects.create(
                 user=user,
                 month=month,
                 budget=0,
                 spendings=0,
                 savings=0,
-                needs_new_form=True 
+                needs_new_form=True
             )
-            monthly_budget.save()
-            # return the monthly budget id so i can update it later with the budget 
+            # return the monthly budget ID so it can be updated later with the budget
             serializer = MonthlyBudgetSerializer(monthly_budget)
-            return Response({"data":serializer.data,"id":monthly_budget.id})
+            return Response({"data": serializer.data, "id": monthly_budget.id})
         else:
-            # end a http 204 response
-            return Response(status=status.HTTP_204_NO_CONTENT)   
+            # Return an HTTP 204 response indicating no content
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 class SaveFormAPIView(APIView):
-    def patch(self,request):
-        monthly_budget_id = request = request.data.get('monthly_budget_id')
-        MonthlyBudgetOBJ = MonthlyBudget.objects.get(id=monthly_budget_id)
-        # update the monthly budget
-        MonthlyBudgetOBJ.budget = request.data.get('budget')
-        MonthlyBudgetOBJ.month = request.data.get('month')
-        # set needs new form to false
-        MonthlyBudgetOBJ.needs_new_form = False
-        # save the monthly budget
-        MonthlyBudgetOBJ.save()
-        # return a response
-        return Response(status=status.HTTP_200_OK)
+    def patch(self, request):
+        monthly_budget_id = request.data.get('monthly_budget_id')
+        budget = request.data.get('budget')
+        month = request.data.get('month')
 
+        monthly_budget = MonthlyBudget.objects.get(id=monthly_budget_id)
+        # Update the monthly budget
+        monthly_budget.budget = budget
+        monthly_budget.month = month
+        # Set needs new form to false
+        monthly_budget.needs_new_form = False
+        # Save the monthly budget
+        monthly_budget.save()
+        # Return a response
+        return Response(status=status.HTTP_200_OK)
+        
 # GET the user's actual budget and expenses for the current month
 def actual_month():
     today = date.today()

@@ -145,6 +145,8 @@ export class CartComponent {
   OnDelete(item:number){
     this.itemService.deleteItemCart(item).subscribe((data:any) => {
       this.itemsCart = this.itemsCart.filter((x) => x.IDEIMPST != item);
+      this.showMessage = true;
+      this.message = "is empty";
     });
   }
 
