@@ -261,7 +261,7 @@ addToCart(item: Item) {
 
     }, 
     error => {
-      console.log(error);
+      // console.log(error);
     }
     );
 

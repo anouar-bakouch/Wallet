@@ -488,7 +488,6 @@ class ListMonthlyPurchaseView(APIView):
         return Response(serializer.data)
 
 # Saving each month data 
-
 class ListMonthlyBudgetView(APIView):
     # the user's monthly budget data 
     def get(self, request):
@@ -501,20 +500,31 @@ class ListMonthlyBudgetView(APIView):
             months.append(month.MOISSOLD)
         # get the unique months
         months = list(set(months))
+        print(months)
         # for each month , a monthly budget is created or updated 
         for month in months:
             # get the user's purchases for the month
             purchases = Purchase.objects.filter(user=user, MOISSOLD=month)
             # get the user's budget for the month
-            mbudget = MonthlyBudget.objects.filter(user=user, month=month)
-            if mbudget:
-                budget = mbudget.first().budget
-            else :
-                budget = purchases.aggregate(Sum('budget'))
-            # get the user's spendings for the month
-            savings = purchases.aggregate(Sum('MONTRAPP'))
-            # get the user's savings for the month
-            spendings = purchases.aggregate(Sum('budget'))['budget__sum'] 
+            # if(MonthlyBudget.objects.filter(user=user, month=month).first().budget):
+            #     budget = MonthlyBudget.objects.filter(user=user, month=month).first().budget
+            # else :
+            #     budget = 0
+            # 
+            budget = MonthlyBudget.objects.filter(user=user, month=month).first().budget
+            items_boughts = ItemPurchase.objects.filter(user=user, is_purchased=True)
+            items_boughts_id = []
+            for item_bought in items_boughts:
+                items_boughts_id.append(item_bought.item.IDEIMPST)
+             
+            items_prices_of_this_month = []
+
+            for item in items_boughts_id:
+                items_prices_of_this_month.append(Item.objects.get(IDEIMPST=item).MONTSTRU)
+
+            spendings = sum(items_prices_of_this_month) 
+            savings = Purchase.objects.filter(user=user, MOISSOLD=month).aggregate(Sum('MONTRAPP'))
+            print(spendings,savings,budget)
 
             # check if the monthly budget exists
             monthly_budget = MonthlyBudget.objects.filter(user=user, month=month).first()
@@ -527,14 +537,15 @@ class ListMonthlyBudgetView(APIView):
 
             else:
                 # create a new monthly budget
-                monthly_budget = MonthlyBudget.objects.create(
+                monthly_budget_ = MonthlyBudget.objects.create(
                     user=user,
                     month=month, # get the month number
-                    budget=budget['budget__sum'],
+                    budget=budget,
                     spendings=spendings,
                     savings=savings['MONTRAPP__sum']
                 )
-                monthly_budget.save()
+
+                monthly_budget_.save()
 
         # get the user's monthly budgets
         monthly_budgets = MonthlyBudget.objects.filter(user=user)
@@ -592,7 +603,6 @@ class SaveFormAPIView(APIView):
 def actual_month():
     today = date.today()
     return today
-
 
 class GetActualBudgetExpensesView(APIView):
     def get(self, request):

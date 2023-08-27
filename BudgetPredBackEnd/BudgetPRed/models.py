@@ -64,7 +64,7 @@ class MonthlyBudget(models.Model):
     savings = models.FloatField(default=0)
     budget = models.FloatField(default=0) # budget allowed to spend
     spendings = models.FloatField(default=0)
-    needs_new_form = models.BooleanField(default=True) # if the user has already filled the form for this month
+    needs_new_form = models.BooleanField(default=True) # filled or not
 
     def __str__(self):
         return f"MonthlyBudget: {self.user.username} - {self.month}"
