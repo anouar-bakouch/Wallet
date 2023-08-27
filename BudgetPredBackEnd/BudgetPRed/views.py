@@ -562,7 +562,6 @@ class NewFormAPIView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')
         month_of_request = int(request.query_params.get('month'))
-        
         if check_date(month_of_request):
             user = User.objects.get(id=user_id)
             month = date.today().replace(day=1).replace(month=month_of_request) + relativedelta(months=1)
@@ -594,6 +593,23 @@ class SaveFormAPIView(APIView):
         monthly_budget.month = month
         # Set needs new form to false
         monthly_budget.needs_new_form = True
+        # Save the monthly budget
+        monthly_budget.save()
+        # Return a response
+        return Response(status=status.HTTP_200_OK)
+
+class UpdateFormAPIView(APIView):
+    def patch(self, request):
+        print(request.data)
+        monthly_budget_id = request.data.get('monthly_budget_id')
+        budget = request.data.get('budget')
+        month = request.data.get('month')
+
+
+        monthly_budget = MonthlyBudget.objects.get(id=monthly_budget_id)
+        # Update the monthly budget
+        monthly_budget.budget = budget
+        monthly_budget.month = month
         # Save the monthly budget
         monthly_budget.save()
         # Return a response

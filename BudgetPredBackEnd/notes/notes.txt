@@ -1,1 +1,3 @@
 - alert when reaching a budget limit => budget is lower than purchase
+
+- budget definition

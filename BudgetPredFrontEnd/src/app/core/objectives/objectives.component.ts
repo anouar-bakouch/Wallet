@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { MonthlyBudget } from 'src/models/MonthlyBudget';
 import { RxFormBuilder, RxFormGroup } from '@rxweb/reactive-form-validators';
 import { Validators } from '@angular/forms';
+import { HeaderService } from '../services/header.service';
 
 @Component({
   selector: 'app-objectives',
@@ -19,8 +20,16 @@ export class ObjectivesComponent implements OnInit {
   public monthly_budget_id:number = 0;
   public displayForm:boolean = false;
   public lastMonths:MonthlyBudget[] = [];
+  id__actual_monthly :number = 0;
 
   public form = <RxFormGroup> this.formService.group(
+    {
+      budget: ['',Validators.required],
+      month : ['',Validators.required],
+    }
+  );
+
+  public form_ = <RxFormGroup> this.formService.group(
     {
       budget: ['',Validators.required],
       month : ['',Validators.required],
@@ -31,12 +40,31 @@ export class ObjectivesComponent implements OnInit {
     private objService : ObjectivesService,
     private authService : AuthService,
     private formService : RxFormBuilder,
+    private hservice:HeaderService
   ) { }
 
   ngOnInit() {
     this.user_id = this.authService.getId();
     this.getForm();
     this.getLastMonths();
+    this.getActualBudget();
+    
+  }
+
+  getActualBudget(){
+    this.hservice.actualMonthBudget(this.user_id).subscribe(
+      (data:any) => {
+        this.form_.patchValue({
+          budget: data.budget,
+          month: data.month,
+        });
+        this.id__actual_monthly = data.id;
+      },
+      (error) => {
+        this.messageError = error.message;
+        console.log(error);
+      }
+    );
   }
 
   getForm(){
@@ -68,10 +96,6 @@ export class ObjectivesComponent implements OnInit {
         console.log(error);
       }
     );
-
-
-
-
   }
 
   saveForm(){
@@ -99,6 +123,25 @@ export class ObjectivesComponent implements OnInit {
       },
       (error) => {
         this.messageError = error;
+        console.log(error);
+      }
+    );
+  }
+
+  updateForm(){
+    // get the form values
+    const form_ = this.form_.toFormData();
+    form_.append('monthly_budget_id',this.id__actual_monthly.toString());
+    console.log(this.form_.value)
+  
+    // get today's actual month to append it to the form
+    this.objService.updateForm(form_).subscribe(
+      (data:any) => {
+        console.log(data);
+        window.location.reload();
+      },
+      (error) => {
+         this.messageError = error;
         console.log(error);
       }
     );

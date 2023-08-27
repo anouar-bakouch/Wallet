@@ -29,5 +29,9 @@ export class ObjectivesService  {
         return this.http.get<MonthlyBudget[]>(_url,{params})
     }
 
+    updateForm(data:any){
+        const _url = environment.apiUrl + '/update-form/';
+        return this.http.patch<MonthlyBudget>(_url,data)
+    }
 
 }

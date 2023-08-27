@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from BudgetPRed.views import MostBoughtCategoryView,GetLastMonthsBudgetExpensesView,GetActualBudgetExpensesView,SaveFormAPIView,NewFormAPIView,ListMonthlyBudgetView,GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListMonthlyPurchaseView, ListPurchaseView,LoginView, PredictNextMonthMONTSTRUView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index
+from BudgetPRed.views import UpdateFormAPIView,MostBoughtCategoryView,GetLastMonthsBudgetExpensesView,GetActualBudgetExpensesView,SaveFormAPIView,NewFormAPIView,ListMonthlyBudgetView,GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListMonthlyPurchaseView, ListPurchaseView,LoginView, PredictNextMonthMONTSTRUView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index
 urlpatterns = [
     path('',index),
     path('admin/', admin.site.urls),
@@ -37,6 +37,7 @@ urlpatterns = [
     # Objectives PART --------------------
     path('save-new-form/',SaveFormAPIView.as_view()),
     path('get-new-form/',NewFormAPIView.as_view()),
+    path('update-form/',UpdateFormAPIView.as_view()),
     path('get-objectives/',GetActualBudgetExpensesView.as_view()),
     path('get-last-months-objectives/',GetLastMonthsBudgetExpensesView.as_view()),
     path('most-bought-categories/',MostBoughtCategoryView.as_view())
