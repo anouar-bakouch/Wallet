@@ -544,8 +544,8 @@ class ListMonthlyBudgetView(APIView):
 # OBJECTIVES
 def check_date(month):
     # to check if we are in a new month
-    actual_month = date.today().month
-    return month == actual_month
+    actual_month = date.today() + relativedelta(months=1)
+    return month == actual_month.month
 
 class NewFormAPIView(APIView):
     def get(self, request):
@@ -562,7 +562,7 @@ class NewFormAPIView(APIView):
                 budget=0,
                 spendings=0,
                 savings=0,
-                needs_new_form=True
+                needs_new_form=False # user still not filled this month's objectives
             )
             # return the monthly budget ID so it can be updated later with the budget
             serializer = MonthlyBudgetSerializer(monthly_budget)
@@ -582,7 +582,7 @@ class SaveFormAPIView(APIView):
         monthly_budget.budget = budget
         monthly_budget.month = month
         # Set needs new form to false
-        monthly_budget.needs_new_form = False
+        monthly_budget.needs_new_form = True
         # Save the monthly budget
         monthly_budget.save()
         # Return a response
