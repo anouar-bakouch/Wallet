@@ -41,6 +41,7 @@ export class HeaderBudgetComponent {
   ]
   most_bought_categories = []
   has_config:boolean = false;
+  currency:string = localStorage.getItem('currency')|| "MAD";
 
   constructor(
     public authService:AuthService,
