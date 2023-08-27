@@ -15,7 +15,6 @@ export class SignUpComponent implements OnInit {
   password: string = "";
   firstName: string = "";
   lastName: string = "";
-
   disabledSignupButton = true;
   emailError :string | null = null;
   passwordError :string | null = null;
@@ -86,7 +85,6 @@ export class SignUpComponent implements OnInit {
       first_name: this.firstName,
       last_name: this.lastName,
       path_photo : "",
-      month_budget : 0,
     }
     this.authService.signUp(user).subscribe((response) => {
       this.router.navigate(['/home/login']);

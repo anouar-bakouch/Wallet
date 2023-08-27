@@ -68,3 +68,6 @@ class MonthlyBudget(models.Model):
 
     def __str__(self):
         return f"MonthlyBudget: {self.user.username} - {self.month}"
+    
+    class Meta:
+        unique_together = ['user', 'month'] # one user can have only one monthly budget per month

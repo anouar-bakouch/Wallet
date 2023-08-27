@@ -5,6 +5,7 @@ import { MonthlyBudget } from 'src/models/MonthlyBudget';
 import { RxFormBuilder, RxFormGroup } from '@rxweb/reactive-form-validators';
 import { Validators } from '@angular/forms';
 import { HeaderService } from '../services/header.service';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-objectives',
@@ -35,12 +36,14 @@ export class ObjectivesComponent implements OnInit {
       month : ['',Validators.required],
     }
   );
+  closeResult: string = "";
 
   constructor(
     private objService : ObjectivesService,
     private authService : AuthService,
     private formService : RxFormBuilder,
-    private hservice:HeaderService
+    private hservice:HeaderService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -54,7 +57,7 @@ export class ObjectivesComponent implements OnInit {
   getActualBudget(){
     this.hservice.actualMonthBudget(this.user_id).subscribe(
       (data:any) => {
-        this.form_.patchValue({
+        this.form.patchValue({
           budget: data.budget,
           month: data.month,
         });
@@ -65,6 +68,46 @@ export class ObjectivesComponent implements OnInit {
         console.log(error);
       }
     );
+  }
+
+  submitForm(){
+    const form = this.form.toFormData();
+    form.append('user_id',this.user_id.toString());
+    this.objService.setBudget(form).subscribe(
+      (data:any) => {
+        console.log(data);
+        // window.location.reload();
+      }
+    );
+  }
+
+  open(content: any) {
+    if (content._declarationTContainer.localNames[0] == 'mymodal') {
+      this.form_.patchValue({
+        budget: this.form.value.budget,
+        month: this.form.value.month
+      });
+    }
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result: any) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason: any) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 
   getForm(){

@@ -13,6 +13,7 @@ export class MyPurchasesComponent {
   my_purchases: any[] = [];
   user_id: number = 0;
   show_loading = false;
+  currency:string = localStorage.getItem('currency')|| "MAD";
 
   constructor(
     private puchaseservice: PurchaseService,
@@ -25,7 +26,6 @@ export class MyPurchasesComponent {
     this.puchaseservice.getPurchaseByUser(this.user_id).subscribe(
       (data: any) => {
         this.my_purchases = data;
-        console.log(data)
       },
       error => {
         console.log(error);
@@ -56,4 +56,20 @@ export class MyPurchasesComponent {
       }
     );
   }
+
+  deletePurchase(id: number) {
+    this.puchaseservice.deletePurchase(id).subscribe(
+      (data: any) => {
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      },
+      () => {
+        this.ngOnInit();
+      }
+    );
+  }
+
+
 }

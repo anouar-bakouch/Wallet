@@ -34,4 +34,9 @@ export class ObjectivesService  {
         return this.http.patch<MonthlyBudget>(_url,data)
     }
 
+    setBudget(data:any){
+        const _url = environment.apiUrl + '/set-budget/';
+        return this.http.post<MonthlyBudget>(_url,data)
+    }
+
 }

@@ -22,4 +22,8 @@ export class PurchaseService {
             const params = new HttpParams().set('user_id', id).set('month',month);
             return this.http.get(url_,{params})
         }
+
+        deletePurchase(id:number){
+            return this.http.delete(environment.apiUrl+`/delete-purchase/${id}/`)
+        }
 }

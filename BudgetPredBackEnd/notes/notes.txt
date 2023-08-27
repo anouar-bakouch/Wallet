@@ -2,4 +2,4 @@
 
 - purchases 
 
-- cart problem when removing a purchase
+- a user can not buy if budget is not defined

@@ -338,7 +338,6 @@ class UserRegistrationView(APIView):
     def post(self, request, *args, **kwargs):
         # Get the user data from the request
         data = request.data
-
         # Create a new user from the above data
         user = User.objects.create(
             username=data['username'],
@@ -346,9 +345,7 @@ class UserRegistrationView(APIView):
             first_name=data['first_name'],
             last_name=data['last_name'],
             # hash the password with the set_password method
-            password = data['password'],
-            path_photo = data['path_photo'],
-            month_budget = data['month_budget']
+            password = data['password']
         )
 
         # algorithm to hash the password using make_password
@@ -466,6 +463,7 @@ class PurchaseView(APIView):
             monthly_budget = MonthlyBudget.objects.get(user=user, month=purchase.MOISSOLD)
             monthly_budget.spendings -= ((purchase.budget * purchase.quantity) - purchase.MONTRAPP) 
             monthly_budget.savings += purchase.MONTRAPP 
+            print(monthly_budget)
             monthly_budget.save()
 
         except:
@@ -476,11 +474,18 @@ class PurchaseView(APIView):
 class DeletePurchaseViewAPI(APIView):
     def delete(self, request, pk):
         # Get object with this pk
-        purchase = get_object_or_404(Purchase.objects.all(), pk=pk)
-        item_purchase = ItemPurchase.objects.get(user=purchase.user, item=purchase.item_purchase.item)
+        item = get_object_or_404(Item.objects.all(), pk=pk)
+        item_purchase = ItemPurchase.objects.get( item=item,)
         item_purchase.is_purchased = False
         item_purchase.save()
+        purchase = Purchase.objects.get(item_purchase=item_purchase)
         purchase.delete()
+        # update the monthly budget
+        monthly_budget = MonthlyBudget.objects.get(user=purchase.user, month=purchase.MOISSOLD)
+        monthly_budget.spendings += ((purchase.budget * purchase.quantity) - purchase.MONTRAPP)
+        monthly_budget.savings -= purchase.MONTRAPP
+        monthly_budget.budget += purchase.budget 
+        monthly_budget.save()
         return Response({
             "message": "Purchase with id `{}` has been deleted.".format(pk)
         }, status=204)
@@ -516,17 +521,10 @@ class ListMonthlyBudgetView(APIView):
             months.append(month.MOISSOLD)
         # get the unique months
         months = list(set(months))
-        print(months)
         # for each month , a monthly budget is created or updated 
         for month in months:
             # get the user's purchases for the month
             purchases = Purchase.objects.filter(user=user, MOISSOLD=month)
-            # get the user's budget for the month
-            # if(MonthlyBudget.objects.filter(user=user, month=month).first().budget):
-            #     budget = MonthlyBudget.objects.filter(user=user, month=month).first().budget
-            # else :
-            #     budget = 0
-            # 
             budget = MonthlyBudget.objects.filter(user=user, month=month).first().budget
             items_boughts = ItemPurchase.objects.filter(user=user, is_purchased=True)
             items_boughts_id = []
@@ -540,7 +538,6 @@ class ListMonthlyBudgetView(APIView):
 
             spendings = sum(items_prices_of_this_month) 
             savings = Purchase.objects.filter(user=user, MOISSOLD=month).aggregate(Sum('MONTRAPP'))
-            print(spendings,savings,budget)
 
             # check if the monthly budget exists
             monthly_budget = MonthlyBudget.objects.filter(user=user, month=month).first()
@@ -574,11 +571,31 @@ def check_date(month):
     actual_month = date.today() + relativedelta(months=1)
     return month == actual_month.month
 
+class FormAPIView(APIView):
+    def post(self, request):
+        print(request.data)
+        user_id = request.data.get('user_id')
+        month = request.data.get('month')
+        budget = request.data.get('budget')
+        user = User.objects.get(id=user_id)
+        monthly_budget = MonthlyBudget.objects.create(
+            user=user,
+            month=month,
+            budget=budget,
+            spendings=0,
+            savings=0,
+            needs_new_form=True # user still not filled this month's objectives
+        )
+        monthly_budget.save()
+        return Response(status=status.HTTP_200_OK)
+
+
 class NewFormAPIView(APIView):
     def get(self, request):
         user_id = request.query_params.get('user_id')
         month_of_request = int(request.query_params.get('month'))
         if check_date(month_of_request):
+            
             user = User.objects.get(id=user_id)
             month = date.today().replace(day=1).replace(month=month_of_request) + relativedelta(months=1)
             
