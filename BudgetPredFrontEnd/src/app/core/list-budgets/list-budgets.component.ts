@@ -11,6 +11,7 @@ import { Item } from 'src/models/Item';
 import { environment } from 'src/environments/environment';
 import { ItemPurchase } from 'src/models/ItemPurchase';
 import { AuthService } from 'src/app/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-budgets',
@@ -56,6 +57,7 @@ export class ListBudgetsComponent {
     private budgetService: BudgetService,
     private modalService: NgbModal,
     private fservice: RxFormBuilder,
+    private router:Router,
     private authService: AuthService){
   }
 
@@ -138,7 +140,7 @@ addToCart(item: Item) {
     }
 
     this.budgetService.addToCart(ItemPurchase).subscribe((data: any) => {
-      console.log(data);
+      this.router.navigate(['/budgetHome/cart']);
     });
 }
 

@@ -17,11 +17,11 @@
         <li class="nav-item dropdown">
           <a
             class="text-color nav-link dropdown-toggle"
-            href="#ced"
             id="poles_doctorales"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
+            routerLink="/budgetHome/budgets"
           >
             <span class="display-15">
               <img *ngIf="show_loading" class="img-fluid img-thumbnail" src="/assets/animations/auth-loading.gif" width="70" height="70" alt="" srcset="">
@@ -92,7 +92,7 @@
   <div class="card my-3 col col-3 mx-3">
     <div class="card-content">
       <h2 class="card-title border border-bottom border-1 p-1 text-center">{{actual_month}} </h2>
-      <p class="card-text">Budget :{{actual_budget}} {{currency}}</p>
+      <p class="card-text">Budget Left :{{actual_budget}} {{currency}}</p>
       <p class="card-text">Spendings :{{spendings}} {{currency}}</p>
       <p class="card-text">Savings :{{savings}} {{currency}}</p>
 

@@ -463,14 +463,13 @@ class PurchaseView(APIView):
             try :
                 # update the monthly budget
                 monthly_budget = MonthlyBudget.objects.get(user=user, month=purchase.MOISSOLD)
-                monthly_budget.spendings -= ((purchase.budget * purchase.quantity) - purchase.MONTRAPP) 
+                monthly_budget.spendings += (purchase.budget * purchase.quantity) 
                 monthly_budget.savings += purchase.MONTRAPP 
-                monthly_budget.budget -= purchase.budget * purchase.quantity
-                print(monthly_budget)
+                monthly_budget.budget -= (purchase.budget * purchase.quantity)
                 monthly_budget.save()
             except Exception as e :
                  # get the exact error 
-                 print(e)
+                 Response({'message': e})
         
         except:
                 return Response({'message': 'Purchase not added successfully'})
