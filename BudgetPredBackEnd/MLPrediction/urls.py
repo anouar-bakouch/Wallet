@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from BudgetPRed.views import UpdateFormAPIView,MostBoughtCategoryView,GetLastMonthsBudgetExpensesView,GetActualBudgetExpensesView,SaveFormAPIView,NewFormAPIView,ListMonthlyBudgetView,GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListMonthlyPurchaseView, ListPurchaseView,LoginView, PredictNextMonthMONTSTRUView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index
+from BudgetPRed.views import UpdateFormAPIView,MostBoughtCategoryView,GetLastMonthsBudgetExpensesView,GetActualBudgetExpensesView,SaveFormAPIView,NewFormAPIView,ListMonthlyBudgetView,GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListMonthlyPurchaseView, ListPurchaseView,LoginView, PredictNextMonthMONTSTRUView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index,DeletePurchaseViewAPI
 urlpatterns = [
     path('',index),
     path('admin/', admin.site.urls),
@@ -32,6 +32,7 @@ urlpatterns = [
     path('add-purchase/', PurchaseView.as_view()),
     path('list-purchase/', ListPurchaseView.as_view()),
     path('list-month-purchase/',ListMonthlyPurchaseView.as_view()),
+    path('delete-purchase/<int:pk>',DeletePurchaseViewAPI.as_view()),
     # Months DATA -------- 
     path('list-data/',ListMonthlyBudgetView.as_view()),
     # Objectives PART --------------------

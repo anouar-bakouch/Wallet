@@ -86,7 +86,7 @@ export class ObjectivesComponent implements OnInit {
           budget: this.formData.budget,
           month: this.formData.month,
         });
-        if(this.formData.needs_new_form == true){
+        if(this.formData.needs_new_form == false){
           this.displayForm = true;
         }
 

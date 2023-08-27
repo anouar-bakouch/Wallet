@@ -443,7 +443,6 @@ class deleteItemPurchaseView(APIView):
 class PurchaseView(APIView):
     def post(self, request):
         purchase = request.data.get('item')
-        print(purchase)
         try:
             
             item = Item.objects.get(IDEIMPST=purchase['item_id'])
@@ -464,11 +463,28 @@ class PurchaseView(APIView):
             purchase.save()
 
             # update the monthly budget
+            monthly_budget = MonthlyBudget.objects.get(user=user, month=purchase.MOISSOLD)
+            monthly_budget.spendings -= ((purchase.budget * purchase.quantity) - purchase.MONTRAPP) 
+            monthly_budget.savings += purchase.MONTRAPP 
+            monthly_budget.save()
 
         except:
             return Response({'message': 'Purchase not added successfully'})
 
         return Response({'message': 'Purchase added successfully'})
+
+class DeletePurchaseViewAPI(APIView):
+    def delete(self, request, pk):
+        # Get object with this pk
+        purchase = get_object_or_404(Purchase.objects.all(), pk=pk)
+        item_purchase = ItemPurchase.objects.get(user=purchase.user, item=purchase.item_purchase.item)
+        item_purchase.is_purchased = False
+        item_purchase.save()
+        purchase.delete()
+        return Response({
+            "message": "Purchase with id `{}` has been deleted.".format(pk)
+        }, status=204)
+
 
 class ListPurchaseView(APIView):
     def get(self, request):
@@ -604,8 +620,6 @@ class UpdateFormAPIView(APIView):
         monthly_budget_id = request.data.get('monthly_budget_id')
         budget = request.data.get('budget')
         month = request.data.get('month')
-
-
         monthly_budget = MonthlyBudget.objects.get(id=monthly_budget_id)
         # Update the monthly budget
         monthly_budget.budget = budget
