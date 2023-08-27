@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.urls import path
-from BudgetPRed.views import FormAPIView,UpdateFormAPIView,MostBoughtCategoryView,GetLastMonthsBudgetExpensesView,GetActualBudgetExpensesView,SaveFormAPIView,NewFormAPIView,ListMonthlyBudgetView,GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListMonthlyPurchaseView, ListPurchaseView,LoginView, PredictNextMonthMONTSTRUView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index,DeletePurchaseViewAPI
+from BudgetPRed.views import configModelView,FormAPIView,UpdateFormAPIView,MostBoughtCategoryView,GetLastMonthsBudgetExpensesView,GetActualBudgetExpensesView,SaveFormAPIView,NewFormAPIView,ListMonthlyBudgetView,GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListMonthlyPurchaseView, ListPurchaseView,LoginView, PredictNextMonthMONTSTRUView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index,DeletePurchaseViewAPI
 urlpatterns = [
     path('',index),
     path('admin/', admin.site.urls),
+    #USER CONFIG ------------------------
+    path('user-config/',configModelView.as_view()),
     # ITEM ------------------------------
     path('add-item/', AddItemView.as_view()),
     path('update-item/<int:pk>/', UpdateItemView.as_view()),

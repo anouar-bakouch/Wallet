@@ -2,7 +2,7 @@
 
 
   <form  class="col-4 m-auto"  [formGroup]="form" (ngSubmit)="submitForm()">
-   <h3 class="bg-success p-3 text-light" >Actual Month Budget</h3>
+   <h3 class="border  border-success p-3 " >Actual Month Budget</h3>
     <div class="form-group fs-4">
       <label for="budget">Budget</label>
       <input type="number" class="form-control" id="budget" formControlName="budget">
@@ -12,7 +12,7 @@
       <input type="date" class="form-control" id="month" formControlName="month">
     </div>
     <button type="submit" class="btn btn-success mx-3">submit</button>
-    <button class="btn btn-primary" (click)="open(mymodal)">update</button>
+    <button class="btn btn-primary" type="button" (click)="open(mymodal)">update</button>
   </form>
 
   <ng-template class="modal w-80 fade" tabindex="-1" role="dialog" #mymodal let-modal aria-hidden="true">

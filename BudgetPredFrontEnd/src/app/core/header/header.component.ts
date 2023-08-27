@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { environment } from 'src/environments/environment';
 import { User } from 'src/models/User';
 import { HeaderService } from '../services/header.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: '[app-budget-header]',
@@ -39,12 +40,14 @@ export class HeaderBudgetComponent {
     {id:12,name:'December'},
   ]
   most_bought_categories = []
+  has_config:boolean = false;
 
   constructor(
     public authService:AuthService,
     public fservice : RxFormBuilder,
     private modalService: NgbModal,
-    private hservice:HeaderService
+    private hservice:HeaderService,
+    private router: Router
   ) {
 
     const id = Number(localStorage.getItem('user_id'));
@@ -55,12 +58,16 @@ export class HeaderBudgetComponent {
       this.photoPath = `${environment.apiUrl}/${this.user?.path_photo}`;
       this.show_loading = false;
     } 
-    );
+    )
 
+    this.hservice.userConfig(this.authService.getId()).subscribe((data:any) => {
+      this.has_config =  data.has_config;
+    });
    }
 
   onLogout(){
     this.authService.logout();
+    this.router.navigate(['/home/login']);
   }
 
   ngOnInit(): void {
@@ -73,7 +80,6 @@ export class HeaderBudgetComponent {
     }
     );
   }
-
 
 
   open(content: any) {

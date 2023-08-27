@@ -80,7 +80,7 @@ export class AuthService {
     localStorage.removeItem('access');
     localStorage.removeItem('user_id');
     localStorage.removeItem('refresh');
-    this.router.navigate(['/login']);
+    
   }
 
   signUp(user:any): Observable<any> {

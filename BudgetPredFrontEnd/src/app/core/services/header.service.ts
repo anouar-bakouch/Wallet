@@ -41,4 +41,10 @@ export class HeaderService {
       return this.http.get(_url, {params});
     }
 
+    userConfig(user_id:number){
+      const _url = environment.apiUrl + '/user-config/';
+      const params = new HttpParams().set('user_id', user_id.toString());
+      return this.http.get(_url, {params});
+    }
+
 }

@@ -578,16 +578,25 @@ class FormAPIView(APIView):
         month = request.data.get('month')
         budget = request.data.get('budget')
         user = User.objects.get(id=user_id)
-        monthly_budget = MonthlyBudget.objects.create(
-            user=user,
-            month=month,
-            budget=budget,
-            spendings=0,
-            savings=0,
-            needs_new_form=True # user still not filled this month's objectives
-        )
-        monthly_budget.save()
-        return Response(status=status.HTTP_200_OK)
+        
+        # check if it exists 
+        monthly_budget = MonthlyBudget.objects.filter(user=user, month=month).first()
+        if monthly_budget:
+            # update the monthly budget
+            monthly_budget.budget = budget
+            monthly_budget.save()
+            return Response(status=status.HTTP_200_OK)
+        else :
+            monthly_budget = MonthlyBudget.objects.create(
+                user=user,
+                month=month,
+                budget=budget,
+                spendings=0,
+                savings=0,
+                needs_new_form=True # user still not filled this month's objectives
+            )
+            monthly_budget.save()
+            return Response(status=status.HTTP_200_OK)
 
 
 class NewFormAPIView(APIView):
@@ -687,3 +696,18 @@ class MostBoughtCategoryView(APIView):
             categories.append(purchase.item_purchase.item.categorie)
         top_categories = categories[:3]
         return Response(top_categories)
+
+class configModelView(APIView):
+    def get(self,request):
+        user_id = request.query_params.get('user_id')
+        # GOAL : check if the user has set a budget for this month
+            # YES : then return True 
+            # NO : then return False
+        user = User.objects.get(id=user_id)
+        monthly_budgets = MonthlyBudget.objects.filter(user=user)
+        if monthly_budgets:
+            for monthly_budget in monthly_budgets:
+                if monthly_budget.month.month == actual_month().month:
+                    return Response({'has_config': True})
+        else:
+            return Response({'has_config': False})
