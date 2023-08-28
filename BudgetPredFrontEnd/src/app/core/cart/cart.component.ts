@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ItemPurchaseService } from '../services/itemPurchase.service';
 import { environment } from 'src/environments/environment';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe } from '@angular/common';
+
 import {
   RxFormBuilder,
   RxFormGroup,
@@ -25,6 +27,7 @@ export class CartComponent {
   showMessage = false;
   message = '';
   prix_item:number = 0;
+  today: string="";
 
   public form_ = <RxFormGroup> this.fservice.group(
     { 
@@ -41,7 +44,8 @@ export class CartComponent {
     private itemService: ItemPurchaseService,
     private modalService: NgbModal,
     private fservice: RxFormBuilder,
-    private router : Router
+    private router : Router,
+    private datePipe: DatePipe
     ) {}
 
     ngOnInit(): void {
@@ -66,6 +70,8 @@ export class CartComponent {
           }
         });
       });
+      this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || "";
+
     }
     
   correctImagePath(item: any): void {
@@ -81,7 +87,7 @@ export class CartComponent {
       this.form_.setValue({
         item_id : x.IDEIMPST,
         Budget : x.MONTSTRU ,
-        MOISSOLD : '2021-04-23',
+        MOISSOLD : this.today,
         quantity : 1,
       })
 

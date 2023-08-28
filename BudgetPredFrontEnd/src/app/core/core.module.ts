@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CoreRoutingModule } from './core-routing.module';
 import { HomeBudgetComponent } from './home/home.component';
 import { HeaderBudgetComponent } from './header/header.component';
@@ -40,7 +40,8 @@ import { ObjectivesComponent } from './objectives/objectives.component';
     HomeBudgetComponent
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true },
+    DatePipe
   ],
 })
 

@@ -441,8 +441,7 @@ class PurchaseView(APIView):
     def post(self, request):
         data = request.data.get('item')
         print(request.data)
-        try:
-            
+        try: 
             item = Item.objects.get(IDEIMPST=data['item_id'])
             user = User.objects.get(id=data['user_id'])
             item_purchase = ItemPurchase.objects.get(user=user, item=item)
@@ -465,7 +464,8 @@ class PurchaseView(APIView):
                 monthly_budget = MonthlyBudget.objects.get(user=user, month=purchase.MOISSOLD)
                 monthly_budget.spendings += (purchase.budget * purchase.quantity) 
                 monthly_budget.savings += purchase.MONTRAPP 
-                monthly_budget.budget -= (purchase.budget * purchase.quantity)
+                monthly_budget.budget = monthly_budget.budget
+
                 monthly_budget.save()
             except Exception as e :
                  # get the exact error 
