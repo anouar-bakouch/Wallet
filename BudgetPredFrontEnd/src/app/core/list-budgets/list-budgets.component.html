@@ -52,8 +52,8 @@
   <img src = "assets/animations/items.gif" *ngIf="showLoading" alt="loading" width="300" height="300">
 
   
-  <div *ngIf="showAdded" class="row">
-    <div class="col col-6 m-auto bg-primary text-light text-center">
+  <div *ngIf="showAdded" class="row my-3 ">
+    <div class="col col-6 m-auto text-title bg-white text-center">
       <h3 class="p-3">{{messageItemAdded}}</h3>
     </div>
   </div>
@@ -99,28 +99,28 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Item INFOS</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Informations de l'article </h5>
       </div>
       <div class="modal-body">
         <form [formGroup]="form" (ngSubmit)="onClickSubmit()" class="container">
           <div class="form-group my-3">
-            <label for="LIBACTGE">Label - Description</label>
+            <label for="LIBACTGE">Description</label>
             <input id="LIBACTGE" type="text" formControlName="LIBACTGE" class="my-3 form-control">
           </div>
 
           <div class="form-group my-3">
             <label for="CODYTPAC">Code de Catégorie</label>
-            <input id="CODYTPAC" type="text" formControlName="CODYTPAC" class="my-3 form-control" placeholder="codtypac">
+            <input id="CODYTPAC" max="2" type="text" formControlName="CODTYPAC" class="my-3 form-control" placeholder="code de catégorie">
           </div>
 
           <div class="form-group my-3">
-            <label for="inputGroupFile01">Item Picture</label>
+            <label for="inputGroupFile01">Image descriptive</label>
             <input id="inputGroupFile01" type="file" (change)="onFileSelected($event)" formControlName="budgetphoto"
               class="form-control">
           </div>
 
           <div class="form-group my-3">
-            <label for="categorie">Categorie</label>
+            <label for="categorie">Catégorie</label>
             <select id="categorie" formControlName="categorie" class="form-control">
               <option *ngFor="let c of categories" [value]="c">{{c}}</option>
             </select>
@@ -131,7 +131,7 @@
             <input id="price" type="text" formControlName="MONTSTRU" class="my-3 form-control" placeholder="prix">
           </div>
 
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" [disabled]="form.invalid" class="btn btn-custom"><i class="bi bi-check-circle"></i></button>
         </form>
       </div>
     </div>

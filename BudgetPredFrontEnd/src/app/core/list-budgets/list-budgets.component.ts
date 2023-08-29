@@ -197,30 +197,28 @@ addToCart(item: Item) {
         formData.append('budgetphoto', selectedFile[0], selectedFile[0].name);
       }
   
-      this.budgetService.addItem(formData).subscribe( response => {
-        this.getBudgets();
-        setTimeout(() => {
+      this.budgetService.addItem(formData).subscribe(
+        response => {
+          this.getBudgets();
           this.showAdded = true;
-          this.messageItemAdded = "Added successfully !";
-        }, 3000);
-      },
+          this.messageItemAdded = "Article bien ajouté!";
+          setTimeout(() => {
+            this.showAdded = false;
+          }, 3000);
+        },
         error => {
           console.log(error);
+          this.showAdded = true;
+          this.messageItemAdded = "Erreur lors de l'ajout!";
           setTimeout(() => {
-            this.showAdded = true;
-            this.messageItemAdded = "something went wrong";
-          }, 3000);
-          
-        },()=>{
-        
             this.showAdded = false;
-         
-        } 
-        );
-      }
-      // close the model 
-      this.modalService.dismissAll();
+          }, 3000);
+        }
+      );
     }
+    // close the modal 
+    this.modalService.dismissAll();
+  }
 
     onFileSelected(event: any) {
       this.selectedFie = event.target.files[0];

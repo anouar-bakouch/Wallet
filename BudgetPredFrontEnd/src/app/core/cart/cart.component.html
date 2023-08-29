@@ -1,32 +1,30 @@
 <div class="container bg-white w-80 m-auto border rounded panier">
-<div class="list-group my-5 row">
-  <div class="row m-auto ">
-    <h2 class="col col-5 mx-3 fs-1 text-title border-bottom border rounded text-center " >
-      <i class="bi bi-cart"></i> Panier  
+  <div class="row m-auto">
+    <h2 class="col-5 mx-3 my-2 fs-1 text-title border-bottom border rounded text-center">
+      <i class="bi bi-cart"></i> Panier
     </h2>
-    <h2 class="col col-5 fs-1 text-center text-error border rounded border-red " *ngIf="!showMessage">
-      est vide 
+    <h2 class="col-5 my-2 fs-1 text-center text-error border rounded border-red" *ngIf="showMessage">
+      est vide
     </h2>
   </div>
 
-    <div *ngFor="let x of itemsCart" class="col col-5 shadow list-group-item list-group-item-action flex-column justify-content-end w-50 m-auto align-items-center my-3 border-primary">
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1 fs-4 text-primary fs-bold">{{x.LIBACTGE}}</h5>
-        <img class="img img-responsive my-3 shadow" [src]="x.budgetphoto" width="200" height="200" alt="">
-        <small class="text-muted">{{x.CODYTPAC}}</small>
+  <div class="my-5 row">
+    <div *ngFor="let x of itemsCart" class="col-4 ">
+      <div class="bg-light shadow list-group-item list-group-item-action flex-column align-items-center my-3 border rounded">
+        <div class="my-2 d-flex justify-content-center align-items-center">
+  
+          <img class="img img-responsive rounded shadow" [src]="x.budgetphoto" width="170" height="170" alt="">
+        </div>
+        <ul class="list-group fs-4 fs-bold">
+          <h5 class="mb-1 fs-4 fs-bold text-title text-center border rounded">{{x.LIBACTGE}}</h5>
+          <li class="rounded list-group-item my-2">Catégorie: {{x.categorie}}</li>
+          <li class="rounded list-group-item my-2"><span class="text-primary fs-bold">{{x.MONTSTRU}} {{currency}}</span></li>
+        </ul>
+  
+        <button class="btn my-2 btn-custom text-white mx-3" (click)="open(mymodal, x)"><i class="bi bi-check-circle-fill"></i></button>
+        <button class="btn btn-outline-danger" (click)="OnDelete(x.IDEIMPST)"><i class="bi bi-x-circle"></i></button>
       </div>
-      <ul class="list-group fs-4 fs-bold">
-        <li class="list-group-item my-3">Catégorie : {{x.categorie}}</li>
-        <li class="list-group-item my-3">Prix Total : <span class="text-primary"> {{x.MONTSTRU}} $ </span></li>
-        <li class="list-group-item my-3">Quantité : <span class="text-primary"> 1 </span></li>
-      </ul>
-
-        <button class="btn btn-primary mx-3" (click)="open(mymodal,x)" >confirm purchase</button>
-        <button class="btn btn-danger" (click)="OnDelete(x.IDEIMPST)" >cancel purchase</button>
-
-    
     </div>
-
   </div>
 </div>
 
@@ -35,12 +33,12 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">PURCHASE INFOS</h5>
+        <h5 class="modal-title text-title" id="exampleModalLongTitle">Informations de l'achat</h5>
       </div>
       <div class="modal-body">
         <form [formGroup]="form_" (ngSubmit)="onClickSubmit()" class="container">
           <img class="m-auto border-primary img img-responsive my-3 shadow" [src]="item_?.budgetphoto" width="200" height="200" alt="">
-          <p class="fs-bold text-primary text-center">{{item_?.LIBACTGE}}</p>
+          <p class="fs-bold text-title text-center text-primary">{{item_?.LIBACTGE}}</p>
           <div class="form-group my-3" *ngIf="!true">
             <label for="item">Item Id</label>
             <input id="item" type="text" readonly formControlName="item_id" class="my-3 form-control">
@@ -61,7 +59,7 @@
             <input min="1" max="7" id="quantite" type="number" formControlName="quantity" class="my-3 form-control">
           </div>
     
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" [disabled]="form_.invalid" class="btn btn-primary"><i class="bi bi-check-circle-fill"></i></button>
         </form>
       </div>
     </div>

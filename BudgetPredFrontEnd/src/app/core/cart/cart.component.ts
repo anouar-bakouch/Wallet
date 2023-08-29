@@ -28,6 +28,7 @@ export class CartComponent {
   message = '';
   prix_item:number = 0;
   today: string="";
+  currency = localStorage.getItem('currency') || "MAD";
 
   public form_ = <RxFormGroup> this.fservice.group(
     { 
@@ -154,6 +155,14 @@ export class CartComponent {
     const basePrice = this.form_.value.Budget; 
 
     return quantity * basePrice;
+  }
+
+  canPurchase():boolean{
+    const quantity = this.form_.value.quantity;
+    const basePrice = this.form_.value.Budget; 
+    const budget = this.form_.value.MOISSOLD; 
+
+    return quantity * basePrice <= budget;
   }
 
 
