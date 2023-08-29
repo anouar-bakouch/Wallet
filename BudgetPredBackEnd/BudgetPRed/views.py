@@ -677,13 +677,12 @@ class GetActualBudgetExpensesView(APIView):
         user = User.objects.get(id=user_id)
         month = actual_month().month
         # Get all monthly budgets for the user
-        monthly_budgets = MonthlyBudget.objects.filter(user=user)
-        
-        # Find the monthly budget with the same month as the actual month
-        for monthly_budget in monthly_budgets:
-            if monthly_budget.month.month == month:
-                serializer = MonthlyBudgetSerializer(monthly_budget)
-                return Response(serializer.data)
+        monthly_budgets = MonthlyBudget.objects.annotate(month_component=ExtractMonth('month')).filter(user=user, month_component=month).first()
+        # If a matching monthly budget is found, return it
+        # return only one monthly budget
+        if monthly_budgets:
+            serializer = MonthlyBudgetSerializer(monthly_budgets)
+            return Response(serializer.data)
         
         # If no matching monthly budget is found, return a 204 No Content response
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -723,8 +722,6 @@ class configModelView(APIView):
                     return Response({'has_config': True})
         else:
             return Response({'has_config': False})
-
-
 
 class AutorizationPurchaseViewAPI(APIView):
     def post(self, request):
