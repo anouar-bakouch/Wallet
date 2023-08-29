@@ -98,10 +98,10 @@
 
     </div>
   </div>
-  <div class="card my-3 col col-5" *ngIf="!has_config">
+  <div class="card my-3 col col-5">
     <div class="card-content">
       <h2 class="card-title p-2 text-center"><i class="bi bi-heart-fill"></i> Categories</h2>
-      <h4 class="card-text p-2 bg-white text-danger border border-radius text-center fs-bold" *ngFor="let x of most_bought_categories"><i class="bi bi-heart text-danger"></i> {{x}}</h4>
+      <h4 class="card-text p-2 border rounded bg-light text-center fs-bold text-black" *ngFor="let x of most_bought_categories"><i class="bi bi-heart text-danger"></i> {{x}}</h4>
 
     </div>
   </div>

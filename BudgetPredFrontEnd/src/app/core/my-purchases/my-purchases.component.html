@@ -1,11 +1,11 @@
 <div *ngIf="!show_loading" class="container bg-white w-80 m-auto border rounded">
     <div class="rowmy-5 row">
       <div class="col col-12">
-        <h3 class=" p-3 border rounded text-center my-3 text-title">My Purchases</h3>
+        <h3 class=" p-3 border rounded text-center my-3 text-title">Mes achats</h3>
         <div class="card-container"> 
           <h3 *ngIf="purchaseMessageAppear" class="errorMessage">{{purchaseMessage}}</h3>
           <div *ngFor="let y of my_purchases" class="card">
-            <img class="card-img-top" [src]="y.budgetphoto" alt="Card image cap">
+            <img class="border rounded my-2 card-img-top" [src]="y.budgetphoto" alt="Card image cap">
             <div class="card-body">
               <h5 class="card-title">{{y.LIBACTGE}}</h5>
               <h6 class="text-success fs-bold">{{y.MONTSTRU}} {{currency}}</h6>

@@ -706,7 +706,8 @@ class MostBoughtCategoryView(APIView):
         for purchase in purchases:
             categories.append(purchase.item_purchase.item.categorie)
         top_categories = categories[:3]
-        return Response(top_categories)
+        unique_categories = list(set(top_categories))
+        return Response(unique_categories)
 
 class configModelView(APIView):
     def get(self,request):
