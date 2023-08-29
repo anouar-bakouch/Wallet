@@ -430,7 +430,9 @@ class refreshTokenView(APIView):
 class deleteItemPurchaseView(APIView):
     def delete(self, request, pk):
         # Get object with this pk
-        item_purchase = get_object_or_404(ItemPurchase.objects.all(), pk=pk)
+        item = get_object_or_404(Item.objects.all(), pk=pk)
+        print(item)
+        item_purchase = ItemPurchase.objects.get( item=item,)
         item_purchase.delete()
         return Response({
             "message": "ItemPurchase with id `{}` has been deleted.".format(pk)
