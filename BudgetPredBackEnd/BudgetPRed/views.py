@@ -532,16 +532,15 @@ class ListMonthlyBudgetView(APIView):
         # get the unique months
         months = list(set(months))
         # change from datetime to YYYY-MM-DD
-
         # for each month , a monthly budget is created or updated 
         for month in months:
             # get the user's purchases for the month
             purchases = Purchase.objects.filter(user=user, MOISSOLD=month)
-            print(month)
-            budget = MonthlyBudget.objects.filter(user=user, month=month).first().budget
+            monthly_budget = MonthlyBudget.objects.annotate(month_component=ExtractMonth('month')).filter(user=user, month_component=month.month).first()
+            budget = monthly_budget.budget
             items_boughts = ItemPurchase.objects.filter(user=user, is_purchased=True)
             items_boughts_id = []
-            for item_bought in items_boughts:
+            for item_bought in items_boughts: 
                 items_boughts_id.append(item_bought.item.IDEIMPST)
             items_prices_of_this_month = []
 
@@ -730,7 +729,6 @@ class AutorizationPurchaseViewAPI(APIView):
     def post(self, request):
         user_id = request.data.get('user_id')
         item_id = request.data.get('item_id')
-        print(request.data)
         user = User.objects.get(id=user_id)
         item = Item.objects.get(IDEIMPST=item_id)
         price_item = item.MONTSTRU

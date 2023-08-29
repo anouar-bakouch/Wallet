@@ -169,7 +169,6 @@ export class CartComponent {
       form.append('item_id', item_id.toString());
       form.append('user_id', user_id.toString());
       this.itemService.canPurchase(form).subscribe((data: any) => {
-        console.log(data);
         const answer = data.can_buy;
         resolve(answer);
       }, (error) => {
