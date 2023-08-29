@@ -69,10 +69,17 @@ export class MyPurchasesComponent {
   deletePurchase(id: number) {
     this.puchaseservice.deletePurchase(id).subscribe(
       (data: any) => {
-        console.log(data);
+        this.router.navigate(['/budgetHome/stats']);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       },
       error => {
         console.log(error);
+        this.router.navigate(['/budgetHome/stats']);
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
       },
       () => {
         this.router.navigate(['/budgetHome/stats'], {
