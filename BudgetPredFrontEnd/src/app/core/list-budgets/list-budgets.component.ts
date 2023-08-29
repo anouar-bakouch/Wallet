@@ -42,6 +42,7 @@ export class ListBudgetsComponent {
   
   // Property to store the filtered budgets
   filteredBudgets: Item[] = []; 
+  budgetphoto:string="";
 
   public form = <RxFormGroup> this.fservice.group(
     { 
@@ -155,6 +156,7 @@ addToCart(item: Item) {
       MONTSTRU: s.MONTSTRU,
     });
     this.id_to_update = s.IDEIMPST;
+    this.budgetphoto = s.budgetphoto;
   
     this.open(content);
   }

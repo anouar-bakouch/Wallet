@@ -16,15 +16,15 @@ export class MySpaceComponent {
   forecast_budget:number = 0;
   show_loading = false;
   show_items = false;
-
+  currency = "";
   items:Item[] = []
 
   constructor(private spaceService: SpaceService) {}
 
   ngOnInit() {
-    
     this.predictMonths();
     this.predictItems();
+    this.currency = localStorage.getItem('currency') || "EURO";
   }
 
 

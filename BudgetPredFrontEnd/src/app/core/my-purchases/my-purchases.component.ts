@@ -14,6 +14,8 @@ export class MyPurchasesComponent {
   user_id: number = 0;
   show_loading = false;
   currency:string = localStorage.getItem('currency')|| "MAD";
+  purchaseMessage:string = "You have no purchases yet"
+  purchaseMessageAppear:boolean = false;
 
   constructor(
     private puchaseservice: PurchaseService,
@@ -23,9 +25,13 @@ export class MyPurchasesComponent {
   ngOnInit() {
     this.user_id = Number(localStorage.getItem('user_id'));
     this.show_loading = true;
+    this.purchaseMessageAppear = false;
     this.puchaseservice.getPurchaseByUser(this.user_id).subscribe(
       (data: any) => {
         this.my_purchases = data;
+        if(this.my_purchases.length == 0){
+          this.purchaseMessageAppear = true;
+        }
       },
       error => {
         console.log(error);

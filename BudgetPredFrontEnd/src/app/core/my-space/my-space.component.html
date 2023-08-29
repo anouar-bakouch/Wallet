@@ -1,34 +1,33 @@
-<div class="container-fluid row border shadow text-primary my-3">
+<div class="container w-80 m-auto  row border rounded rounded-lg shadow text-primary my-3 bg-white">
 
-    <div class="col col-6 my-3" >
 
-        <h3 class="text-center p-3">
-            Achats Recommandées
-        </h3>
-        <img src = "assets/animations/items.gif" *ngIf="show_items" alt="loading" width="300" height="300">
-        <div class="col col-12" *ngIf="!show_items">
-            <div class="card-container">
-              <div class="row">
-                <div class="d-flex align-items-center justify-content-between flex-wrap">
-                  <div *ngFor="let y of items" class="flex-grow-1">
-                    <div class="card my-2 mx-1">
-                      <img class="card-img-top img-responsive" width="200" height="200" [src]="y.budgetphoto" alt="Card image cap">
-                      <div class="card-body">
-                        <h5 class="card-title text-center ">{{y.LIBACTGE}}</h5>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+<img src = "assets/animations/items.gif" *ngIf="show_items" alt="loading" width="300" height="300">
+<div class="col col-6" *ngIf="!show_items">
+  <h3 class="text-center text-danger p-3 border border-bottom rounded my-3">
+    <i class="bi bi-bag-heart"></i> Achats Recommandées
+</h3>  
+  <div class="card-container">
+      <div class="row">
+        <div class="d-flex align-items-center justify-content-between flex-wrap">
+          <div *ngFor="let y of items" class="flex-grow-1">
+            <div class="card my-2 mx-1">
+              <img class="card-img-top img-responsive" width="200" height="200" [src]="y.budgetphoto" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title text-center ">{{y.LIBACTGE}}</h5>
               </div>
             </div>
           </div>
-
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="col col-6 my-3">
+
+
+    <div class="col col-6 ">
             
-            <h3 class="text-center p-3 text-color fs-bold">
-                Prévus Mois Prochain
+            <h3 class="text-center p-3 text-color fs-bold border border-bottom rounded my-3">
+              <i class="bi bi-calendar"></i> Prévus Mois Prochain
             </h3>
 
             <img src = "assets/animations/loading.gif" *ngIf="show_loading" alt="loading" width="300" height="300">
@@ -36,16 +35,16 @@
             <ul class="list-group fs-4" *ngIf="!show_loading" >
 
                 <li class="list-group-item">
-                   Budget  : {{forecast_budget}} MAD
+                   Budget  : {{forecast_budget}}  {{currency}}
                 </li>
 
                 <li class="list-group-item">
-                   Dépenses  : {{forecast_expenses}} MAD
+                   Dépenses  : {{forecast_expenses}}  {{currency}}
                 </li>
 
 
                 <li class="list-group-item ">
-                   Economisées : {{forecast_savings}} MAD
+                   Economisées : {{forecast_savings}} {{currency}}
                 </li>
 
             </ul>

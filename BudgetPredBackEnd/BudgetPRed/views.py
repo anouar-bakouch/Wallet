@@ -513,6 +513,10 @@ class ListMonthlyPurchaseView(APIView):
         serializer = PurchaseSerializer(purchase, many=True)
         return Response(serializer.data)
 
+def datetimeTOdate(date_time):
+    date = date_time.strftime("%Y-%m-%d")
+    return date
+
 # Saving each month data 
 class ListMonthlyBudgetView(APIView):
     # the user's monthly budget data 
@@ -526,16 +530,18 @@ class ListMonthlyBudgetView(APIView):
             months.append(month.MOISSOLD)
         # get the unique months
         months = list(set(months))
+        # change from datetime to YYYY-MM-DD
+
         # for each month , a monthly budget is created or updated 
         for month in months:
             # get the user's purchases for the month
             purchases = Purchase.objects.filter(user=user, MOISSOLD=month)
+            print(month)
             budget = MonthlyBudget.objects.filter(user=user, month=month).first().budget
             items_boughts = ItemPurchase.objects.filter(user=user, is_purchased=True)
             items_boughts_id = []
             for item_bought in items_boughts:
                 items_boughts_id.append(item_bought.item.IDEIMPST)
-             
             items_prices_of_this_month = []
 
             for item in items_boughts_id:
@@ -716,3 +722,23 @@ class configModelView(APIView):
                     return Response({'has_config': True})
         else:
             return Response({'has_config': False})
+
+
+class AutorizationPurchaseViewAPI(APIView):
+    def post(self,request):
+        user_id = request.data.get('user_id')
+        item_id = request.data.get('item_id')
+        user = User.objects.get(id=user_id)
+        item = Item.objects.get(IDEIMPST=item_id)
+        price_item = item.MONTSTRU
+        month = actual_month().month
+        # get the user's monthly budget
+        monthly_budget = MonthlyBudget.objects.get(user=user, month=month)
+        budget = monthly_budget.budget
+        spendings = monthly_budget.spendings
+        real_budget_left = budget - spendings
+        if real_budget_left >= price_item:
+            return Response({'can_buy': True})
+        else:
+            return Response({'can_buy': False})
+            

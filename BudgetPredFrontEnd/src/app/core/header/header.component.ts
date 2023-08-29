@@ -26,18 +26,18 @@ export class HeaderBudgetComponent {
   spendings = 0;
   savings = 0;
   months = [
-    {id:1,name:'January'},
-    {id:2,name:'February'},
-    {id:3,name:'March'},
-    {id:4,name:'April'},
-    {id:5,name:'May'},
-    {id:6,name:'June'},
-    {id:7,name:'July'},
-    {id:8,name:'August'},
-    {id:9,name:'September'},
-    {id:10,name:'October'},
-    {id:11,name:'November'},
-    {id:12,name:'December'},
+    {id:1,name:'Janvier'},
+    {id:2,name:'Fevrier'},
+    {id:3,name:'Mars'},
+    {id:4,name:'Avril'},
+    {id:5,name:'Mai'},
+    {id:6,name:'Juin'},
+    {id:7,name:'Juillet'},
+    {id:8,name:'Aout'},
+    {id:9,name:'Septembre'},
+    {id:10,name:'Octobre'},
+    {id:11,name:'Novembre'},
+    {id:12,name:'Decembre'},
   ]
   most_bought_categories = []
   has_config:boolean = false;
@@ -60,7 +60,6 @@ export class HeaderBudgetComponent {
       this.show_loading = false;
     } 
     )
-
     this.hservice.userConfig(this.authService.getId()).subscribe((data:any) => {
       this.has_config =  data.has_config;
     });

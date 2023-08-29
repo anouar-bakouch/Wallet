@@ -39,12 +39,12 @@
             </div>
             <li>
               <a class="dropdown-item text-coloring  fs-bold " routerLink="/budgetHome/budgets"
-                ><i class="bi bi-house"></i> Home</a
+                ><i class="bi bi-house"></i> Accueil</a
               >
             </li>
             <li>
               <a class="dropdown-item text-coloring  fs-bold" [class.disabled]="!has_config" routerLink="/budgetHome/mySpace"
-                ><i class="bi bi-person-vcard-fill"></i> My Space</a
+                ><i class="bi bi-person-vcard-fill"></i> Mon Espace</a
               >
             </li>
             <li>
@@ -54,17 +54,17 @@
             </li>
             <li>
               <a class="dropdown-item text-coloring fs-bold" routerLink="/budgetHome/cart"
-                ><i class="bi bi-cart-fill"></i> Cart</a
+                ><i class="bi bi-cart-fill"></i> Panier</a
               >
             </li>
             <li>
               <a class="dropdown-item text-coloring  fs-bold " [class.disabled]="!has_config"  routerLink="/budgetHome/myPurchases"
-                ><i class="bi bi-cash-coin"></i> Purchases</a
+                ><i class="bi bi-cash-coin"></i> Achats</a
               >
             </li>
             <li>
              <a class="dropdown-item text-coloring fs-bold" [class.disabled]="!has_config" [routerLink]="!has_config ? null : '/budgetHome/stats'">
-              <i class="bi bi-bar-chart-line"></i> Graphique des dépenses
+              <i class="bi bi-bar-chart-line"></i> Statistiques
 </a>
             </li>
             <li>
@@ -98,7 +98,7 @@
 
     </div>
   </div>
-  <div class="card my-3 col col-5">
+  <div class="card my-3 col col-5" *ngIf="!has_config">
     <div class="card-content">
       <h2 class="card-title p-2 text-center"><i class="bi bi-heart-fill"></i> Categories</h2>
       <h4 class="card-text p-2 bg-white text-danger border border-radius text-center fs-bold" *ngFor="let x of most_bought_categories"><i class="bi bi-heart text-danger"></i> {{x}}</h4>

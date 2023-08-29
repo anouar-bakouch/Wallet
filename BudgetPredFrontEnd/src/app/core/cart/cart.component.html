@@ -1,11 +1,11 @@
-<div class="container-fluid">
+<div class="container bg-white w-80 m-auto border rounded panier">
 <div class="list-group my-5 row">
-  <div class="row m-auto w-50">
-    <h2 class="col col-3 fs-1 text-center text-primary border-bottom border-3 border-primary " >
-      Your Cart 
+  <div class="row m-auto ">
+    <h2 class="col col-5 mx-3 fs-1 text-title border-bottom border rounded text-center " >
+      <i class="bi bi-cart"></i> Panier  
     </h2>
-    <h2 class="col col-3 fs-1 text-danger border-bottom border-3 border-danger" *ngIf="showMessage">
-      {{message}}
+    <h2 class="col col-5 fs-1 text-center text-error border rounded border-red " *ngIf="!showMessage">
+      est vide 
     </h2>
   </div>
 
@@ -41,19 +41,19 @@
         <form [formGroup]="form_" (ngSubmit)="onClickSubmit()" class="container">
           <img class="m-auto border-primary img img-responsive my-3 shadow" [src]="item_?.budgetphoto" width="200" height="200" alt="">
           <p class="fs-bold text-primary text-center">{{item_?.LIBACTGE}}</p>
-          <div class="form-group my-3">
+          <div class="form-group my-3" *ngIf="!true">
             <label for="item">Item Id</label>
             <input id="item" type="text" readonly formControlName="item_id" class="my-3 form-control">
           </div>
 
           <div class="form-group my-3">
-            <label for="Budget">Budget</label>
-            <input id="Budget" type="text" formControlName="Budget" class="my-3 form-control">
+            <label for="Budget">Prix</label>
+            <input readonly id="Budget" type="text" [value]="incrementPrice()" formControlName="Budget" class="my-3 form-control">
           </div>
 
           <div class="form-group my-3">
             <label for="MOISSOLD">Mois d'achat</label>
-            <input id="MOISSOLD" type="date" formControlName="MOISSOLD" class="my-3 form-control">
+            <input id="MOISSOLD" readonly type="date" formControlName="MOISSOLD" class="my-3 form-control">
           </div>
     
           <div class="form-group my-3">

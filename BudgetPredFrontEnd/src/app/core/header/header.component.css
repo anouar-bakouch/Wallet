@@ -1,11 +1,11 @@
 .img {
-    width :100%;
-    height: 60vh;
+  width: 100%;
+  height: 60vh;
 }
 
 .text-coloring {
-    color: rgb(15, 15, 15);
-    font-size: 19px;
+  color: rgb(15, 15, 15);
+  font-size: 19px;
 }
 
 @keyframes button-pulse {
@@ -22,7 +22,7 @@
 
 .button--pulsed {
   animation: button-pulse 0.5s infinite;
-  color : red;
+  color: red;
   font-size: 23px;
 }
 
@@ -30,10 +30,18 @@
   width: 300px;
   height: 200px;
   border-radius: 10px;
-  background: linear-gradient(to right, #006eff, #0965ee);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(to right, #00c756, #00c756);
   overflow: hidden;
   position: relative;
+  border: none;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  animation: card-in 0.5s ease-out forwards;
+  
+}
+
+.card:hover {
+  transform: scale(1.05);
+  cursor: pointer;
 }
 
 .card::before {
@@ -61,4 +69,35 @@
 .card-text {
   font-size: 16px;
   line-height: 1.5;
+}
+
+/* Animation for card */
+@keyframes card-in {
+  0% {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Card changes color every 3s */
+@keyframes card-change {
+  0% {
+    background-color: #00c756;
+  }
+  25% {
+    background-color: #00c721;
+  }
+  50% {
+    background-color: #0be97e;
+  }
+  75% {
+    background-color: #0796fd;
+  }
+  100% {
+    background-color: #00c756;
+  }
 }
