@@ -2,8 +2,8 @@
 
 
   <form  class="col-4 m-auto bg-white border rounded"  [formGroup]="form" (ngSubmit)="submitForm()">
-   <h3 class="border  border rounded p-3 bg-white text-center my-2" >Ce Mois</h3>
-    <div class="form-group fs-4">
+   <h3 class="border  border rounded p-3 bg-white text-center my-2 text-primary fs-bold" >Ce Mois</h3>
+    <div class="form-group fs-4 ">
       <label for="budget">Budget</label>
       <input type="number" class="form-control" id="budget" formControlName="budget">
     </div>
@@ -11,8 +11,8 @@
       <label for="month">Month</label>
       <input type="date" class="form-control" id="month" formControlName="month">
     </div>
-    <button type="submit" class="btn btn-success mx-3">confirmer</button>
-    <button class="btn btn-primary" type="button" (click)="open(mymodal)">modifier</button>
+    <button type="submit" class="btn btn-outline-primary mx-3"><i class="bi bi-check2-square text-primary"></i></button>
+    <button class="btn btn-outline-success my-3" type="button" (click)="open(mymodal)"><i class="bi bi-pencil-square"></i></button>
   </form>
 
   <ng-template class="modal w-80 fade" tabindex="-1" role="dialog" #mymodal let-modal aria-hidden="true">

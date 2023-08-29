@@ -124,7 +124,7 @@ toggleFilter() {
   // close it automatically after 3 s
   setTimeout(() => {
     this.showFilter = false;
-  } , 3000);
+  } , 5000);
 
 }
 

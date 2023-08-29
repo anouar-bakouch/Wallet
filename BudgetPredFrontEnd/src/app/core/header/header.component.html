@@ -90,18 +90,18 @@
 </nav>
 <div class="container-fluid row w-100">
   <div class="card my-3 col col-3 mx-3">
-    <div class="card-content">
-      <h2 class="card-title border border-bottom border-1 p-1 text-center">{{actual_month}} </h2>
-      <p class="card-text">Budget :{{actual_budget}} {{currency}}</p>
-      <p class="card-text">Spendings :{{spendings}} {{currency}}</p>
-      <p class="card-text">Savings :{{savings}} {{currency}}</p>
+    <div class="card-content p-2">
+      <h2 class="card-title border border-bottom border fs-bold rounded bg-white text-title p-1 text-center"><i class="bi bi-calendar-fill text-danger"></i> {{actual_month}} </h2>
+      <p class="text-p p-1 border rounded bg-light text-center text-black">Budget :{{actual_budget}} {{currency}}</p>
+      <p class="text-p p-1 border rounded bg-light text-center text-black">Spendings :{{spendings}} {{currency}}</p>
+      <p class="text-p p-1 border rounded bg-light text-center text-black">Savings :{{savings}} {{currency}}</p>
 
     </div>
   </div>
   <div class="card my-3 col col-5">
     <div class="card-content">
-      <h2 class="card-title p-2 text-center"><i class="bi bi-heart-fill"></i> Categories</h2>
-      <h4 class="card-text p-2 border rounded bg-light text-center fs-bold text-black" *ngFor="let x of most_bought_categories"><i class="bi bi-heart text-danger"></i> {{x}}</h4>
+      <h2 class="card-title p-2 text-center bg-white border rounded text-title"><i class="bi text-danger bi-heart-fill"></i> Categories</h2>
+      <h4 class="card-text text-p p-2 border rounded bg-light text-center fs-bold text-black" *ngFor="let x of most_bought_categories"><i class="bi bi-heart text-danger"></i> {{x}}</h4>
 
     </div>
   </div>
