@@ -35,10 +35,9 @@ export class ItemPurchaseService {
         return this.http.delete(url);
     }
    
-    canPurchase(item_id:number,user_id:number){
+    canPurchase(form:any){
         const url = environment.apiUrl + "/can-purchase/";
-        const params = new HttpParams().set('item_id', item_id).set('user_id', user_id);
-        return this.http.get(url, {params});
+        return this.http.post(url, form);    
     }
 
 

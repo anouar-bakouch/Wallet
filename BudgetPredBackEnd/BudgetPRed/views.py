@@ -18,6 +18,7 @@ from django.db.models import Sum
 from datetime import date, datetime
 import calendar
 from dateutil.relativedelta import relativedelta
+from django.db.models.functions import ExtractMonth
 # Recommendation ML
 from sklearn.calibration import LabelEncoder
 from surprise import Reader,Dataset,KNNBasic
@@ -724,21 +725,26 @@ class configModelView(APIView):
             return Response({'has_config': False})
 
 
+
 class AutorizationPurchaseViewAPI(APIView):
-    def post(self,request):
+    def post(self, request):
         user_id = request.data.get('user_id')
         item_id = request.data.get('item_id')
+        print(request.data)
         user = User.objects.get(id=user_id)
         item = Item.objects.get(IDEIMPST=item_id)
         price_item = item.MONTSTRU
-        month = actual_month().month
-        # get the user's monthly budget
-        monthly_budget = MonthlyBudget.objects.get(user=user, month=month)
-        budget = monthly_budget.budget
-        spendings = monthly_budget.spendings
-        real_budget_left = budget - spendings
-        if real_budget_left >= price_item:
-            return Response({'can_buy': True})
-        else:
-            return Response({'can_buy': False})
+        today = date.today()
+        
+        # Filter the MonthlyBudget objects based on the month component only
+        monthly_budget = MonthlyBudget.objects.annotate(month_component=ExtractMonth('month')).filter(user=user, month_component=today.month).first()
+        
+        if monthly_budget is not None:
+            budget = monthly_budget.budget
+            spendings = monthly_budget.spendings
+            real_budget_left = budget - spendings
             
+            if real_budget_left >= price_item:
+                return Response({'can_buy': True})
+        
+        return Response({'can_buy': False})

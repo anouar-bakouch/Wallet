@@ -61,6 +61,7 @@ export class MyPurchasesComponent {
         this.show_loading = false;
       }
     );
+    
   }
 
   deletePurchase(id: number) {

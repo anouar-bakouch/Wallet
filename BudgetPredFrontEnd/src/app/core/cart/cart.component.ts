@@ -71,7 +71,6 @@ export class CartComponent {
         });
       });
       this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd') || "";
-
     }
     
   correctImagePath(item: any): void {
@@ -80,7 +79,9 @@ export class CartComponent {
 
 
   open(content: any,x:Item) {
-
+   
+    this.canPurchase(x.IDEIMPST).then((answer: boolean) => {
+      if (answer) { 
     this.item_ = x;
     if (content._declarationTContainer.localNames[0] == 'mymodal') {
       this.form_.reset();
@@ -105,6 +106,10 @@ export class CartComponent {
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         }
       );
+      } else {
+        alert('You can not purchase this item');
+      } 
+    });
   }
 
   private getDismissReason(reason: any): string {
@@ -138,7 +143,7 @@ export class CartComponent {
 
       this.modalService.dismissAll();
     });
-
+  
   }
 
   OnDelete(item:number){
@@ -157,12 +162,20 @@ export class CartComponent {
     return quantity * basePrice;
   }
 
-  canPurchase():boolean{
-    const quantity = this.form_.value.quantity;
-    const basePrice = this.form_.value.Budget; 
-    const budget = this.form_.value.MOISSOLD; 
-
-    return quantity * basePrice <= budget;
+  canPurchase(item_id: number): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      const user_id = Number(localStorage.getItem('user_id'));
+      const form: FormData = new FormData();
+      form.append('item_id', item_id.toString());
+      form.append('user_id', user_id.toString());
+      this.itemService.canPurchase(form).subscribe((data: any) => {
+        console.log(data);
+        const answer = data.can_buy;
+        resolve(answer);
+      }, (error) => {
+        reject(error);
+      });
+    });
   }
 
 
