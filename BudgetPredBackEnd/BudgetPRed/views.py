@@ -431,7 +431,6 @@ class deleteItemPurchaseView(APIView):
     def delete(self, request, pk):
         # Get object with this pk
         item = get_object_or_404(Item.objects.all(), pk=pk)
-        print(item)
         item_purchase = ItemPurchase.objects.get( item=item,)
         item_purchase.delete()
         return Response({
@@ -481,16 +480,15 @@ class DeletePurchaseViewAPI(APIView):
     def delete(self, request, pk):
         # Get object with this pk
         item = get_object_or_404(Item.objects.all(), pk=pk)
-        item_purchase = ItemPurchase.objects.get( item=item,)
+        item_purchase = ItemPurchase.objects.get( item=item)
+        user_id = item_purchase.user.id
         item_purchase.is_purchased = False
         item_purchase.save()
-        purchase = Purchase.objects.get(item_purchase=item_purchase)
-        purchase.delete()
-        # update the monthly budget
-        monthly_budget = MonthlyBudget.objects.get(user=purchase.user, month=purchase.MOISSOLD)
-        monthly_budget.spendings += ((purchase.budget * purchase.quantity) - purchase.MONTRAPP)
-        monthly_budget.savings -= purchase.MONTRAPP
-        monthly_budget.budget += purchase.budget 
+        purchase = get_object_or_404(Purchase.objects.all(), item_purchase=item_purchase, user=user_id)
+        month = purchase.MOISSOLD
+        monthly_budget = MonthlyBudget.objects.annotate(month_component=ExtractMonth('month')).filter(user=user, month_component=month.month).first()
+        monthly_budget.spendings += purchase.budget
+        monthly_budget.savings += monthly_budget.budget - purchase.budget 
         monthly_budget.save()
         return Response({
             "message": "Purchase with id `{}` has been deleted.".format(pk)

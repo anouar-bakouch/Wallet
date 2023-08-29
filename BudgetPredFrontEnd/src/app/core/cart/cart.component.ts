@@ -136,7 +136,7 @@ export class CartComponent {
     this.itemService.addToPurchase(item).subscribe((data: any) => {
       // delete the data from itemsCart 
       this.itemsCart = this.itemsCart.filter((x) => x.IDEIMPST != this.item_?.IDEIMPST);
-            this.router.navigate(['/budgetHome/stats']);
+      this.router.navigate(['/budgetHome/stats']);
 
       setTimeout(() => {
       window.location.reload();

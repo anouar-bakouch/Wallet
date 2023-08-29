@@ -3,6 +3,7 @@ import { SpaceService } from '../services/space.service';
 import { PurchaseService } from '../services/Purchase.service';
 import { ItemPurchaseService } from '../services/itemPurchase.service';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-purchases',
@@ -19,7 +20,8 @@ export class MyPurchasesComponent {
 
   constructor(
     private puchaseservice: PurchaseService,
-    private itemService: ItemPurchaseService
+    private itemService: ItemPurchaseService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -73,7 +75,13 @@ export class MyPurchasesComponent {
         console.log(error);
       },
       () => {
-        this.ngOnInit();
+        this.router.navigate(['/budgetHome/stats'], {
+          // Add any relevant navigation options here
+        }).then(() => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        });
       }
     );
   }
