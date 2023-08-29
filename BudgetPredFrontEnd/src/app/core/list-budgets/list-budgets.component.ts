@@ -254,12 +254,11 @@ addToCart(item: Item) {
     
     this.budgetService.updateItem(form_data,this.id_to_update).subscribe( response => {
       this.getBudgets();
-      console.log(response)
-      // setTimeout(() => {
-      //   this.showAdded = true;
-      //   this.messageItemAdded = "Updated successfully !";
-      //   window.location.reload();
-      // } , 2000);
+      this.showAdded = true; 
+      this.messageItemAdded = "Article bien modifié!";
+      setTimeout(() => {
+        this.showAdded = false;
+      } , 2000);
 
     }, 
     error => {

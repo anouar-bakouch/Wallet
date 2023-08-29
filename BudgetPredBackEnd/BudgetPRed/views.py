@@ -101,18 +101,17 @@ class PredictNextMonthMONTSTRUView(APIView):
     # get the user id and search for its puchases in the database
     user_id = request.query_params.get('user_id')
     user = User.objects.get(id=user_id)
-    purchases = Purchase.objects.filter(user=user)
+    data = MonthlyBudget.objects.filter(user=user)
 
-    # get the budget and expenses for the past months
-    for purchase in purchases:
-        monthly_budget.append(purchase.budget)
-        monthly_expenses.append(purchase.budget - purchase.MONTRAPP)
-        monthly_revenue.append(purchase.MONTRAPP)
+    # get the user's purchases
+    for x in data : 
+        monthly_budget.append(x.budget)
+        monthly_expenses.append(x.spendings)
+        monthly_revenue.append(x.savings)
 
     budget = pd.DataFrame({
         'month': len(monthly_budget),
         'budget': monthly_budget
-
     })
 
     expenses = pd.DataFrame({
@@ -461,8 +460,7 @@ class PurchaseView(APIView):
             purchase.save()
 
             try :
-                # update the monthly budget
-                monthly_budget = MonthlyBudget.objects.get(user=user, month=purchase.MOISSOLD)
+                monthly_budget = MonthlyBudget.objects.annotate(month_component=ExtractMonth('month')).filter(user=user, month_component=data['MOISSOLD'].month).first()
                 monthly_budget.spendings += (purchase.budget * purchase.quantity) 
                 monthly_budget.savings += purchase.MONTRAPP 
                 monthly_budget.budget = monthly_budget.budget
@@ -538,25 +536,27 @@ class ListMonthlyBudgetView(APIView):
             purchases = Purchase.objects.filter(user=user, MOISSOLD=month)
             monthly_budget = MonthlyBudget.objects.annotate(month_component=ExtractMonth('month')).filter(user=user, month_component=month.month).first()
             budget = monthly_budget.budget
+            
             items_boughts = ItemPurchase.objects.filter(user=user, is_purchased=True)
             items_boughts_id = []
+
             for item_bought in items_boughts: 
                 items_boughts_id.append(item_bought.item.IDEIMPST)
             items_prices_of_this_month = []
+            
 
             for item in items_boughts_id:
                 items_prices_of_this_month.append(Item.objects.get(IDEIMPST=item).MONTSTRU)
 
             spendings = sum(items_prices_of_this_month) 
-            savings = Purchase.objects.filter(user=user, MOISSOLD=month).aggregate(Sum('MONTRAPP'))
+            savings = monthly_budget.budget - spendings
 
             # check if the monthly budget exists
-            monthly_budget = MonthlyBudget.objects.filter(user=user, month=month).first()
             if monthly_budget:
                 # update 
                 monthly_budget.budget = budget
                 monthly_budget.spendings = spendings
-                monthly_budget.savings = savings['MONTRAPP__sum']
+                monthly_budget.savings = savings
                 monthly_budget.save()
 
             else:

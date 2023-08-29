@@ -136,7 +136,7 @@ export class CartComponent {
     this.itemService.addToPurchase(item).subscribe((data: any) => {
       // delete the data from itemsCart 
       this.itemsCart = this.itemsCart.filter((x) => x.IDEIMPST != this.item_?.IDEIMPST);
-      this.router.navigate(['/budgetHome/myPurchases']);
+      this.router.navigate(['/budgetHome/stats']);
     } , (error: any) => {
       console.log(error);
     } , () => {

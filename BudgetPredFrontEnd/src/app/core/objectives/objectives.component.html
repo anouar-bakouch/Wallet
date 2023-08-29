@@ -1,8 +1,8 @@
 <div class="row container-fluid">
 
 
-  <form  class="col-4 m-auto"  [formGroup]="form" (ngSubmit)="submitForm()">
-   <h3 class="border  border-success p-3 " >Ce Mois</h3>
+  <form  class="col-4 m-auto bg-white border rounded"  [formGroup]="form" (ngSubmit)="submitForm()">
+   <h3 class="border  border rounded p-3 bg-white text-center my-2" >Ce Mois</h3>
     <div class="form-group fs-4">
       <label for="budget">Budget</label>
       <input type="number" class="form-control" id="budget" formControlName="budget">
@@ -40,7 +40,7 @@
   
 
 
-  <form *ngIf="displayForm" class="col-4 m-auto"  [formGroup]="form" (ngSubmit)="saveForm()">
+  <form *ngIf="displayForm" class="col-4 m-auto bg-white"  [formGroup]="form" (ngSubmit)="saveForm()">
       <div class="form-group fs-4">
         <label for="budget">Budget</label>
         <input type="number" class="form-control" id="budget" formControlName="budget">
@@ -57,10 +57,10 @@
       <div class="list-group my-5 row">
         <div class="col col-8">
           <div class="card-container">
-            <h3 class="text-primary ">Previous budgets</h3>
+            <h3 class="text-primary bg-white p-3 border rounded text-center ">Budgets </h3>
             <div *ngFor="let y of lastMonths" class="card my-2">
               <div class="card-body">
-                <h5 class="card-title"><span class="text-primary">Month</span> {{y.month}}</h5>
+                <h5 class="card-title"><span class="text-primary">Month</span> {{y.month.split('-')[1]}}</h5>
                 <p class="card-text">Budget: {{y.budget}}</p>
 
               </div>
