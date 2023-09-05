@@ -1,5 +1,6 @@
-- alert when reaching a budget limit => budget is lower than purchase
+- prediction for a whole year ,  
 
-- purchases 
+    - enhancing the model by adding more features ,
 
-- a user can not buy if budget is not defined
+- enhancing the UI by adding more features ,
+

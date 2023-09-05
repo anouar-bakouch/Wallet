@@ -49,6 +49,18 @@
 
             </ul>
 
+            <div class="card">
+              <div class="card-header">
+                <h3>Predicted Budget</h3>
+              </div>
+              <div class="card-body">
+                <div *ngFor="let prediction of predictions" class="prediction">
+                  <div class="month">{{ prediction.month }}</div>
+                  <div class="budget">{{ prediction.budget | currency }}</div>
+                </div>
+              </div>
+            </div>
+
     </div>
 
 

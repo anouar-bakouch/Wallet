@@ -18,12 +18,14 @@ export class MySpaceComponent {
   show_items = false;
   currency = "";
   items:Item[] = []
+  predictions: any[] = [];
 
   constructor(private spaceService: SpaceService) {}
 
   ngOnInit() {
     this.predictMonths();
     this.predictItems();
+    this.predictYear();
     this.currency = localStorage.getItem('currency') || "EURO";
   }
 
@@ -57,6 +59,12 @@ export class MySpaceComponent {
       this.show_loading = false;
     }
     );
+  }
+
+  predictYear() {
+    this.spaceService.predictBudgetYear(Number(localStorage.getItem('user_id'))).subscribe((data: any) => {
+      this.predictions = data
+    });
   }
 
 }

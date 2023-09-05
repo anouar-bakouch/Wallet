@@ -21,5 +21,9 @@ export class SpaceService {
         predictItems(user_id:number){
             return this.http.get<Item[]>(environment.apiUrl+`/predict-items/?user_id=${user_id}`)
         }
+
+        predictBudgetYear(user_id:number){
+            return this.http.get(environment.apiUrl+`/predict-budget-year/?user_id=${user_id}`)
+        }
     
 }

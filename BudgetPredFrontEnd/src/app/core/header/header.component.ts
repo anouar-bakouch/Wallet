@@ -111,7 +111,6 @@ export class HeaderBudgetComponent {
   
   actualMonthBudget(){
     this.hservice.actualMonthBudget(this.authService.getId()).subscribe((data:any) => {
-      console.log(data)
       this.actual_budget = data?.budget;
       this.actual_month =  this.months.filter((month:any) => month.id == data.month.split('-')[1])[0].name;
       this.spendings = data.spendings;

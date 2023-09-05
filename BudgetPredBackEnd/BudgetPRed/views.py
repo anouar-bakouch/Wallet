@@ -709,19 +709,22 @@ class MostBoughtCategoryView(APIView):
         return Response(unique_categories)
 
 class configModelView(APIView):
-    def get(self,request):
+    def get(self, request):
         user_id = request.query_params.get('user_id')
-        # GOAL : check if the user has set a budget for this month
-            # YES : then return True 
-            # NO : then return False
-        user = User.objects.get(id=user_id)
-        monthly_budgets = MonthlyBudget.objects.filter(user=user)
-        if monthly_budgets:
+
+        try:
+            user = User.objects.get(id=user_id)
+            monthly_budgets = MonthlyBudget.objects.filter(user=user)
+
             for monthly_budget in monthly_budgets:
                 if monthly_budget.month.month == actual_month().month:
                     return Response({'has_config': True})
-        else:
+
             return Response({'has_config': False})
+        except User.DoesNotExist:
+            return Response({'error': 'User does not exist'})
+        except MonthlyBudget.DoesNotExist:
+            return Response({'error': 'Monthly budget does not exist'})
 
 class AutorizationPurchaseViewAPI(APIView):
     def post(self, request):
@@ -744,3 +747,41 @@ class AutorizationPurchaseViewAPI(APIView):
                 return Response({'can_buy': True})
         
         return Response({'can_buy': False})
+
+class PredictNextYearBudgetView(APIView):
+
+  def get(self, request):
+
+    user_id = request.query_params.get('user_id')
+    user = User.objects.get(id=user_id)
+    data = MonthlyBudget.objects.filter(user=user)
+
+    monthly_budget = {
+        "month": [],
+        "budget": []
+    };
+
+    for x in data :
+        monthly_budget["month"].append(x.month.month)
+        monthly_budget["budget"].append(x.budget)
+    
+    dataFrame = pd.DataFrame(monthly_budget)
+
+    # Create a linear regression model
+    model = LinearRegression()
+
+    # Fit the model to the data
+    model.fit(dataFrame[['month']], dataFrame[['budget']])
+
+    # Predict the budget for the next month
+    next_year_budget = model.predict([[13]])
+
+    predictions = []
+    for i in range(1, 13):
+        prediction = model.predict([[i]])[0][0]
+        month_name = calendar.month_name[i]
+        predictions.append((month_name, prediction))
+
+    return Response(
+        predictions
+    )

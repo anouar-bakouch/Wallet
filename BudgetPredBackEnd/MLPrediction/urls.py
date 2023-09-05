@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from BudgetPRed.views import deleteItemPurchaseView,AutorizationPurchaseViewAPI,configModelView,FormAPIView,UpdateFormAPIView,MostBoughtCategoryView,GetLastMonthsBudgetExpensesView,GetActualBudgetExpensesView,SaveFormAPIView,NewFormAPIView,ListMonthlyBudgetView,GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListMonthlyPurchaseView, ListPurchaseView,LoginView, PredictNextMonthMONTSTRUView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index,DeletePurchaseViewAPI
+from BudgetPRed.views import PredictNextYearBudgetView,deleteItemPurchaseView,AutorizationPurchaseViewAPI,configModelView,FormAPIView,UpdateFormAPIView,MostBoughtCategoryView,GetLastMonthsBudgetExpensesView,GetActualBudgetExpensesView,SaveFormAPIView,NewFormAPIView,ListMonthlyBudgetView,GetUserInfoView,ItemsCartAPIView,AddToCartAPIVIEW, ListMonthlyPurchaseView, ListPurchaseView,LoginView, PredictNextMonthMONTSTRUView, PurchaseView,refreshTokenView, AddItemView, DeleteItemView, GetItemView, GetUserView, ItemAPIView, ItemCategorieAPIView, PredictedItems, UpdateItemView, UpdateUserView, UserRegistrationView, index,DeletePurchaseViewAPI
 urlpatterns = [
     path('',index),
     path('admin/', admin.site.urls),
@@ -26,6 +26,7 @@ urlpatterns = [
     # PREDICTION ------------------------
     path('predict-items/', PredictedItems.as_view(), name='PredictItems'),
     path('predict-budget/',PredictNextMonthMONTSTRUView.as_view(),name='PredictBudget'),
+    path('predict-budget-year/',PredictNextYearBudgetView.as_view(),name='PredictBudgetYear'),
     # path('PredictMONTSTRU')
     path('list-item/',ItemAPIView.as_view() , name='list-item'),
     path('list-item-categorie/',ItemCategorieAPIView.as_view() , name='list-item-categorie'),
