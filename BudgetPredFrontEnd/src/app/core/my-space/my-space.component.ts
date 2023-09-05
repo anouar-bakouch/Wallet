@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { SpaceService } from '../services/space.service';
 import { Item } from 'src/models/Item';
 import { environment } from 'src/environments/environment';
+import { Prediction } from 'src/models/Prediction';
 
 @Component({
   selector: 'app-my-space',
@@ -19,6 +20,7 @@ export class MySpaceComponent {
   currency = "";
   items:Item[] = []
   predictions: any[] = [];
+  predictionYear: Prediction[] = [];
 
   constructor(private spaceService: SpaceService) {}
 
@@ -61,10 +63,26 @@ export class MySpaceComponent {
     );
   }
 
-  predictYear() {
-    this.spaceService.predictBudgetYear(Number(localStorage.getItem('user_id'))).subscribe((data: any) => {
-      this.predictions = data
-    });
-  }
 
+  predictYear() {
+    this.spaceService.predictBudgetYear(Number(localStorage.getItem('user_id')))
+      .subscribe(
+        (data: any) => {
+          this.predictions = data;
+        },
+        error => {
+          console.log(error);
+        },
+        () => {
+          this.predictions.forEach((prediction: any) => {
+            const month = prediction[0];
+            const budget = prediction[1].toFixed(2);
+            this.predictionYear.push({
+              month: month,
+              budget: budget
+            });
+          });
+        }
+      );
+  }
 }

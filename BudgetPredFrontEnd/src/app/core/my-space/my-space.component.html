@@ -49,14 +49,14 @@
 
             </ul>
 
-            <div class="card">
-              <div class="card-header">
-                <h3>Predicted Budget</h3>
+            <div class="card my-3">
+              <div class="text-color text-center p-3 border rounded m-3">
+                <h3><i class="bi bi-calendar2-week"></i> Prévision du budget pour l'année prochaine</h3>
               </div>
               <div class="card-body">
-                <div *ngFor="let prediction of predictions" class="prediction">
-                  <div class="month">{{ prediction.month }}</div>
-                  <div class="budget">{{ prediction.budget | currency }}</div>
+                <div *ngFor="let prediction of predictionYear" class="prediction border rounded p-2 bg-white">
+                  <div class="text-title ">{{ prediction.month }}</div>
+                  <div class="text-title">{{ prediction.budget }} <span class="text-success"> {{currency}} </span> </div>
                 </div>
               </div>
             </div>
